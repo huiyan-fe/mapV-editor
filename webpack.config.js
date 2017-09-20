@@ -9,7 +9,6 @@ module.exports = {
     entry: {
         // 'app/index': './src/app/index.jsx',
         'app/index': './src/app/index.vue.js',
-        // 'app/index2': './src/app/index2.jsx'
     },
     output: {
         filename: '[name].[chunkhash].js',
@@ -20,18 +19,28 @@ module.exports = {
     },
     module: {
         rules: [
+            //
             {
                 test: /\.vue$/,
-                loader: 'vue-loader'
+                loader: 'vue-loader',
+                exclude: /node_modules/
             }, {
-                test: /\.jsx$/,
-                loader: 'babel-loader'
+                test: /\.(jsx|js)$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/
             },
             {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: ['css-loader', 'sass-loader']
+                })
+            },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader']
                 })
             },
             {
