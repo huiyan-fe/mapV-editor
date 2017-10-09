@@ -3862,9 +3862,9 @@ mapv@^2.0.17:
   version "2.0.17"
   resolved "http://registry.npm.taobao.org/mapv/download/mapv-2.0.17.tgz#bccb290bc2670e5a3f0f59243493cf0d34586366"
 
-marine@^1.0.2:
-  version "1.0.4"
-  resolved "http://registry.npm.taobao.org/marine/download/marine-1.0.4.tgz#74f1435ad591e5d51cfff97d521d9d635cafe872"
+marine@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/marine/-/marine-1.0.5.tgz#0046834c6e4d5820cae78eb568e51f8972a81fb5"
 
 material-ui@^0.19.0:
   version "0.19.1"

@@ -1,7 +1,7 @@
 <template lang="pug">
-    .layers-console
+    .layers-console(v-if="layerInfo")
         .layers-console-head 
-            .layers-console-title 图层名称
+            .layers-console-title {{layerInfo.name}}
             .layers-btns
                 button.active 
                     svg(viewBox="0 0 24 24")
@@ -13,14 +13,11 @@
                         path(d="M22.706 5.294l-4-4c-0.387-0.387-1.025-0.387-1.413 0l-10 10c-0.188 0.188-0.294 0.444-0.294 0.706v4c0 0.55 0.45 1 1 1h4c0.263 0 0.519-0.106 0.706-0.294l10-10c0.394-0.387 0.394-1.025 0-1.413zM11.587 15h-2.587v-2.587l9-9 2.587 2.587-9 9z")
                     | 修改样式
         .layers-console-body
-            ul
+            ul(v-for="item in datas")
                 li 
-                    span.icon.active
-                    span 示例点数据
-                li  
                     span.icon
-                    span 示例面数据
-            .tipsbox
+                    span {{item.name}}
+            .tipsbox(v-if="datas.length<=2")
                 .tips 想要添加自定义数据? 
                 .tips 您可以通过点击左侧导航中的数据按钮
                     svg(viewBox="0 0 24 24")
@@ -31,8 +28,22 @@
 </template>
 
 <script>
+import { Action, Store } from 'marine';
 export default {
-
+    data: function() {
+        return {
+            layerInfo: null,
+            datas: [
+                { name: '示例点数据' },
+                { name: '示例面数据' },
+            ]
+        }
+    },
+    mounted: function() {
+        Store.on('home.changeActiveLayer', StoreData => {
+            this.layerInfo = StoreData.data;
+        });
+    }
 }
 </script>
 
