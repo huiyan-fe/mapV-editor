@@ -3,12 +3,16 @@
     NavComp
     MapComp
     Layers(v-if="nav==='layer'")
+    MapV
+    Datas
 </template>
 
 <script>
 import Nav from './navs/nav.vue';
 import MapComp from './map/map.vue';
 import Layers from './layers/layers.vue';
+import MapV from './mapv/mapv.vue';
+import Datas from './datas/datas.vue';
 import { Action, Store } from 'marine';
 Action.def('home', {});
 
@@ -22,7 +26,9 @@ export default {
   components: {
     NavComp: Nav,
     MapComp: MapComp,
-    Layers
+    Layers,
+    MapV,
+    Datas
   },
   mounted: function() {
     Store.on('home.changeNav', StoreData => {

@@ -31,7 +31,7 @@
 <script>
 import Console from './layers-console.vue';
 import { Action, Store } from 'marine';
-
+let index = 0;
 export default {
     components: {
         Console
@@ -47,13 +47,11 @@ export default {
             const newLayer = {
                 visiable: true,
                 name: `新建图层-${this.list.length + 1}`,
-                active: true
+                active: true,
+                id: `${+new Date()}_${index++}`
             }
-            this.list.push(newLayer);
-            // console.log(this.$data.list, this.$data.list[this.$data.list.length - 1])
-            // this.list.forEach(item => {
-            //     console.log(item);
-            // })
+            this.list.unshift(newLayer);
+            Action.home.emit('addNewLayer', newLayer);
             Action.home.emit('changeActiveLayer', newLayer);
         },
         changeActive: function(index) {
@@ -62,6 +60,16 @@ export default {
             });
             Action.home.emit('changeActiveLayer', this.list[index]);
         }
+    },
+    mounted: function() {
+        Store.on('home.receiveLayers', StoreData => {
+            StoreData.data.forEach(item => {
+                item.active = false;
+                return item;
+            });
+            this.list = StoreData.data;
+        });
+        Action.home.emit('getLayers');
     }
 }
 </script>
