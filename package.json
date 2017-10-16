@@ -11,7 +11,7 @@
         "dev": "rm -rf dist && mkdir -p dist/static && cp -r src/static/* dist/static && npm run dev:gulp & npm run dev:webpackServer",
         "build:gulp": "gulp",
         "build:webpack": "webpack -p",
-        "build": " mkdir -p dist/static && cp -r src/static/* dist/static && npm run build:webpack && npm run build:gulp"
+        "build": " mkdir -p dist/static && cp -r src/static/* dist/static && npm run build:gulp && npm run build:webpack "
     },
     "repository": {
         "type": "git",
