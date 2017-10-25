@@ -90,7 +90,7 @@ export default {
                 }
             }
         },
-        Line: {
+        LineString: {
             simple: {
                 name: '默认',
                 config: {

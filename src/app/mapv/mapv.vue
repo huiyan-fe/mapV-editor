@@ -72,14 +72,14 @@ export default {
               draw: "simple",
               dataType: "Point"
             };
-          } else if (StoreData.data.data[0].geometry.type === "Line") {
+          } else if (StoreData.data.data[0].geometry.type === "LineString") {
             target.config = {
               strokeStyle: "#fffa32" || "rgba(255, 250, 50, 0.3)",
               shadowColor: "#fffa32" || "rgba(255, 250, 50, 1)",
               shadowBlur: 20,
               lineWidth: 0.7,
               draw: "simple",
-              dataType: "Line"
+              dataType: "LineString"
             };
           } else if (StoreData.data.data[0].geometry.type === "Polygon") {
             target.config = {
