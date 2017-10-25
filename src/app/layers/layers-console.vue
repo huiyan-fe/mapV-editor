@@ -18,7 +18,7 @@
                     li(v-for="item in datas" @click="dataClick(item)" :class="item.active?'active':''")
                         span.icon
                         span {{item.name}}
-                .tipsbox(v-if="datas.length < 3")
+                .tipsbox(v-if="datas.length < 4")
                     .tips 想要添加自定义数据? 
                     .tips 您可以通过点击左侧导航中的数据按钮
                         svg(viewBox="0 0 24 24")

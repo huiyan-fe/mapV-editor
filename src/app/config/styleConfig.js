@@ -1,5 +1,28 @@
 export default {
     styleMap: {
+        Polygon: {
+            simple: {
+                name: '默认',
+                config: {
+                    fillStyle: '#ff5035',
+                    strokeStyle: '#faff35',
+                    lineWidth: 1,
+                    draw: 'simple',
+                    globalAlpha: 0.8,
+                }
+            },
+            intensity: {
+                name: '密度',
+                config: {
+                    gradient: {
+                        0: 'yellow',
+                        1: 'red'
+                    },
+                    globalAlpha: 0.8,
+                    draw: 'intensity'
+                }
+            }
+        },
         Point: {
             simple: {
                 name: '默认',
@@ -102,6 +125,13 @@ export default {
         label: {
             name: '标签',
             type: 'checkbox'
+        },
+        globalAlpha: {
+            name: '透明度',
+            type: 'range',
+            max: 1,
+            min: 0,
+            step: 0.01
         },
         maxOpacity: {
             name: '透明度',
