@@ -20,9 +20,9 @@ Action.def("home", {});
 
 export default {
   name: "app",
-  data: function() {
+  data: function () {
     return {
-      nav: null
+      nav: "data" || null
     };
   },
   components: {
@@ -33,7 +33,7 @@ export default {
     DatasCore,
     DatasLayer
   },
-  mounted: function() {
+  mounted: function () {
     Store.on("home.changeNav", StoreData => {
       this.nav = StoreData.data;
     });
