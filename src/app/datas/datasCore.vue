@@ -22,6 +22,8 @@ export default {
     },
     mounted: function () {
         Store.on("home.getDatas", () => {
+            // console.log(datas)
+
             Action.home.emit("receiveDatas", datas);
         });
 
@@ -40,7 +42,21 @@ export default {
             if (files && files.length > 0) {
                 var reader = new FileReader();
                 reader.onload = () => {
-                    console.log(reader.result)
+                    let isJSON = true;
+                    let jsonData;
+                    try {
+                        jsonData = JSON.parse(reader.result);
+                    } catch (e) {
+                        isJSON = false;
+                    }
+                    if (isJSON) {
+                        this.userDataIndex = this.userDataIndex || 0;
+                        datas.push({
+                            id: `userData_${Math.random()}`,
+                            name: `用户自定义数据 - ${++this.userDataIndex}`,
+                            data: jsonData
+                        });
+                    }
                 }
                 reader.readAsText(files[0]);
             }

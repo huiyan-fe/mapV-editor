@@ -22,6 +22,7 @@ export default {
 
 <style lang="scss">
 .datam-layers {
+  display: none;
   position: absolute;
   border-left: 1px solid #323232;
   left: 310px;

@@ -3,11 +3,13 @@
 
 <script>
 import { Action, Store } from "marine";
+import Config from '../map/config.js';
+
 
 console.log("init mapv");
 
 export default {
-  data: function() {
+  data: function () {
     return {
       list: [],
       layerid: null
@@ -15,7 +17,7 @@ export default {
   },
   computed: {},
   methods: {
-    updateConfig: function(config) {
+    updateConfig: function (config) {
       let target = null;
       for (let i in this.list) {
         if (this.list[i].id === this.layerid) {
@@ -27,8 +29,48 @@ export default {
       target.mapv.setOptions(config);
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.stores = [
+      Store.on('home.layerFocusOn', () => {
+        let target = null;
+        for (let i in this.list) {
+          if (this.list[i].id === this.layerid) {
+            target = this.list[i];
+            break;
+          }
+        }
+        if (target) {
+          const datas = target.mapv.dataSet.get();
+          const allPoints = [];
+          datas.forEach(point => {
+            switch (point.geometry.type) {
+              case 'Point':
+                allPoints.push(new BMap.Point(point.geometry.coordinates[0], point.geometry.coordinates[1]));
+                break;
+              case 'LineString':
+                point.geometry.coordinates.forEach(point => {
+                  allPoints.push(new BMap.Point(point[0], point[1]));
+                });
+                break;
+              case 'Polygon':
+                point.geometry.coordinates.forEach(boundary => {
+                  boundary.forEach(point => {
+                    allPoints.push(new BMap.Point(point[0], point[1]));
+                  });
+                });
+                break;
+              default:
+                console.log(point.geometry)
+            }
+          });
+          map.setViewport(allPoints, {
+            margins: [0, 0, 0, 610]
+          });
+        }
+      }),
+      Store.on('home.layerFocusOut', () => {
+        map.centerAndZoom(new BMap.Point(Config.center[0], Config.center[1]), Config.zoom);
+      }),
       Store.on("home.getLayers", () => {
         Action.home.emit("receiveLayers", this.list);
       }),

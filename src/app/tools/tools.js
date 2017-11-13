@@ -6,7 +6,6 @@ const create = {
         const citys = ['北京', '天津', '上海', '重庆', '石家庄', '太原', '呼和浩特', '哈尔滨', '长春', '沈阳', '济南', '南京', '合肥', '杭州', '南昌', '福州', '郑州', '武汉', '长沙', '广州', '南宁', '西安', '银川', '兰州', '西宁', '乌鲁木齐', '成都', '贵阳', '昆明', '拉萨', '海口'];
         while (randomCount--) {
             const cityCenter = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
-            // if (cityCenter) {
             data.push({
                 geometry: {
                     type: 'Point',
@@ -14,7 +13,6 @@ const create = {
                 },
                 count: 30 * Math.random()
             });
-            // }
         }
         return data;
     },

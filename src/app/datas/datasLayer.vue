@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  .layers
+  .layers(v-if="nav==='data'")
       .layers-fn
           .layers-title 数据管理
           .layers-new 
@@ -23,7 +23,8 @@ datas.forEach(item => (item.visiable = true));
 export default {
     data: function () {
         return {
-            datas
+            datas,
+            nav: null
         };
     },
     components: {
@@ -31,8 +32,15 @@ export default {
     },
     computed: {},
     methods: {},
-    mounted: function () { }
+    mounted: function () {
+        Store.on("home.changeNav", StoreData => {
+            // console.log(StoreData)
+            this.nav = StoreData.data;
+        });
+    }
 };
+
+
 </script>
 
 <style lang="scss">
