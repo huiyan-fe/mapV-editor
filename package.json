@@ -1,68 +1,70 @@
 {
-    "name": "mapv-editor",
-    "version": "0.0.1",
-    "description": "awesome editor based on mapV",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "dev:webpack": "webpack -w --config webpack.config.js",
-        "dev:webpackServer": "webpack-dev-server --config webpack.config.js --open",
-        "dev:gulp": "NODE_ENV=development gulp",
-        "dev": "rm -rf dist && mkdir -p dist/static && cp -r src/static/* dist/static && npm run dev:gulp & npm run dev:webpackServer",
-        "build:gulp": "gulp",
-        "build:webpack": "webpack -p",
-        "build": " mkdir -p dist/static && cp -r src/static/* dist/static && npm run build:gulp && npm run build:webpack "
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/huiyan-fe/mapV-editor.git"
-    },
-    "keywords": [
-        "mapv",
-        "visualization"
-    ],
-    "author": "Mofei Zhu <hello@zhuwenlong.com>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/huiyan-fe/mapV-editor/issues"
-    },
-    "homepage": "https://github.com/huiyan-fe/mapV-editor#readme",
-    "dependencies": {
-        "babel-eslint": "^8.0.1",
-        "babel-runtime": "^6.26.0",
-        "extract-text-webpack-plugin": "^3.0.0",
-        "gulp-sass": "^3.1.0",
-        "html-webpack-plugin": "^2.30.1",
-        "mapv": "^2.0.17",
-        "material-ui": "^0.19.0",
-        "react": "^15.6.1",
-        "react-bmap": "^1.0.32",
-        "react-dom": "^15.6.1",
-        "vue": "^2.4.4",
-        "vue-loader": "^13.0.4",
-        "vue-material": "^0.7.5",
-        "vue-template-compiler": "^2.4.4"
-    },
-    "devDependencies": {
-        "babel-cli": "^6.26.0",
-        "babel-core": "^6.26.0",
-        "babel-loader": "^7.1.1",
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-preset-env": "^1.6.0",
-        "babel-preset-react": "^6.24.1",
-        "babel-preset-stage-0": "^6.24.1",
-        "copy-webpack-plugin": "^4.1.1",
-        "css-loader": "^0.28.7",
-        "eslint": "^4.7.1",
-        "eslint-plugin-react": "^7.3.0",
-        "eslint-plugin-vue": "^3.13.0",
-        "gulp": "^3.9.1",
-        "marine": "^1.0.5",
-        "pug": "^2.0.0-rc.4",
-        "sass-loader": "^6.0.6",
-        "style-loader": "^0.18.2",
-        "webpack": "^3.5.5",
-        "webpack-dev-server": "^2.7.1",
-        "webpack-stream": "^4.0.0"
-    }
+  "name": "mapv-editor",
+  "version": "0.0.1",
+  "description": "awesome editor based on mapV",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:webpack": "webpack -w --config webpack.config.js",
+    "dev:webpackServer": "webpack-dev-server --config webpack.config.js --open",
+    "dev:gulp": "NODE_ENV=development gulp",
+    "dev": "rm -rf dist && mkdir -p dist/static && cp -r src/static/* dist/static && npm run dev:gulp & npm run dev:webpackServer",
+    "build:gulp": "gulp",
+    "build:webpack": "webpack -p",
+    "build": " mkdir -p dist/static && cp -r src/static/* dist/static && npm run build:gulp && npm run build:webpack "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huiyan-fe/mapV-editor.git"
+  },
+  "keywords": [
+    "mapv",
+    "visualization"
+  ],
+  "author": "Mofei Zhu <hello@zhuwenlong.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/huiyan-fe/mapV-editor/issues"
+  },
+  "homepage": "https://github.com/huiyan-fe/mapV-editor#readme",
+  "dependencies": {
+    "babel-eslint": "^8.0.1",
+    "babel-runtime": "^6.26.0",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "gulp-sass": "^3.1.0",
+    "html-webpack-plugin": "^2.30.1",
+    "mapv": "^2.0.17",
+    "material-ui": "^0.19.0",
+    "react": "^15.6.1",
+    "react-bmap": "^1.0.32",
+    "react-dom": "^15.6.1",
+    "vue": "^2.4.4",
+    "vue-loader": "^13.0.4",
+    "vue-material": "^0.7.5",
+    "vue-template-compiler": "^2.4.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-helpers": "^6.24.1",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "copy-webpack-plugin": "^4.1.1",
+    "css-loader": "^0.28.7",
+    "eslint": "^4.7.1",
+    "eslint-plugin-react": "^7.3.0",
+    "eslint-plugin-vue": "^3.13.0",
+    "gulp": "^3.9.1",
+    "marine": "^1.0.5",
+    "pug": "^2.0.0-rc.4",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1",
+    "webpack-stream": "^4.0.0"
+  }
 }

@@ -1,4 +1,5 @@
 import * as mapv from 'mapv';
+// const mapv = require('mapv');
 
 const create = {
     createPointData: function () {

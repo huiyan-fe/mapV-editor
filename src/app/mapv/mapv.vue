@@ -5,7 +5,7 @@
 import { Action, Store } from "marine";
 import Config from '../map/config.js';
 import * as mapv from 'mapv';
-// console.log(Mapv)
+// console.log(mapv)
 
 
 console.log("init mapv");
@@ -27,7 +27,9 @@ export default {
           break;
         }
       }
-      //   console.log(target, config);
+      console.log('\n');
+      console.log(JSON.stringify(config), this.list);
+
       target.mapv.setOptions(config);
     }
   },

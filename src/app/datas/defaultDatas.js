@@ -1,5 +1,5 @@
-
 import * as mapv from 'mapv';
+// const mapv = require('mapv');
 
 // demo datas
 let randomCount = 300;
