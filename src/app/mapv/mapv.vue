@@ -4,6 +4,8 @@
 <script>
 import { Action, Store } from "marine";
 import Config from '../map/config.js';
+import * as mapv from 'mapv';
+// console.log(Mapv)
 
 
 console.log("init mapv");

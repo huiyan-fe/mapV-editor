@@ -1,4 +1,5 @@
-/* globals mapv */
+
+import * as mapv from 'mapv';
 
 // demo datas
 let randomCount = 300;

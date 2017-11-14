@@ -1,4 +1,5 @@
-/* globals mapv */
+import * as mapv from 'mapv';
+
 const create = {
     createPointData: function () {
         let randomCount = 300;

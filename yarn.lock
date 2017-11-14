@@ -3985,7 +3985,7 @@ map-obj@^1.0.0, map-obj@^1.0.1:
 
 mapv@^2.0.17:
   version "2.0.17"
-  resolved "http://registry.npm.taobao.org/mapv/download/mapv-2.0.17.tgz#bccb290bc2670e5a3f0f59243493cf0d34586366"
+  resolved "https://registry.npmjs.org/mapv/-/mapv-2.0.17.tgz#bccb290bc2670e5a3f0f59243493cf0d34586366"
 
 marine@^1.0.5:
   version "1.0.5"
