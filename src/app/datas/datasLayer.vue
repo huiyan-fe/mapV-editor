@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  .layers(v-if="nav==='data'")
+  .layers
       .layers-fn
           .layers-title 数据管理
           .layers-new 
@@ -33,10 +33,6 @@ export default {
     computed: {},
     methods: {},
     mounted: function () {
-        Store.on("home.changeNav", StoreData => {
-            // console.log(StoreData)
-            this.nav = StoreData.data;
-        });
     }
 };
 

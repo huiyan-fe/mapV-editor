@@ -22,8 +22,6 @@ export default {
     },
     mounted: function () {
         Store.on("home.getDatas", () => {
-            // console.log(datas)
-
             Action.home.emit("receiveDatas", datas);
         });
 
