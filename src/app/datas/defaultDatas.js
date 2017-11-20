@@ -90,6 +90,7 @@ while (randomCount--) {
         count: 30 * Math.random()
     });
 }
+console.log(JSON.stringify(data));
 datas.push({
     id: 2,
     name: '示例线数据',

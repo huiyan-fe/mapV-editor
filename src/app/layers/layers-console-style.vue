@@ -1,7 +1,5 @@
 <template lang="pug">
     .layers-console-body-block
-        md-button-toggle(md-single)
-            md-button(v-for="(value,key) in styleMap" :key='key' :class="key===config.draw?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
         .btns-block(v-for="(value,key) in config" v-if="configMap[key]&&configMap[key].name")
             label(v-if="configMap[key]") {{configMap[key]&&configMap[key].name}} 
             input(v-if="configMap[key]&&configMap[key].type!=='select'" 
@@ -66,7 +64,6 @@ export default {
     Store.on("home.initConfig", StoreData => {
       this.config = StoreData.data;
       this.styleMap = styleConfig.styleMap[this.config.dataType];
-      console.log(this.styleMap, this.config.dataType);
     });
 
     Store.on("home.changeActiveLayer", StoreData => {

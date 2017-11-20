@@ -22,10 +22,16 @@ gulp.task('sass', () =>
     .pipe(gulp.dest('./dist/static/css'))
 );
 
+gulp.task('static', () => {
+    gulp.src(['src/static/**/{*.*,!*.scss}'])
+        .pipe(gulp.dest('./dist/static'));
+});
+
 
 if (env === 'development') {
     gulp.watch('src/page/*.*', ['page']);
     gulp.watch('src/scss/**/{*.scss,!_*.scss}', ['sass']);
+    gulp.watch('src/static/**/{*.*,!*.scss}', ['static']);
 }
 
-gulp.task('default', ['page', 'sass']);
+gulp.task('default', ['page', 'sass', 'static']);

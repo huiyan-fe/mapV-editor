@@ -27,8 +27,8 @@ export default {
           break;
         }
       }
-      console.log('\n');
-      console.log(JSON.stringify(config), this.list);
+      // console.log('\n');
+      // console.log(JSON.stringify(config), this.list);
 
       target.mapv.setOptions(config);
     }
@@ -78,6 +78,38 @@ export default {
       Store.on("home.getLayers", () => {
         Action.home.emit("receiveLayers", this.list);
       }),
+      Store.on('home.hideLayer', StoreData => {
+        this.list.forEach(mapvObj => {
+          if (StoreData.data.id === mapvObj.id) {
+            mapvObj.layerHide = true;
+            if (mapvObj.mapv) {
+              mapvObj.mapv.hide();
+            }
+          }
+        });
+      }),
+      Store.on('home.showLayer', StoreData => {
+        this.list.forEach(mapvObj => {
+          if (StoreData.data.id === mapvObj.id) {
+            mapvObj.layerHide = false;
+            if (mapvObj.mapv) {
+              mapvObj.mapv.show();
+            }
+          }
+        });
+      }),
+      Store.on('home.removeLayer', StoreData => {
+        // console.log(StoreData.data.id)
+        // // destroy
+        // for (let i = 0; i < this.list.length; i++) {
+
+        //   if (StoreData.data.id === this.list[i].id) {
+        //     const tar = this.list.splice(i, 1);
+        //     console.log(tar);
+        //     break;
+        //   }
+        // }
+      }),
       Store.on("home.changeActiveLayer", StoreData => {
         this.layerid = StoreData.data.id;
       }),
@@ -106,6 +138,9 @@ export default {
           } else {
             const dataSet = new mapv.DataSet(StoreData.data.data);
             target.mapv = new mapv.baiduMapLayer(map, dataSet, {});
+            if (target.layerHide) {
+              target.mapv.hide();
+            }
           }
           // set defalut options
           if (StoreData.data.data[0].geometry.type === "Point") {

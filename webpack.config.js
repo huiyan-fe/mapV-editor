@@ -9,10 +9,10 @@ module.exports = {
     entry: {
         // 'app/index': './src/app/index.jsx',
         'app/index': './src/app/index.vue.js',
-        'app/common': ['babel-helpers', 'mapv']
+        'app/common': ['mapv']
     },
     output: {
-        filename: '[name].[chunkhash].js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'dist')
     },
     devServer: {

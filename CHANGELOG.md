@@ -1,3 +1,8 @@
+## Nov 20, 2017
+
+* :tada: Support hide layer
+* :tada: Suppert remove layer
+
 ## Nov 14, 2107
 
 * :tada: Fix some bug of mapv API

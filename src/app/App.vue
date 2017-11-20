@@ -22,7 +22,7 @@ export default {
   name: "app",
   data: function () {
     return {
-      nav: "data" || null
+      nav: null
     };
   },
   components: {
@@ -35,13 +35,17 @@ export default {
   },
   mounted: function () {
     Store.on("home.changeNav", StoreData => {
-      this.nav = StoreData.data;
+      this.nav = this.nav === StoreData.data ? null : StoreData.data;
     });
   }
 };
 </script>
 
 <style lang="scss">
+@import "~vue-material/dist/theme/engine"; // Import the theme engine
+@include md-register-theme("default");
+@import "~vue-material/dist/theme/all"; // Apply the theme
+
 #app {
   position: absolute;
   top: 0;
@@ -86,6 +90,18 @@ export default {
 }
 
 .layers-lists {
+  .layer-name {
+    vertical-align: middle;
+    display: inline-block;
+    max-width: 160px;
+    white-space: nowrap;
+    // text-overflow: ellipsis;
+    overflow: hidden;
+    outline: none;
+    // &:focus {
+    //   text-overflow: clip;
+    // }
+  }
   cursor: pointer;
   position: absolute;
   top: 100px;
@@ -112,6 +128,7 @@ export default {
       background: #404040;
     }
     svg {
+      vertical-align: middle;
       display: inline-block;
       width: 18px;
       height: 18px;
