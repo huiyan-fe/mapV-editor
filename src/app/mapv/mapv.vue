@@ -143,8 +143,11 @@ export default {
         this.list.forEach(list => {
           if (list.mapv) {
             const zIndex = list.zIndex;
-            list.mapv.setOptions({
-              zIndex
+            // console.log(list.mapv.getOption)
+            list.mapv.update({
+              options: {
+                zIndex
+              }
             })
           }
         });
