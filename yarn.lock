@@ -4005,7 +4005,7 @@ mapv@^2.0.17:
   version "2.0.17"
   resolved "https://registry.npmjs.org/mapv/-/mapv-2.0.17.tgz#bccb290bc2670e5a3f0f59243493cf0d34586366"
 
-mapv@^2.0.18:
+mapv@^2.0.19:
   version "2.0.19"
   resolved "https://registry.npmjs.org/mapv/-/mapv-2.0.19.tgz#3676adbad67ea6f670e327a52a8ec8eacd2869d8"
   dependencies:
