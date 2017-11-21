@@ -96,18 +96,6 @@ export default {
           }
         });
       }),
-      Store.on('home.removeLayer', StoreData => {
-        // console.log(StoreData.data.id)
-        // // destroy
-        // for (let i = 0; i < this.list.length; i++) {
-
-        //   if (StoreData.data.id === this.list[i].id) {
-        //     const tar = this.list.splice(i, 1);
-        //     console.log(tar);
-        //     break;
-        //   }
-        // }
-      }),
       Store.on("home.changeActiveLayer", StoreData => {
         this.layerid = StoreData.data.id;
       }),
@@ -135,7 +123,8 @@ export default {
             target.mapv.dataSet.set(StoreData.data.data);
           } else {
             const dataSet = new mapv.DataSet(StoreData.data.data);
-            target.mapv = new mapv.baiduMapLayer(map, dataSet, {});
+            target.mapv = new mapv.baiduMapLayer(map, dataSet, { zIndex: target.zIndex });
+            // console.log(target.mapv)
             if (target.layerHide) {
               target.mapv.hide();
             }
@@ -149,6 +138,23 @@ export default {
           }
           Action.home.emit("initConfig", target.config);
         }
+      }),
+      Store.on("home.updateZIndex", StoreData => {
+        this.list.forEach(list => {
+          if (list.mapv) {
+            const zIndex = list.zIndex;
+            list.mapv.setOptions({
+              zIndex
+            })
+          }
+        });
+        // console.log(StoreData.data);
+        // const ids = StoreData.data;
+        // ids.forEach(id => {
+
+        //   console.log(id, this.list[id])
+        // })
+        // this.list[]
       })
     ];
     //

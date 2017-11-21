@@ -90,6 +90,14 @@ export default {
 }
 
 .layers-lists {
+  input {
+    width: 160px;
+    padding: 5px;
+    background: none;
+    border: none;
+    color: white;
+    outline: none;
+  }
   .layer-name {
     vertical-align: middle;
     display: inline-block;
@@ -115,6 +123,7 @@ export default {
   overflow: auto;
   li {
     border-left: 2px solid rgba(0, 0, 0, 0);
+    border-bottom: 2px solid #323232;
     padding-left: 10px;
     height: 40px;
     line-height: 40px;
@@ -124,6 +133,7 @@ export default {
       background: #383838;
     }
     &.active {
+      border-bottom: 2px solid #404040;
       border-left: 2px solid white;
       background: #404040;
     }
