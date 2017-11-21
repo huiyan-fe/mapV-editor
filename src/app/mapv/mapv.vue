@@ -3,9 +3,10 @@
 
 <script>
 import { Action, Store } from "marine";
+import styleConfig from '../config/styleConfig.js';
 import Config from '../map/config.js';
 import * as mapv from 'mapv';
-// console.log(mapv)
+
 
 
 console.log("init mapv");
@@ -27,9 +28,6 @@ export default {
           break;
         }
       }
-      // console.log('\n');
-      // console.log(JSON.stringify(config), this.list);
-
       target.mapv.setOptions(config);
     }
   },
@@ -143,34 +141,11 @@ export default {
             }
           }
           // set defalut options
-          if (StoreData.data.data[0].geometry.type === "Point") {
-            target.config = {
-              fillStyle: "#ff3232" || "rgba(255, 50, 50, 0.6)",
-              shadowColor: "#ff3232" || "rgba(255, 50, 50, 1)",
-              shadowBlur: 30,
-              globalCompositeOperation: "lighter",
-              size: 5,
-              draw: "simple",
-              dataType: "Point"
-            };
-          } else if (StoreData.data.data[0].geometry.type === "LineString") {
-            target.config = {
-              strokeStyle: "#fffa32" || "rgba(255, 250, 50, 0.3)",
-              shadowColor: "#fffa32" || "rgba(255, 250, 50, 1)",
-              shadowBlur: 20,
-              lineWidth: 0.7,
-              draw: "simple",
-              dataType: "LineString"
-            };
-          } else if (StoreData.data.data[0].geometry.type === "Polygon") {
-            target.config = {
-              fillStyle: "#ff5035",
-              strokeStyle: "#faff35",
-              lineWidth: 1,
-              globalAlpha: 1,
-              draw: "simple",
-              dataType: "Polygon"
-            };
+          const defalutDrawType = StoreData.data.data[0].geometry.type;
+          if (styleConfig.styleMap[defalutDrawType]) {
+            const defalutConfig = JSON.parse(JSON.stringify(styleConfig.styleMap[defalutDrawType].simple.config));
+            defalutConfig.dataType = 'Point';
+            target.config = defalutConfig;
           }
           Action.home.emit("initConfig", target.config);
         }

@@ -1,5 +1,6 @@
 <template lang="pug">
     .layers-console-body-block
+        md-button(v-for="(value,key) in styleMap" :key='key' :class="key===config.draw?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
         .btns-block(v-for="(value,key) in config" v-if="configMap[key]&&configMap[key].name")
             label(v-if="configMap[key]") {{configMap[key]&&configMap[key].name}} 
             input(v-if="configMap[key]&&configMap[key].type!=='select'" 
@@ -76,24 +77,23 @@ export default {
 
 <style lang="scss">
 .layers-console-body-block {
-  .md-button-toggle {
-    padding: 0 10px;
-    display: block;
-  }
-  .md-theme-default.md-button-toggle {
-    button {
-      color: #999;
-      min-height: initial;
-      min-width: initial;
-      line-height: 1.6em;
-      padding: 5px 12px;
-      margin: 5px 5px 5px 0;
-    }
-    .md-toggle {
+  .md-button.md-theme-default {
+    color: #999;
+    min-height: initial;
+    min-width: initial;
+    line-height: 1.6em;
+    padding: 5px;
+    margin: 2px 0 0 10px;
+    &.md-toggle {
       color: white;
       background: #505050;
     }
   }
+  .md-button-toggle {
+    padding: 0 10px;
+    display: block;
+  }
+
   .btns-block {
     padding: 5px 10px;
     label {

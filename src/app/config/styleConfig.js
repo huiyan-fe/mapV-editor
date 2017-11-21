@@ -94,8 +94,8 @@ export default {
             simple: {
                 name: '默认',
                 config: {
-                    strokeStyle: 'rgba(255, 250, 50, 0.3)',
-                    shadowColor: 'rgba(255, 250, 50, 1)',
+                    strokeStyle: '#fffa32' || 'rgba(255, 250, 50, 0.3)',
+                    shadowColor: '#fffa32' || 'rgba(255, 250, 50, 1)',
                     shadowBlur: 20,
                     lineWidth: 0.7,
                     draw: 'simple'
