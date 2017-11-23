@@ -29,6 +29,7 @@ export default {
         });
 
         Store.on('home.importData', (storeData) => {
+            console.log(storeData.data)
             this.userDataIndex = this.userDataIndex || 0;
             datas.push({
                 id: `userData_${Math.random()}`,
@@ -64,6 +65,7 @@ export default {
                     }
                     if (isJSON) {
                         this.userDataIndex = this.userDataIndex || 0;
+                        // console.log(jsonData)
                         datas.push({
                             id: `userData_${Math.random()}`,
                             name: `用户自定义数据 - ${++this.userDataIndex}`,
@@ -80,7 +82,7 @@ export default {
 
         window.addEventListener('paste', e => {
             this.importData = e.clipboardData.getData('Text');
-            console.log('xxx', e.clipboardData.getData('Text'))
+            // console.log('xxx', e.clipboardData.getData('Text'))
         });
     }
 };

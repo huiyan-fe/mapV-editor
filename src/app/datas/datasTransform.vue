@@ -167,12 +167,22 @@ export default {
                         coordinates = originData.split(',').splice(0, 2);
                     }
 
-                    if (valueColum.type === 'LineString' || valueColum.type === 'Polygon') {
+                    if (valueColum.type === 'LineString') {
                         const splitedData = originData.split(',');
                         coordinates = [];
                         for (let i = 0; i < splitedData.length; i += 2) {
                             coordinates.push([splitedData[i], splitedData[i + 1]])
                         }
+                    }
+
+                    if (valueColum.type === 'Polygon') {
+                        const splitedData = originData.split(',');
+                        coordinates = [];
+                        const tempCoordinates = [];
+                        for (let i = 0; i < splitedData.length; i += 2) {
+                            tempCoordinates.push([splitedData[i], splitedData[i + 1]])
+                        }
+                        coordinates.push(tempCoordinates);
                     }
 
                     useData.push({
@@ -184,6 +194,8 @@ export default {
                     });
                 }
             });
+
+            // console.log(useData)
 
             Action.home.emit('importData', useData);
 
