@@ -1,3 +1,8 @@
+## Nov 23, 2017
+
+* :tada: Support Import Text Files (Auto judege data type);
+* :tada: Support paste content from clipboard
+
 ## Nov 21, 2017
 
 * :tada: Change layer name supported

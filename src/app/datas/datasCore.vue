@@ -1,18 +1,18 @@
 <template lang="pug">
-
+Transfor(:importData="importData")
 </template>
 
 <script>
 import { Action, Store } from "marine";
 import datas from "./defaultDatas.js";
+import Transfor from './datasTransform.vue';
 
 export default {
     data: function () {
         return {
-            datas: []
+            importData: false
         };
     },
-    props: ['nav'],
     computed: {},
     methods: {
         changeNav: function (data) {
@@ -20,10 +20,26 @@ export default {
             Action.home.emit("changeNav", data);
         }
     },
+    components: {
+        Transfor
+    },
     mounted: function () {
         Store.on("home.getDatas", () => {
             Action.home.emit("receiveDatas", datas);
         });
+
+        Store.on('home.importData', (storeData) => {
+            this.userDataIndex = this.userDataIndex || 0;
+            datas.push({
+                id: `userData_${Math.random()}`,
+                name: `用户自定义数据 - ${++this.userDataIndex}`,
+                data: storeData.data
+            });
+        })
+
+        Store.on('home.cancelImport', () => {
+            this.importData = false;
+        })
 
         // 
         window.addEventListener('drag', e => {
@@ -35,7 +51,6 @@ export default {
         });
 
         window.addEventListener('drop', e => {
-            // console.log(e.dataTransfer.files);
             const files = e.dataTransfer.files;
             if (files && files.length > 0) {
                 var reader = new FileReader();
@@ -54,6 +69,8 @@ export default {
                             name: `用户自定义数据 - ${++this.userDataIndex}`,
                             data: jsonData
                         });
+                    } else {
+                        this.importData = reader.result;
                     }
                 }
                 reader.readAsText(files[0]);
@@ -62,8 +79,9 @@ export default {
         });
 
         window.addEventListener('paste', e => {
+            this.importData = e.clipboardData.getData('Text');
             console.log('xxx', e.clipboardData.getData('Text'))
-        })
+        });
     }
 };
 </script>
