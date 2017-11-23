@@ -55,7 +55,7 @@ while (randomCount--) {
     });
     // }
 }
-
+console.log(JSON.stringify(data))
 datas.push({
     id: 1,
     name: '示例点数据',

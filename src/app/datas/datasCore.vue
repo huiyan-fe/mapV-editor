@@ -58,9 +58,12 @@ export default {
                 }
                 reader.readAsText(files[0]);
             }
-
             e.preventDefault();
         });
+
+        window.addEventListener('paste', e => {
+            console.log('xxx', e.clipboardData.getData('Text'))
+        })
     }
 };
 </script>
