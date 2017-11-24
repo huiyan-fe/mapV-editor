@@ -97,7 +97,11 @@ export default {
                 this.mapvLayers.forEach(item => {
                     if (item.mapv) {
                         const mapvCanvas = item.mapv.getContext().canvas;
-                        ctx.drawImage(mapvCanvas, 0, 0);
+                        ctx.drawImage(
+                            mapvCanvas,
+                            0, 0, preWidth * 2, preWidth * 2,
+                            0, 0, preWidth, preWidth
+                        );
                     }
                 })
 
@@ -105,7 +109,7 @@ export default {
                 a.href = canvas.toDataURL().replace("image/png", "image/octet-stream");
                 a.download = "MapvOutput.png";
                 a.click();
-  
+
             })
             // 
         }
