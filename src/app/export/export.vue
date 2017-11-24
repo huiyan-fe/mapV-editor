@@ -28,30 +28,39 @@ export default {
             let currentHeight = 0
             while (currentWidth < map.width) {
                 currentWidth += preWidth;
-                const useWidth = currentWidth > map.width ?
-                    (preWidth - currentWidth + map.width) / 2 :
+                const useWidth = currentWidth > map.width ? preWidth - currentWidth + map.width : preWidth;
+                const useX = currentWidth > map.width ?
+                    (preWidth - currentWidth + map.width) / 2 + (currentWidth - preWidth) :
                     (currentWidth - preWidth / 2);
                 // height
                 currentHeight = 0;
                 while (currentHeight < map.height) {
                     currentHeight += preWidth;
                     const useHeight = currentHeight > map.height ?
-                        (preWidth - currentHeight + map.height) / 2 :
+                        preWidth - currentHeight + map.height :
+                        preWidth;
+                    const useY = currentHeight > map.height ?
+                        (preWidth - currentHeight + map.height) / 2 + (currentHeight - preWidth) :
                         currentHeight - preWidth / 2;
+                    // if (currentHeight > map.height) {
+                    // console.log(useX, useY)
                     centers.push({
-                        x: useWidth,
-                        y: useHeight,
+                        x: useX,
+                        y: useY,
+                        left: currentWidth - preWidth,
+                        top: currentHeight - preWidth,
                         point: map.pixelToPoint({
-                            x: useWidth,
-                            y: useHeight
+                            x: useX,
+                            y: useY
                         }),
-                        width: preWidth,
-                        height: preWidth,
+                        width: useWidth,
+                        height: useHeight,
                         zoom
                     });
+                    // }
                 }
             }
-
+            console.log(centers)
             const promises = [];
             centers.forEach(item => {
                 let url = `//api.map.baidu.com/customimage/staticmap?`;
@@ -86,8 +95,8 @@ export default {
                 res.forEach(item => {
                     ctx.drawImage(
                         item.image,
-                        0, 0, preWidth * 2, preWidth * 2,
-                        0, 0, preWidth, preWidth
+                        0, 0, item.width * 2, item.height * 2,
+                        item.left, item.top, item.width, item.height
                     );
                 });
                 this.mapvLayers.sort((a, b) => {
@@ -99,8 +108,8 @@ export default {
                         const mapvCanvas = item.mapv.getContext().canvas;
                         ctx.drawImage(
                             mapvCanvas,
-                            0, 0, preWidth * 2, preWidth * 2,
-                            0, 0, preWidth, preWidth
+                            0, 0, mapvCanvas.width, mapvCanvas.height,
+                            0, 0, map.width, map.height
                         );
                     }
                 })
