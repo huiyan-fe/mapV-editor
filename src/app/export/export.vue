@@ -54,7 +54,7 @@ export default {
 
             const promises = [];
             centers.forEach(item => {
-                let url = `http://api.map.baidu.com/customimage/staticmap?`;
+                let url = `//api.map.baidu.com/customimage/staticmap?`;
                 url += `center=${item.point.lng},${item.point.lat}&`;
                 url += `zoom=${item.zoom}&`;
                 url += `width=${item.width}&`;
