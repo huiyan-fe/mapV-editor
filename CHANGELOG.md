@@ -1,3 +1,7 @@
+## Nov 24, 2017
+
+* :tada::tada: Support Output Images
+
 ## Nov 23, 2017
 
 * :tada: Support Import Text Files (Auto judege data type);
