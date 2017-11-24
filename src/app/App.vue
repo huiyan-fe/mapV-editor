@@ -6,6 +6,7 @@
     MapV
     DatasCore
     DatasLayer(v-if="nav==='data'")
+    Export
 </template>
 
 <script>
@@ -15,6 +16,7 @@ import Layers from "./layers/layers.vue";
 import MapV from "./mapv/mapv.vue";
 import DatasCore from "./datas/datasCore.vue";
 import DatasLayer from "./datas/datasLayer.vue";
+import Export from "./export/export.vue";
 import { Action, Store } from "marine";
 Action.def("home", {});
 
@@ -31,7 +33,8 @@ export default {
     Layers,
     MapV,
     DatasCore,
-    DatasLayer
+    DatasLayer,
+    Export
   },
   mounted: function () {
     Store.on("home.changeNav", StoreData => {

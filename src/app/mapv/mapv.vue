@@ -7,8 +7,6 @@ import styleConfig from '../config/styleConfig.js';
 import Config from '../map/config.js';
 import * as mapv from 'mapv';
 
-
-
 console.log("init mapv");
 
 export default {
@@ -151,16 +149,8 @@ export default {
             })
           }
         });
-        // console.log(StoreData.data);
-        // const ids = StoreData.data;
-        // ids.forEach(id => {
-
-        //   console.log(id, this.list[id])
-        // })
-        // this.list[]
       })
     ];
-    //
   }
 };
 </script>
