@@ -69,6 +69,20 @@ export default {
         }
     },
     mounted: function () {
+        Store.on('home.importData', (storeData) => {
+            setTimeout(() => {
+                // wait untill insert data, create new layer finished
+                // auto choose the import data
+                const datasObj = this.datas.filter(data => {
+                    return data.data === storeData.data;
+                })
+                if (datasObj.length >= 1) {
+                    this.dataClick(datasObj[0]);
+                    // foucus on the data
+                    Action.home.emit("layerFocusOn");
+                }
+            })
+        });
         Store.on('home.removeLayer', StoreData => {
             this.layerInfo = null;
         });

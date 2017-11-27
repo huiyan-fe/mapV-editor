@@ -29,11 +29,10 @@ export default {
         });
 
         Store.on('home.importData', (storeData) => {
-            console.log(storeData.data)
             this.userDataIndex = this.userDataIndex || 0;
             datas.push({
                 id: `userData_${Math.random()}`,
-                name: `用户自定义数据 - ${++this.userDataIndex}`,
+                name: `用户导入数据 - ${++this.userDataIndex}`,
                 data: storeData.data
             });
         })

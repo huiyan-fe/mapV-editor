@@ -2,10 +2,10 @@
 #app
     NavComp
     MapComp
-    Layers(v-if="nav==='layer'")
     MapV
     DatasCore
-    DatasLayer(v-if="nav==='data'")
+    DatasLayer(v-show="nav==='data'")
+    Layers(v-show="nav==='layer'")
     Export
 </template>
 

@@ -50,14 +50,12 @@ export default {
     methods: {
         changeName: function (e, item) {
             item.name = e.target.innerText;
-            // e.preventDefault();
-            // console.log('xxx', e.target.innerText, item.name = e.target.innerText)
         },
-        addLayer: function () {
+        addLayer: function (layerInfo = {}) {
             let hasActive = this.list.forEach(item => item.active = false);
             const newLayer = {
                 visiable: true,
-                name: `新建图层-${this.list.length + 1}`,
+                name: `${(layerInfo && layerInfo.name) ? layerInfo.name : '新建图层'}-${this.list.length + 1}`,
                 active: true,
                 id: `${+new Date()}_${index++}`,
                 zIndex: index * 10
@@ -139,7 +137,12 @@ export default {
         }
     },
     mounted: function () {
-
+        // add a new leayer while import new data 
+        Store.on('home.importData', StoreData => {
+            this.addLayer({
+                name: '导入数据'
+            });
+        });
         Store.on('home.receiveLayers', StoreData => {
             StoreData.data.forEach(item => {
                 item.active = false;

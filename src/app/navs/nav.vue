@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { Action } from 'marine';
+import { Action, Store } from 'marine';
 const version = require('../../../package.json').version;
 
 export default {
@@ -50,12 +50,21 @@ export default {
     },
     methods: {
         changeNav: function (data) {
-            this.nav = data;
+            this.nav = this.nav === data ? '' : data;
             Action.home.emit('changeNav', data);
         },
         showinfo: function () {
             this.shwoConfig = true;
         }
+    },
+    mounted: function () {
+        Store.on('home.importData', (data) => {
+            console.log(this.nav)
+            if (this.nav !== 'layer') {
+                this.nav = 'layer';
+                Action.home.emit('changeNav', 'layer');
+            }
+        })
     }
 }
 </script>

@@ -1,3 +1,14 @@
+
+## TODO:
+
+1. Data source Support both Local file and Data URL(With reflash time)
+2. Layer plugin: support user's customer layer style
+
+
+## Nov 27, 2017
+
+* :wrench: Optimize process: while import new data, mapv will auto create layer and zoom to the data
+
 ## Nov 24, 2017
 
 * :tada::tada: Support Output Images
@@ -35,9 +46,3 @@
 
 * :tada: Layer Support Point and Line Data
 
-
-## TODO:
-
-1. Data source Support both Local file and Data URL(With reflash time)
-2. ADD Tools, such as car-trace 
-3. Export Images

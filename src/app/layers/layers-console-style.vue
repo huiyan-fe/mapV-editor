@@ -40,10 +40,10 @@ export default {
   },
   methods: {
     focusOn: function () {
-      Action.home.emit("layerFocusOn", this.config);
+      Action.home.emit("layerFocusOn");
     },
     focusOut: function () {
-      Action.home.emit("layerFocusOut", this.config);
+      Action.home.emit("layerFocusOut");
     },
     changeconfig: function (e, key) {
       this.config[key] = e.target.value;
