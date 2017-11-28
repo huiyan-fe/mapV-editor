@@ -1,20 +1,35 @@
 <template lang="pug">
     .layers-console-body-block
-        md-button(v-for="(value,key) in styleMap" :key='key' :class="key===config.draw?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
-        .btns-block(v-for="(value,key) in config" v-if="configMap[key]&&configMap[key].name")
+        .btns-typsbtn
+            md-button(v-for="(value, key) in styleMap" :key='key' :class="key===config.draw?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
+        .btns-block(v-for="(value, key) in config" v-if="configMap[key]&&configMap[key].name")
             label(v-if="configMap[key]") {{configMap[key]&&configMap[key].name}} 
-            input(v-if="configMap[key]&&configMap[key].type!=='select'" 
+            el-color-picker(v-model="config[key]" 
+                show-alpha 
+                v-if="configMap[key]&&configMap[key].type==='color'"
+                @change="changeconfig($event,key)")
+            el-slider(v-else-if="configMap[key]&&configMap[key].type==='range'" 
+                v-model="config[key]"
+                show-input
+                @change="changeconfig($event,key)")
+            el-select(v-else-if="configMap[key]&&configMap[key].type==='select'" 
+                @change="changeconfig($event,key)" 
+                v-model="config[key]")
+                el-option(v-for="value in configMap[key].values" key="value.id" :value="value.id" :label="value.name")
+            el-switch(v-else-if="configMap[key]&&configMap[key].type==='checkbox'"
+                @change="changeconfig($event,key)" 
+                v-model="config[key]"   
+            )
+            input(v-else-if="configMap[key]&&configMap[key].type!=='select'" 
                 :type='configMap[key]&&configMap[key].type' 
                 :name="key" 
-                :value="value"
+                v-model="config[key]" 
                 :max="configMap[key]&&configMap[key].max"
-                :min="configMap[key]&&configMap[key].min"
+                :min="configMap[key]&&configMap[key].min" 
                 :step="configMap[key]&&configMap[key].step"
                 @change="changeconfig($event,key)"
             )
-            select(v-if="configMap[key]&&configMap[key].type==='select'" @change="changeconfig($event,key)" :value="value")
-                option(v-for="value in configMap[key].values" :value="value.id") {{value.name}}
-            span(v-if="configMap[key]" class="layers-console-value") {{value}}
+            span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'" class="layers-console-value") {{value}}
         .btns-focus
             md-button(@click="focusOn()")
               svg(viewBox="0 0 1024 1024")
@@ -27,51 +42,56 @@
 </template>
 
 <script>
+import { Sketch } from 'vue-color'
 import { Action, Store } from "marine";
 import tools from "../tools/tools";
 import styleConfig from "../config/styleConfig.js";
 export default {
-  data: function () {
-    return {
-      styleMap: styleConfig.styleMap,
-      configMap: styleConfig.configLabelMap,
-      config: {}
-    };
-  },
-  methods: {
-    focusOn: function () {
-      Action.home.emit("layerFocusOn");
+    components: {
+        Photoshop: Sketch
     },
-    focusOut: function () {
-      Action.home.emit("layerFocusOut");
+    data: function () {
+        return {
+            styleMap: styleConfig.styleMap,
+            configMap: styleConfig.configLabelMap,
+            config: {}
+        };
     },
-    changeconfig: function (e, key) {
-      this.config[key] = e.target.value;
-      Action.home.emit("changeConfig", this.config);
-    },
-    changeDrawType: function (key) {
-      if (this.styleMap[key].config) {
-        const newConfig = JSON.parse(JSON.stringify(this.styleMap[key].config));
-        newConfig.dataType = this.config.dataType;
+    methods: {
+        focusOn: function () {
+            Action.home.emit("layerFocusOn");
+        },
+        focusOut: function () {
+            Action.home.emit("layerFocusOut");
+        },
+        changeconfig: function (e, key) {
+            // this.config[key] = e.target.value;
+            Action.home.emit("changeConfig", this.config);
+        },
+        changeDrawType: function (key) {
+            if (this.styleMap[key].config) {
+                const newConfig = JSON.parse(JSON.stringify(this.styleMap[key].config));
+                newConfig.dataType = this.config.dataType;
 
-        this.config = newConfig;
-      }
-      this.config.draw = key;
-      this.styleMap = styleConfig.styleMap[this.config.dataType];
-      Action.home.emit("changeConfig", this.config);
+                this.config = newConfig;
+            }
+            this.config.draw = key;
+            this.styleMap = styleConfig.styleMap[this.config.dataType];
+            Action.home.emit("changeConfig", this.config);
+        }
+    },
+    mounted: function () {
+        Store.on("home.initConfig", StoreData => {
+            this.config = StoreData.data;
+            console.log(this.config)
+            this.styleMap = styleConfig.styleMap[this.config.dataType];
+        });
+
+        Store.on("home.changeActiveLayer", StoreData => {
+            this.config = StoreData.data.config || {};
+            this.styleMap = styleConfig.styleMap[this.config.dataType];
+        });
     }
-  },
-  mounted: function () {
-    Store.on("home.initConfig", StoreData => {
-      this.config = StoreData.data;
-      this.styleMap = styleConfig.styleMap[this.config.dataType];
-    });
-
-    Store.on("home.changeActiveLayer", StoreData => {
-      this.config = StoreData.data.config || {};
-      this.styleMap = styleConfig.styleMap[this.config.dataType];
-    });
-  }
 };
 </script>
 
@@ -95,20 +115,25 @@ export default {
   }
 
   .btns-block {
-    padding: 5px 10px;
+    margin: 0 10px;
+    padding: 10px;
+    border-top: 1px solid #4e4e4e;
     label {
       margin-right: 10px;
     }
+    overflow: hidden;
   }
   .layers-console-value {
     float: right;
     color: #666;
+    // height: 48px;
+    // line-height: 48px;
   }
 
   .btns-focus {
     text-align: right;
     border-top: 1px solid #505050;
-    margin: 20px 10px;
+    margin: 10px 10px;
     button {
       float: right;
       min-width: auto;
@@ -122,5 +147,14 @@ export default {
       margin: 0;
     }
   }
+}
+
+.layers-console-control {
+  display: inline-block;
+  width: 130px;
+}
+
+.btns-typsbtn {
+  padding: 10px 0;
 }
 </style>

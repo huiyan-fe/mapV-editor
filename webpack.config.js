@@ -34,7 +34,7 @@ module.exports = {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader', 'sass-loader']
+                    use: ['url-loader', 'css-loader', 'sass-loader']
                 })
             },
             {
@@ -46,7 +46,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-                loader: 'url-loader',
+                loader: 'url-loader'
             }
         ]
     },

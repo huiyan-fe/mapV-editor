@@ -118,7 +118,6 @@ export default {
                 a.href = canvas.toDataURL().replace("image/png", "image/octet-stream");
                 a.download = "MapvOutput.png";
                 a.click();
-
             })
             // 
         }

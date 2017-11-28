@@ -27,8 +27,8 @@ export default {
             simple: {
                 name: '默认',
                 config: {
-                    fillStyle: '#ff3232' || 'rgba(255, 50, 50, 0.6)',
-                    shadowColor: '#ff3232' || 'rgba(255, 50, 50, 1)',
+                    fillStyle: 'rgba(255, 50, 50, 0.6)',
+                    shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     size: 5,
@@ -38,8 +38,8 @@ export default {
             bubble: {
                 name: '气泡',
                 config: {
-                    fillStyle: '#ff3232' || 'rgba(255, 50, 50, 0.6)',
-                    shadowColor: '#ff3232' || 'rgba(255, 50, 50, 1)',
+                    fillStyle: 'rgba(255, 50, 50, 0.6)',
+                    shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     maxSize: 40,
@@ -50,7 +50,7 @@ export default {
             intensity: {
                 name: '密度',
                 config: {
-                    shadowColor: '#ff3232' || 'rgba(255, 50, 50, 1)',
+                    shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     max: 100,
@@ -60,7 +60,7 @@ export default {
             grid: {
                 name: '网格',
                 config: {
-                    shadowColor: '#ff3232' || 'rgba(255, 50, 50, 1)',
+                    shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     size: 50,
@@ -80,7 +80,7 @@ export default {
             honeycomb: {
                 name: '蜂窝',
                 config: {
-                    shadowColor: '#ff3232' || 'rgba(255, 50, 50, 1)',
+                    shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     size: 50,
@@ -94,9 +94,9 @@ export default {
             simple: {
                 name: '默认',
                 config: {
-                    strokeStyle: '#fffa32' || 'rgba(255, 250, 50, 0.3)',
-                    // shadowColor: '#fffa32' || 'rgba(255, 250, 50, 1)',
-                    // shadowBlur: 20,
+                    strokeStyle: 'rgba(255, 250, 50, 0.3)',
+                    shadowColor: 'rgba(255, 250, 50, 1)',
+                    shadowBlur: 20,
                     lineWidth: 0.7,
                     draw: 'simple'
                 }

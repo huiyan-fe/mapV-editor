@@ -1,6 +1,6 @@
 {
     "name": "mapv-editor",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "awesome editor based on mapV",
     "main": "index.js",
     "scripts": {
@@ -28,15 +28,19 @@
     },
     "homepage": "https://github.com/huiyan-fe/mapV-editor#readme",
     "dependencies": {
+        "babel-plugin-component": "^0.10.1",
+        "element-ui": "^2.0.5",
         "mapv": "^2.0.19",
         "material-ui": "^0.19.0",
         "react": "^15.6.1",
         "react-bmap": "^1.0.32",
         "react-dom": "^15.6.1",
-        "vue": "^2.4.4",
+        "url-loader": "^0.6.2",
+        "vue": "^2.5.9",
+        "vue-color": "^2.4.3",
         "vue-loader": "^13.0.4",
         "vue-material": "^1.0.0-beta-4",
-        "vue-template-compiler": "^2.4.4"
+        "vue-template-compiler": "^2.5.9"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
