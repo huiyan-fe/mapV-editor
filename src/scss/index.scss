@@ -1,6 +1,6 @@
 body {
     .el-select {
-        width: 125px;
+        width: 110px;
         .el-input__suffix {
             line-height: 30px;
         }
@@ -28,6 +28,7 @@ body {
         background-color: #404040;
     }
     .el-input__inner {
+        padding: 0 8px;
         border-color: #757575;
         color: #ccc;
         background-color: #404040;

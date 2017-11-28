@@ -131,7 +131,7 @@ export default {
           const defalutDrawType = StoreData.data.data[0].geometry.type;
           if (styleConfig.styleMap[defalutDrawType]) {
             const defalutConfig = JSON.parse(JSON.stringify(styleConfig.styleMap[defalutDrawType].simple.config));
-            defalutConfig.dataType = 'Point';
+            defalutConfig.dataType = defalutDrawType;
             target.config = defalutConfig;
           }
           Action.home.emit("initConfig", target.config);

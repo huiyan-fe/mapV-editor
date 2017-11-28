@@ -11,13 +11,15 @@
             el-slider(v-else-if="configMap[key]&&configMap[key].type==='range'" 
                 v-model="config[key]"
                 show-input
+                :xstep="Number(configMap[key]&&configMap[key].step)"
+                :step="Number(configMap[key]&&configMap[key].step)||1"
                 @change="changeconfig($event,key)")
             el-select(v-else-if="configMap[key]&&configMap[key].type==='select'" 
                 @change="changeconfig($event,key)" 
                 v-model="config[key]")
                 el-option(v-for="value in configMap[key].values" key="value.id" :value="value.id" :label="value.name")
             el-switch(v-else-if="configMap[key]&&configMap[key].type==='checkbox'"
-                @change="changeconfig($event,key)" 
+                @change="changeconfig($event, key)" 
                 v-model="config[key]"   
             )
             input(v-else-if="configMap[key]&&configMap[key].type!=='select'" 
@@ -53,7 +55,7 @@ export default {
     data: function () {
         return {
             styleMap: styleConfig.styleMap,
-            configMap: styleConfig.configLabelMap,
+            configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap)),
             config: {}
         };
     },
@@ -65,25 +67,38 @@ export default {
             Action.home.emit("layerFocusOut");
         },
         changeconfig: function (e, key) {
-            // this.config[key] = e.target.value;
+            // console.log(key,, this.config);
+            if (key === 'useShadow') {
+                if (this.config.useShadow) {
+                    this.config.shadowBlur = this.cachedShadowBlurCache || styleConfig.styleMap[this.config.dataType][this.config.draw].config.shadowBlur;
+                    this.config.shadowColor = this.cachedShadowColor || styleConfig.styleMap[this.config.dataType][this.config.draw].config.shadowColor;
+                } else {
+                    this.cachedShadowBlurCache = this.config.shadowBlur;
+                    this.cachedShadowColor = this.config.shadowColor;
+                    this.config.shadowBlur = undefined;
+                    this.config.shadowColor = undefined;
+                }
+            }
             Action.home.emit("changeConfig", this.config);
         },
         changeDrawType: function (key) {
             if (this.styleMap[key].config) {
                 const newConfig = JSON.parse(JSON.stringify(this.styleMap[key].config));
                 newConfig.dataType = this.config.dataType;
-
                 this.config = newConfig;
             }
             this.config.draw = key;
             this.styleMap = styleConfig.styleMap[this.config.dataType];
+            // console.warn(this.styleMap, this.config.dataType)
+            this.cachedShadowBlurCache = null;
+            this.cachedShadowColor = null;
             Action.home.emit("changeConfig", this.config);
         }
     },
     mounted: function () {
         Store.on("home.initConfig", StoreData => {
             this.config = StoreData.data;
-            console.log(this.config)
+            console.warn('init config', this.config, StoreData.data)
             this.styleMap = styleConfig.styleMap[this.config.dataType];
         });
 
@@ -126,8 +141,8 @@ export default {
   .layers-console-value {
     float: right;
     color: #666;
-    // height: 48px;
-    // line-height: 48px;
+    height: 28px;
+    line-height: 28px;
   }
 
   .btns-focus {

@@ -28,10 +28,11 @@ export default {
                 name: '默认',
                 config: {
                     fillStyle: 'rgba(255, 50, 50, 0.6)',
-                    shadowColor: 'rgba(255, 50, 50, 1)',
-                    shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     size: 5,
+                    useShadow: true,
+                    shadowColor: 'rgba(255, 50, 50, 1)',
+                    shadowBlur: 30,
                     draw: 'simple'
                 }
             },
@@ -39,6 +40,7 @@ export default {
                 name: '气泡',
                 config: {
                     fillStyle: 'rgba(255, 50, 50, 0.6)',
+                    useShadow: true,
                     shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
@@ -50,6 +52,7 @@ export default {
             intensity: {
                 name: '密度',
                 config: {
+                    useShadow: true,
                     shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
@@ -60,6 +63,7 @@ export default {
             grid: {
                 name: '网格',
                 config: {
+                    useShadow: true,
                     shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
@@ -80,6 +84,7 @@ export default {
             honeycomb: {
                 name: '蜂窝',
                 config: {
+                    useShadow: true,
                     shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
@@ -95,6 +100,7 @@ export default {
                 name: '默认',
                 config: {
                     strokeStyle: 'rgba(255, 250, 50, 0.3)',
+                    useShadow: true,
                     shadowColor: 'rgba(255, 250, 50, 1)',
                     shadowBlur: 20,
                     lineWidth: 0.7,
@@ -159,6 +165,10 @@ export default {
         fillStyle: {
             name: '填充颜色',
             type: 'color'
+        },
+        useShadow: {
+            name: '使用阴影',
+            type: 'checkbox'
         },
         shadowColor: {
             name: '投影颜色',
