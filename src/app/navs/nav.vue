@@ -32,6 +32,11 @@
             p 任何和MapV-Editor相关的问题和建议可以通过
                 a(href="https://github.com/huiyan-fe/mapV-editor/issues") github的issue
                 | 提交给我们
+    md-snackbar(md-position="center" :md-active.sync="showSnackbar" )
+        span mapv-Editor基于
+            a(href="https://github.com/huiyan-fe/mapv" target="_blank") Mapv
+            | 实现，目前处于beta版本，各功能可能并不完整，仅供评估学习使用。
+        md-button(class="md-primary" @click="showSnackbar = false") 关闭
 </template>
 
 <script>
@@ -41,6 +46,8 @@ const version = require('../../../package.json').version;
 export default {
     data: function () {
         return {
+            duration: 4000,
+            showSnackbar: true,
             nav: null,
             shwoConfig: false,
             version
@@ -70,8 +77,8 @@ export default {
 </script>
 
 <style lang="scss">
-.md-dialog{
-    z-index: 10001 !important;
+.md-dialog {
+  z-index: 10001 !important;
 }
 .md-dialog-concent {
   padding: 0 20px 20px 20px;
