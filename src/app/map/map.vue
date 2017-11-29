@@ -17,11 +17,13 @@ export default {
             enableMapClick: false
         });    // 创建Map实例
         map.centerAndZoom(new BMap.Point(Config.center[0], Config.center[1]), Config.zoom);  // 初始化地图,设置中心点坐标和地图级别
-        map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
-        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放s
+        map.addControl(new BMap.MapTypeControl({
+            mapTypes: [BMAP_NORMAL_MAP, BMAP_SATELLITE_MAP, BMAP_HYBRID_MAP]
+        }));   //添加地图类型控件
+        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
         map.addControl(navigationControl);
         map.setMapStyle({
-            style: 'visualization' || 'midnight'
+            style: localStorage.getItem('e-mapstyle') || 'visualization' || 'midnight'
         });
     }
 }

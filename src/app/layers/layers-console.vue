@@ -170,6 +170,7 @@ export default {
   top: 85px;
   bottom: 0;
   width: 600px;
+  overflow: auto;
   transition: all 0.2s ease-in;
   &.second {
     left: -300px;

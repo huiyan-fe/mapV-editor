@@ -70,6 +70,9 @@ export default {
 </script>
 
 <style lang="scss">
+.md-dialog{
+    z-index: 10001 !important;
+}
 .md-dialog-concent {
   padding: 0 20px 20px 20px;
 }

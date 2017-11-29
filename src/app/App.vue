@@ -6,6 +6,7 @@
     DatasCore
     DatasLayer(v-show="nav==='data'")
     Layers(v-show="nav==='layer'")
+    MapLayers(v-show="nav==='map'")
     Export
 </template>
 
@@ -16,31 +17,33 @@ import Layers from "./layers/layers.vue";
 import MapV from "./mapv/mapv.vue";
 import DatasCore from "./datas/datasCore.vue";
 import DatasLayer from "./datas/datasLayer.vue";
+import MapLayers from "./map/mapLayer.vue";
 import Export from "./export/export.vue";
 import { Action, Store } from "marine";
 Action.def("home", {});
 
 export default {
-  name: "app",
-  data: function () {
-    return {
-      nav: null
-    };
-  },
-  components: {
-    NavComp: Nav,
-    MapComp,
-    Layers,
-    MapV,
-    DatasCore,
-    DatasLayer,
-    Export
-  },
-  mounted: function () {
-    Store.on("home.changeNav", StoreData => {
-      this.nav = this.nav === StoreData.data ? null : StoreData.data;
-    });
-  }
+    name: "app",
+    data: function () {
+        return {
+            nav: null
+        };
+    },
+    components: {
+        NavComp: Nav,
+        MapComp,
+        Layers,
+        MapV,
+        DatasCore,
+        DatasLayer,
+        MapLayers,
+        Export
+    },
+    mounted: function () {
+        Store.on("home.changeNav", StoreData => {
+            this.nav = this.nav === StoreData.data ? null : StoreData.data;
+        });
+    }
 };
 </script>
 
