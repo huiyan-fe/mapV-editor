@@ -4,6 +4,10 @@
 1. Data source Support both Local file and Data URL(With reflash time)
 2. Layer plugin: support user's customer layer style
 
+## Sep 8, 2017
+
+* :wrench: Optimize process: auto disable shadow while use big data
+
 ## Nov 29, 2017
 
 * :tada: Support Change Map Style

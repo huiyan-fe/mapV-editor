@@ -26,6 +26,9 @@ export default {
           break;
         }
       }
+      Object.keys(config).forEach(key => {
+        console.log(key, config[key])
+      });
       target.mapv.setOptions(config);
     }
   },
@@ -105,6 +108,9 @@ export default {
       Store.on("home.changeConfig", StoreData => {
         const config = StoreData.data;
         const newConfig = JSON.parse(JSON.stringify(config));
+        Object.keys(config).forEach(key => {
+          newConfig[key] = config[key] !== undefined ? config[key] : undefined;
+        });
         this.updateConfig(newConfig);
       }),
       Store.on("home.changeData", StoreData => {
@@ -131,6 +137,11 @@ export default {
           const defalutDrawType = StoreData.data.data[0].geometry.type;
           if (styleConfig.styleMap[defalutDrawType]) {
             const defalutConfig = JSON.parse(JSON.stringify(styleConfig.styleMap[defalutDrawType].simple.config));
+            console.warn(defalutConfig);
+            if (StoreData.data.data.length > 100 && defalutConfig.useShadow) {
+              defalutConfig.useShadow = false;
+              defalutConfig.shadowBlur = 0;
+            }
             defalutConfig.dataType = defalutDrawType;
             target.config = defalutConfig;
           }

@@ -67,15 +67,14 @@ export default {
             Action.home.emit("layerFocusOut");
         },
         changeconfig: function (e, key) {
-            // console.log(key,, this.config);
             if (key === 'useShadow') {
                 if (this.config.useShadow) {
-                    this.config.shadowBlur = this.cachedShadowBlurCache || styleConfig.styleMap[this.config.dataType][this.config.draw].config.shadowBlur;
-                    this.config.shadowColor = this.cachedShadowColor || styleConfig.styleMap[this.config.dataType][this.config.draw].config.shadowColor;
+                    this.config.shadowBlur = this.cachedShadowBlurCache !== undefined ? this.cachedShadowBlurCache : styleConfig.styleMap[this.config.dataType][this.config.draw].config.shadowBlur;
+                    this.config.shadowColor = this.cachedShadowColor !== undefined ? this.cachedShadowColor : styleConfig.styleMap[this.config.dataType][this.config.draw].config.shadowColor;
                 } else {
                     this.cachedShadowBlurCache = this.config.shadowBlur;
                     this.cachedShadowColor = this.config.shadowColor;
-                    this.config.shadowBlur = undefined;
+                    this.config.shadowBlur = 0;
                     this.config.shadowColor = undefined;
                 }
             }
@@ -87,7 +86,7 @@ export default {
                 newConfig.dataType = this.config.dataType;
                 this.config = newConfig;
             }
-            this.config.draw = key;
+
             this.styleMap = styleConfig.styleMap[this.config.dataType];
             // console.warn(this.styleMap, this.config.dataType)
             this.cachedShadowBlurCache = null;

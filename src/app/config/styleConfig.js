@@ -46,7 +46,8 @@ export default {
                     globalCompositeOperation: 'lighter',
                     maxSize: 40,
                     minSize: 0,
-                    max: 100
+                    max: 100,
+                    draw: 'bubble'
                 }
             },
             intensity: {
@@ -57,7 +58,8 @@ export default {
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     max: 100,
-                    min: 0
+                    min: 0,
+                    draw: 'intensity'
                 }
             },
             grid: {
@@ -70,7 +72,8 @@ export default {
                     size: 50,
                     max: 100,
                     min: 0,
-                    label: true
+                    label: true,
+                    draw: 'grid'
                 }
             },
             heatmap: {
@@ -78,7 +81,8 @@ export default {
                 config: {
                     maxOpacity: 0.8,
                     max: 100,
-                    size: 15
+                    size: 15,
+                    draw: 'heatmap'
                 }
             },
             honeycomb: {
@@ -91,7 +95,8 @@ export default {
                     size: 50,
                     max: 100,
                     min: 0,
-                    label: true
+                    label: true,
+                    draw: 'honeycomb'
                 }
             }
         },
@@ -100,10 +105,10 @@ export default {
                 name: '默认',
                 config: {
                     strokeStyle: 'rgba(255, 250, 50, 0.3)',
+                    lineWidth: 0.7,
                     useShadow: true,
                     shadowColor: 'rgba(255, 250, 50, 1)',
                     shadowBlur: 20,
-                    lineWidth: 0.7,
                     draw: 'simple'
                 }
             },
@@ -111,13 +116,19 @@ export default {
                 name: '热力',
                 config: {
                     max: 50,
+                    draw: 'heatmap',
+                    // lineWidth: 0.7,
                 }
             },
             intensity: {
                 name: '密度',
                 config: {
                     lineWidth: 0.5,
-                    max: 30
+                    max: 30,
+                    useShadow: true,
+                    shadowColor: 'rgba(255, 250, 50, 1)',
+                    shadowBlur: 20,
+                    draw: 'intensity'
                 }
             }
         }

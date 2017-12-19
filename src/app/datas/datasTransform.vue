@@ -41,6 +41,7 @@ export default {
                 let filedTypeAnalysis = [];
                 const dataByLine = this.importData.split('\n').map((item, index) => {
                     let dataByTable = item.split('\t');
+                    dataByTable = dataByTable.length === 1 ? dataByTable[0].split(' ') : dataByTable;
                     if (dataByTable.length > 10) {
                         dataByTable = dataByTable.slice(0, 10);
                     }
@@ -118,6 +119,7 @@ export default {
                     }
                 });
                 this.filedTypes = filedType;
+                // console.warn('@@@@@', filedType)
                 this.max = maxWidth;
                 this.showTips = true;
                 this.tempData = dataByLine;

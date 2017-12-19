@@ -65,6 +65,10 @@ export default {
         }
     },
     mounted: function () {
+        setTimeout(() => {
+            this.showSnackbar = false;
+        }, 5000);
+
         Store.on('home.importData', (data) => {
             console.log(this.nav)
             if (this.nav !== 'layer') {
