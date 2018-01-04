@@ -64,7 +64,6 @@ export default {
                     }
                     if (isJSON) {
                         this.userDataIndex = this.userDataIndex || 0;
-                        // console.log(jsonData)
                         datas.push({
                             id: `userData_${Math.random()}`,
                             name: `用户自定义数据 - ${++this.userDataIndex}`,
