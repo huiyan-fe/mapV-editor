@@ -1,19 +1,19 @@
 <template lang="pug">
-#map
+#mapv
 </template>
 
 
 <script>
 import Config from './config.js';
 export default {
-    name: 'map',
+    name: 'mapv',
     components: {},
     mounted: function () {
         let navigationControl = new BMap.NavigationControl({
             anchor: BMAP_ANCHOR_TOP_LEFT,
             type: BMAP_NAVIGATION_CONTROL_LARGE
         });
-        let map = window.map = new BMap.Map("map", {
+        let map = window.map = new BMap.Map("mapv", {
             enableMapClick: false
         });    // 创建Map实例
         map.centerAndZoom(new BMap.Point(Config.center[0], Config.center[1]), Config.zoom);  // 初始化地图,设置中心点坐标和地图级别
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss">
-#map {
+#mapv {
   position: absolute;
   overflow: hidden;
   top: 0;

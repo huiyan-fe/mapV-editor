@@ -6,9 +6,6 @@ import { Action, Store } from "marine";
 import styleConfig from '../config/styleConfig.js';
 import Config from '../map/config.js';
 import * as mapv from 'mapv';
-
-console.log("init mapv");
-
 export default {
   data: function () {
     return {

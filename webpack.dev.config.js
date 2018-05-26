@@ -1,13 +1,12 @@
 /* globals __dirname */
+
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const env = process.env.NODE_ENV || 'production';
-console.log('111', process, env);
+
 module.exports = {
     entry: {
-        // 'app/index': './src/app/index.jsx',
         'app/index': './src/app/index.vue.js',
         'app/common': ['mapv']
     },
@@ -17,17 +16,12 @@ module.exports = {
     },
     devServer: {
         contentBase: './dist',
-        historyApiFallback: true,
-        inline: false,
-        hot: true,
     },
-
+    devtool: 'eval-source-map',
+    cacheBusting: 'false',
     module: {
         rules: [
-            // {
-            //     loader: 'worker-loader',
-            //     options: { inline: true }
-            // },
+            //
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
@@ -61,7 +55,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: 'src/page/index.html',
-            hash: false,
+            hash: true,
             chunks: ['app/index', 'app/common']
         }),
         new webpack.optimize.CommonsChunkPlugin({
@@ -70,7 +64,7 @@ module.exports = {
         }),
         new ExtractTextPlugin({
             filename: (getPath) => {
-                return getPath(`static/css/[name].${env==='production' ? '[chunkhash].':''}css`).replace('css/js', 'css');
+                return getPath('static/css/[name].css').replace('css/js', 'css');
             },
             allChunks: true
         }),

@@ -17,7 +17,7 @@
             el-select(v-else-if="configMap[key]&&configMap[key].type==='select'" 
                 @change="changeconfig($event,key)" 
                 v-model="config[key]")
-                el-option(v-for="value in configMap[key].values" key="value.id" :value="value.id" :label="value.name")
+                el-option(v-for="value in configMap[key].values" v-bind:key="value.id+Math.random()" :value="value.id" :label="value.name")
             el-switch(v-else-if="configMap[key]&&configMap[key].type==='checkbox'"
                 @change="changeconfig($event, key)" 
                 v-model="config[key]"   
@@ -44,68 +44,76 @@
 </template>
 
 <script>
-import { Sketch } from 'vue-color'
+import { Sketch } from "vue-color";
 import { Action, Store } from "marine";
 import tools from "../tools/tools";
 import styleConfig from "../config/styleConfig.js";
 export default {
-    components: {
-        Photoshop: Sketch
+  components: {
+    Photoshop: Sketch
+  },
+  data: function() {
+    return {
+      styleMap: styleConfig.styleMap,
+      configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap)),
+      config: {}
+    };
+  },
+  methods: {
+    focusOn: function() {
+      Action.home.emit("layerFocusOn");
     },
-    data: function () {
-        return {
-            styleMap: styleConfig.styleMap,
-            configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap)),
-            config: {}
-        };
+    focusOut: function() {
+      Action.home.emit("layerFocusOut");
     },
-    methods: {
-        focusOn: function () {
-            Action.home.emit("layerFocusOn");
-        },
-        focusOut: function () {
-            Action.home.emit("layerFocusOut");
-        },
-        changeconfig: function (e, key) {
-            if (key === 'useShadow') {
-                if (this.config.useShadow) {
-                    this.config.shadowBlur = this.cachedShadowBlurCache !== undefined ? this.cachedShadowBlurCache : styleConfig.styleMap[this.config.dataType][this.config.draw].config.shadowBlur;
-                    this.config.shadowColor = this.cachedShadowColor !== undefined ? this.cachedShadowColor : styleConfig.styleMap[this.config.dataType][this.config.draw].config.shadowColor;
-                } else {
-                    this.cachedShadowBlurCache = this.config.shadowBlur;
-                    this.cachedShadowColor = this.config.shadowColor;
-                    this.config.shadowBlur = 0;
-                    this.config.shadowColor = undefined;
-                }
-            }
-            Action.home.emit("changeConfig", this.config);
-        },
-        changeDrawType: function (key) {
-            if (this.styleMap[key].config) {
-                const newConfig = JSON.parse(JSON.stringify(this.styleMap[key].config));
-                newConfig.dataType = this.config.dataType;
-                this.config = newConfig;
-            }
-
-            this.styleMap = styleConfig.styleMap[this.config.dataType];
-            // console.warn(this.styleMap, this.config.dataType)
-            this.cachedShadowBlurCache = null;
-            this.cachedShadowColor = null;
-            Action.home.emit("changeConfig", this.config);
+    changeconfig: function(e, key) {
+      if (key === "useShadow") {
+        if (this.config.useShadow) {
+          this.config.shadowBlur =
+            this.cachedShadowBlurCache !== undefined
+              ? this.cachedShadowBlurCache
+              : styleConfig.styleMap[this.config.dataType][this.config.draw]
+                  .config.shadowBlur;
+          this.config.shadowColor =
+            this.cachedShadowColor !== undefined
+              ? this.cachedShadowColor
+              : styleConfig.styleMap[this.config.dataType][this.config.draw]
+                  .config.shadowColor;
+        } else {
+          this.cachedShadowBlurCache = this.config.shadowBlur;
+          this.cachedShadowColor = this.config.shadowColor;
+          this.config.shadowBlur = 0;
+          this.config.shadowColor = undefined;
         }
+      }
+      Action.home.emit("changeConfig", this.config);
     },
-    mounted: function () {
-        Store.on("home.initConfig", StoreData => {
-            this.config = StoreData.data;
-            console.warn('init config', this.config, StoreData.data)
-            this.styleMap = styleConfig.styleMap[this.config.dataType];
-        });
+    changeDrawType: function(key) {
+      if (this.styleMap[key].config) {
+        const newConfig = JSON.parse(JSON.stringify(this.styleMap[key].config));
+        newConfig.dataType = this.config.dataType;
+        this.config = newConfig;
+      }
 
-        Store.on("home.changeActiveLayer", StoreData => {
-            this.config = StoreData.data.config || {};
-            this.styleMap = styleConfig.styleMap[this.config.dataType];
-        });
+      this.styleMap = styleConfig.styleMap[this.config.dataType];
+      // console.warn(this.styleMap, this.config.dataType)
+      this.cachedShadowBlurCache = null;
+      this.cachedShadowColor = null;
+      Action.home.emit("changeConfig", this.config);
     }
+  },
+  mounted: function() {
+    Store.on("home.initConfig", StoreData => {
+      this.config = StoreData.data;
+      console.warn("init config", this.config, StoreData.data);
+      this.styleMap = styleConfig.styleMap[this.config.dataType];
+    });
+
+    Store.on("home.changeActiveLayer", StoreData => {
+      this.config = StoreData.data.config || {};
+      this.styleMap = styleConfig.styleMap[this.config.dataType];
+    });
+  }
 };
 </script>
 

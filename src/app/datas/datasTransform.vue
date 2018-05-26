@@ -2,8 +2,20 @@
   md-dialog.data-transform(
       :md-active.sync="showTips"
       @md-closed='closeBox'
+      :style='modalBox'
     )
+
     md-dialog-title(v-if="this.importData") 导入新数据 {{receiveData}}
+        div.divider
+            span.diviver-chose 分割方式
+                select( name='lineDividerSymbol' @change="onDividerSymbolChange($event)")
+                    option(
+                        v-for="(item, index) in divideSymbols" 
+                        :value="item.key" 
+                        :selected="item.key === lineDividerSymbol ? 'selected':''"
+                    ) {{item.value}}
+            span.diviver-chose 分组间隔
+                el-input-number.count-input( v-model="groupCount" controls-position="right" size="small" :style="{width:'100px'}")
         md-table
             md-table-row
                 md-table-head(v-for="n in max" :key="n") 
@@ -16,8 +28,11 @@
                         option(value='polygon' :selected="filedTypes[n-1]==='polygon'?'selected':''") 面
                         option(value='number' :selected="filedTypes[n-1]==='number'?'selected':''") 值
                         option(value='text' :selected="filedTypes[n-1]==='text'?'selected':''") 文本
+                        option(value='poiName' :selected="filedTypes[n-1]==='poiName'?'selected':''") 地名
+        md-table(:style="{overflow:'scroll','max-height':'300px'}")
             md-table-row(v-for="m in Math.min(5, tempData.length)" :key="m")
                 md-table-cell(v-for="k in tempData[m-1]"  :key="k") {{k}}
+    
     md-dialog-actions
         md-button.md-primary(@click="showTips = false") 关闭
         md-button.md-primary(@click="onImportData") 导入数据
@@ -25,198 +40,351 @@
  
 <script>
 import { Action, Store } from "marine";
+import config from "../config/globalConfig.js";
+// import Worker from "worker-loader!./geocoding.js";
+// import fetchJsonp from "fetch-jsonp";
+import batchGeoCoding from "./geocoding.js";
 export default {
-    props: ['importData'],
-    data: function () {
-        return {
-            showTips: false,
-            max: 0,
-            filedTypes: [],
-        }
-    },
-    components: {},
-    computed: {
-        receiveData: function () {
-            if (this.importData) {
-                let maxWidth = 0;
-                let filedTypeAnalysis = [];
-                const dataByLine = this.importData.split('\n').map((item, index) => {
-                    let dataByTable = item.split('\t');
-                    // if not split by \t use space as the split chart
-                    dataByTable = dataByTable.length === 1 ? dataByTable[0].split(' ') : dataByTable;
-                    // only support the first 10 files
-                    if (dataByTable.length > 10) {
-                        dataByTable = dataByTable.slice(0, 10);
-                    }
-
-                    // auto choose type of this filed
-                    // only show the first 5 line
-                    if (index < 5) {
-                        console.log(dataByTable)
-                        dataByTable.forEach((item, fileIndex) => {
-                            const fileObj = filedTypeAnalysis[fileIndex] = filedTypeAnalysis[fileIndex] || {};
-                            // is number
-                            if (/^\d+(\.?)\d*$/.test(item)) {
-                                fileObj.number = fileObj.number || 0;
-                                fileObj.number++;
-                            } else if (item.split(',').length >= 2) {
-                                const items = item.split(',');
-                                if (items.length === 2) {
-                                    // is point
-                                    fileObj.point = fileObj.point || 0;
-                                    fileObj.point++;
-                                } else if (items.length === 4) {
-                                    // is line
-                                    fileObj.line = fileObj.line || 0;
-                                    fileObj.line++;
-                                } else {
-                                    // is polygon or line
-                                    let totalDistance = 0;
-                                    const scale = 100000;
-                                    let startEndDistantce = Math.sqrt((items[0] - items[items.length - 2]) ** 2 + (items[1] - items[items.length - 1]) ** 2) * scale;
-                                    for (let i = 2; i < items.length; i += 2) {
-                                        const x1 = items[i] * scale;
-                                        const y1 = items[i + 1] * scale;
-                                        const x2 = items[i - 2] * scale;
-                                        const y2 = items[i - 1] * scale;
-                                        const d = Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
-                                        totalDistance += d;
-                                    }
-                                    if (startEndDistantce <= totalDistance / 4) {
-                                        // polygon
-                                        fileObj.polygon = fileObj.polygon || 0;
-                                        fileObj.polygon++;
-                                    } else {
-                                        // line
-                                        fileObj.line = fileObj.line || 0;
-                                        fileObj.line++;
-                                    }
-                                }
-                            } else {
-                                fileObj.text = fileObj.text || 0;
-                                fileObj.text++;
-                            }
-                        });
-                    }
-                    //
-                    maxWidth = Math.max(dataByTable.length, maxWidth);
-                    return dataByTable;
-                });
-                const usedNames = {};
-                // console.log(filedTypeAnalysis)
-                const filedType = filedTypeAnalysis.map(item => {
-                    let cacheName = 'null';
-                    let cacheMax = 0;
-                    Object.keys(item).forEach(name => {
-                        // console.log(item[name])
-                        if (item[name] > cacheMax) {
-                            cacheName = name;
-                            cacheMax = item[name];
-                        }
-                    });
-                    // console.warn(item, cacheName, cacheMax)
-                    if (!usedNames[cacheName]) {
-                        usedNames[cacheName] = true;
-                        return cacheName;
-                    } else {
-                        return 'null';
-                    }
-                });
-                this.filedTypes = filedType;
-                console.warn('@@@@@', maxWidth)
-                this.max = maxWidth;
-                this.showTips = true;
-                this.tempData = dataByLine;
-            }
-        }
-    },
-    methods: {
-        typeChange: function (e, index) {
-            this.filedTypes[index] = e.target.value;
-        },
-        closeBox: function () {
-            Action.home.emit('cancelImport', {})
-        },
-        onImportData: function () {
-            this.showTips = false;
-            // console.log(this.filedTypes, this.tempData)
-            const values = ['point-mercator', 'point', 'line', 'polygon'];
-            const valueMaps = {
-                'point-mercator': 'Point',
-                'point': 'Point',
-                'line': 'LineString',
-                'polygon': 'Polygon'
-            }
-
-            let valueColum = null;
-            let numberColum = null;
-            console.log(this.filedTypes)
-            this.filedTypes.forEach((key, index) => {
-                if (values.indexOf(key) !== -1 && !valueColum) {
-                    valueColum = {
-                        key,
-                        index,
-                        type: valueMaps[key],
-                    }
-                }
-
-                if (key === 'number' && !numberColum) {
-                    numberColum = {
-                        index
-                    }
-                }
+  props: ["importData"],
+  data: function() {
+    return {
+      modalBox: { "min-width": "50%", "max-height": "80%" },
+      showTips: false,
+      max: 0,
+      stringFiledTypes: "",
+      filedTypes: [],
+      tempData: [],
+      divideSymbols: config.divideSymbols,
+      lineDividerSymbol: config.divideSymbols[0].key,
+      groupCount: 1,
+      nameList: config.defaultNameList,
+      geoCodedPoiList: []
+    };
+  },
+  components: {},
+  mounted: function() {
+    // this.getPointsByNames();
+  },
+  computed: {
+    receiveData: function() {
+      if (this.importData) {
+        let maxWidth = 0;
+        let lineCellTypes = [];
+        // 去除符号("/'/)
+        // 替换多空格为单空格(\s+)
+        let lines = JSON.parse(JSON.stringify(this.importData.trim()))
+          .replace(/"/gi, "")
+          .replace(/'/gi, "")
+          .replace(/\s+/gi, " ")
+          .split("\n");
+        if (lines && lines.length > 0) {
+          let tl = [];
+          lines.map(l => {
+            tl = [...tl, ...l.split(this.lineDividerSymbol)];
+          });
+          if (tl && tl.length > 0) {
+            lines.length = 0;
+            tl.map(item => {
+              item = item.trim();
+              if (item !== "" && item !== null && item !== " ") {
+                lines.push(item);
+              }
             });
-
-            console.log(valueColum)
-            const useData = [];
-            this.tempData.forEach(item => {
-
-                const originData = item[valueColum.index];
-                if (originData) {
-                    let coordinates;
-                    if (valueColum.type === 'Point') {
-                        coordinates = originData.split(',').splice(0, 2);
-                        if (valueColum.key === 'point-mercator') {
-                            const lnglat = map.getMapType().getProjection().pointToLngLat({ x: coordinates[0], y: coordinates[1] })
-                            coordinates = [lnglat.lng, lnglat.lat];
-                            if (!(lnglat.lat < 50 && lnglat.lat > 20)) {
-                                console.log('!!', lnglat, originData)
-                            }
-                        }
-                    }
-
-                    if (valueColum.type === 'LineString') {
-                        const splitedData = originData.split(',');
-                        coordinates = [];
-                        for (let i = 0; i < splitedData.length; i += 2) {
-                            coordinates.push([splitedData[i], splitedData[i + 1]])
-                        }
-                    }
-
-                    if (valueColum.type === 'Polygon') {
-                        const splitedData = originData.split(',');
-                        coordinates = [];
-                        const tempCoordinates = [];
-                        for (let i = 0; i < splitedData.length; i += 2) {
-                            tempCoordinates.push([splitedData[i], splitedData[i + 1]])
-                        }
-                        coordinates.push(tempCoordinates);
-                    }
-
-                    useData.push({
-                        "geometry": {
-                            "type": valueColum.type,
-                            coordinates
-                        },
-                        "count": numberColum ? item[numberColum.index] : 0
-                    });
-                }
-            });
-            Action.home.emit('importData', useData);
+          }
         }
-    },
-    mounted: function () {
+        // 分割依据(split principles)：
+        // line split:
+        //   1.\n(换行):force split into lines when meet \n
+        //   2.\t(制表符):force split one line into cells when meet \t
+        // cell split (in one line)：
+        //   1.split principle: lineDividerSymbol
+        //   2.(null): default,no split
+        //   3.(\s):split by space
+        //   4.(, ):split by comma
+
+        let lineDatas = lines.map((item, index) => {
+          console.log(1, item);
+          let cellDatas = item.split("\t");
+          // if not split by \t use space as the split chart
+          if (cellDatas.length === 1) {
+            cellDatas = cellDatas[0].split(" ");
+          }
+          let jointCells = [];
+          for (
+            let i = 0;
+            i <= cellDatas.length - this.groupCount;
+            i += this.groupCount
+          ) {
+            let con = cellDatas.slice(i, i + this.groupCount);
+            jointCells.push(con.join());
+          }
+          cellDatas = jointCells;
+          console.log(1, cellDatas);
+          // only support the first 10 files
+          // if (cellDatas.length > 10) {
+          //   cellDatas = cellDatas.slice(0, 10);
+          // }
+
+          // auto choose type of this filed
+          // only show the first 5 line
+          if (index < Infinity) {
+            console.log(cellDatas);
+            cellDatas.forEach((item, fileIndex) => {
+              // every line have same type or data structure
+              // so we only need to maintain one line cell types :lineCellTypes
+              const fileObj = (lineCellTypes[fileIndex] =
+                lineCellTypes[fileIndex] || {});
+              // is number
+              if (/^\d+(\.?)\d*$/.test(item)) {
+                fileObj.number = fileObj.number || 0;
+                fileObj.number++;
+              } else if (item.split(",").length >= 2) {
+                const items = item.split(",");
+                if (items.length === 2) {
+                  // is point
+                  fileObj.point = fileObj.point || 0;
+                  fileObj.point++;
+                } else if (items.length === 4) {
+                  // is line
+                  fileObj.line = fileObj.line || 0;
+                  fileObj.line++;
+                } else {
+                  // is polygon or line
+                  let totalDistance = 0;
+                  const scale = 100000;
+                  let startEndDistantce =
+                    Math.sqrt(
+                      (items[0] - items[items.length - 2]) ** 2 +
+                        (items[1] - items[items.length - 1]) ** 2
+                    ) * scale;
+                  for (let i = 2; i < items.length; i += 2) {
+                    const x1 = items[i] * scale;
+                    const y1 = items[i + 1] * scale;
+                    const x2 = items[i - 2] * scale;
+                    const y2 = items[i - 1] * scale;
+                    const d = Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+                    totalDistance += d;
+                  }
+                  if (startEndDistantce <= totalDistance / 4) {
+                    // polygon
+                    fileObj.polygon = fileObj.polygon || 0;
+                    fileObj.polygon++;
+                  } else {
+                    // line
+                    fileObj.line = fileObj.line || 0;
+                    fileObj.line++;
+                  }
+                }
+              } else {
+                fileObj.text = fileObj.text || 0;
+                fileObj.text++;
+              }
+            });
+          }
+          //
+          maxWidth = Math.max(cellDatas.length, maxWidth);
+          return cellDatas;
+        });
+        const usedNames = {};
+        // console.log(lineCellTypes)
+        const filteredCellTypes = lineCellTypes.map(item => {
+          let cacheName = "null";
+          let cacheMax = 0;
+          Object.keys(item).forEach(name => {
+            // console.log(item[name])
+            if (item[name] > cacheMax) {
+              cacheName = name;
+              cacheMax = item[name];
+            }
+          });
+          // console.warn(item, cacheName, cacheMax)
+          if (!usedNames[cacheName]) {
+            usedNames[cacheName] = true;
+            return cacheName;
+          } else {
+            return "null";
+          }
+        });
+        this.max = maxWidth;
+        this.showTips = true;
+        this.filedTypes = filteredCellTypes;
+        this.tempData = lineDatas;
+      }
     }
+  },
+  watch: {
+    stringFiledTypes: {
+      handler: function(newVal, oldVal) {
+        console.log("new: %s, old: %s", newVal, oldVal);
+        if (newVal && newVal.indexOf("]") > -1) {
+          newVal = typeof newVal == "string" ? JSON.parse(newVal) : newVal;
+          let firstCellType = newVal[0];
+          if (firstCellType == "poiName") {
+            this.geoCodedPoiList.length = 0;
+            let nameList = this.tempData.map(l => {
+              return l[0];
+            });
+            console.log("start Geocoding");
+            this.getPointsByNames(nameList, poiList => {
+              this.geoCodedPoiList = poiList;
+              console.log("end Geocoding");
+            });
+          }
+        }
+      },
+      deep: true,
+      immediate: true
+    },
+    filedTypes: {
+      deep: true,
+      immediate: true,
+      handler: function(newVal, oldVal) {
+        console.log("可以了");
+        // let firstCellType = newVal[0];
+        // if (firstCellType == "poiName") {
+        //   let nameList = lineDatas.map(l => {
+        //     return l[0];
+        //   });
+        //   console.log("start Geocoding");
+        //   geoCodedPoiList = 0;
+        //   this.getPointsByNames(nameList, poiList => {
+        //     this.geoCodedPoiList = poiList;
+        //     console.log("end Geocoding");
+        //     return poiList;
+        //   });
+        // }
+      }
+    }
+  },
+  methods: {
+    getPointsByNames: function(nameList, callback) {
+      batchGeoCoding(nameList, poiList => {
+        console.log("poiList:", poiList);
+        callback && callback(poiList);
+      });
+    },
+    webWorkerGeoCoding: function(d) {
+      // let worker = new Worker(require.resolve("./geoWorker.js"));
+      // setTimeout(() => {
+      //   worker.postMessage({
+      //     list: this.nameList,
+      //     type: "geocoding"
+      //   });
+      // }, 1000);
+      // worker.onmessage = function(e) {
+      //   console.log("main receive:", e, e.data);
+      // };
+    },
+    onDividerSymbolChange: function(e) {
+      this.lineDividerSymbol = e.target.value ? e.target.value : null;
+    },
+    typeChange: function(e, index) {
+      console.log("filedTypes change");
+      this.filedTypes[index] = e.target.value;
+      this.stringFiledTypes = JSON.stringify(this.filedTypes);
+    },
+    closeBox: function() {
+      Action.home.emit("cancelImport", {});
+    },
+    onImportData: function() {
+      this.showTips = false;
+      // console.log(this.filedTypes, this.tempData)
+      // const values = ["point-mercator", "poiName", "point", "line", "polygon",''];
+      const valueMaps = {
+        "point-mercator": "Point",
+        poiName: "Point",
+        point: "Point",
+        line: "LineString",
+        polygon: "Polygon",
+        "": ""
+      };
+      const values = Object.keys(valueMaps);
+
+      // valueColum record poi
+      // numberColum record poi right weight
+      let valueColum = null;
+      let numberColum = null;
+      console.log(this.filedTypes);
+      this.filedTypes.forEach((key, index) => {
+        if (values.indexOf(key) !== -1 && !valueColum) {
+          valueColum = {
+            key,
+            index,
+            type: valueMaps[key]
+          };
+        }
+
+        if (key === "number" && !numberColum) {
+          numberColum = {
+            index
+          };
+        }
+      });
+
+      const useData = [];
+      // one line represent an single complete info
+      // if valueColum.key is poiName ,use geo
+      this.tempData.forEach(lineData => {
+        const originData = lineData[valueColum.index];
+        if (originData) {
+          let coordinates;
+          if (valueColum.type === "Point") {
+            coordinates = originData.split(",").splice(0, 2);
+            if (valueColum.key === "point-mercator") {
+              const lnglat = map
+                .getMapType()
+                .getProjection()
+                .pointToLngLat({ x: coordinates[0], y: coordinates[1] });
+              coordinates = [lnglat.lng, lnglat.lat];
+              if (!(lnglat.lat < 50 && lnglat.lat > 20)) {
+                console.log("!!", lnglat, originData);
+              }
+            }
+            if (valueColum.key === "poiName") {
+              while (!(this.geoCodedPoiList.length > 0)) {
+                consle.log(".");
+              }
+              if (this.geoCodedPoiList.length > 0) {
+                coordinates = [];
+                debugger;
+                let poi = this.geoCodedPoiList[valueColum.index];
+                if (poi.location && poi.name && poi.name == originData) {
+                  [poi.location.lng, poi.location.lat];
+                }
+              }
+            }
+          }
+
+          if (valueColum.type === "LineString") {
+            const splitedData = originData.split(",");
+            coordinates = [];
+            for (let i = 0; i < splitedData.length; i += 2) {
+              coordinates.push([splitedData[i], splitedData[i + 1]]);
+            }
+          }
+
+          if (valueColum.type === "Polygon") {
+            const splitedData = originData.split(",");
+            coordinates = [];
+            const tempCoordinates = [];
+            for (let i = 0; i < splitedData.length; i += 2) {
+              tempCoordinates.push([splitedData[i], splitedData[i + 1]]);
+            }
+            coordinates.push(tempCoordinates);
+          }
+
+          useData.push({
+            geometry: {
+              type: valueColum.type,
+              coordinates
+            },
+            count: numberColum ? lineData[numberColum.index] : 0
+          });
+        }
+      });
+      Action.home.emit("importData", useData);
+    }
+  }
 };
 </script>
 
@@ -226,5 +394,26 @@ export default {
   table {
     font-size: 12px;
   }
+}
+.divider {
+  text-align: right;
+  margin-right: 10px;
+  .diviver-chose {
+    font-size: 12px;
+    margin-left: 5px;
+  }
+  .count-input {
+    span[role="button"] {
+      background: #f5f7fa;
+      color: black;
+    }
+    input {
+      color: black;
+      background: none;
+    }
+  }
+}
+.paste-list {
+  overflow: scroll;
 }
 </style>
