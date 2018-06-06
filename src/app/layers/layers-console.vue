@@ -30,82 +30,84 @@
 </template>
 
 <script>
-import { Action, Store } from 'marine';
-import tools from '../tools/tools';
-import ConsoleStyle from './layers-console-style.vue';
+import { Action, Store } from "marine";
+import tools from "../tools/tools";
+import ConsoleStyle from "./layers-console-style.vue";
 export default {
-    components: {
-        ConsoleStyle
+  components: {
+    ConsoleStyle
+  },
+  data: function() {
+    return {
+      layerInfo: null,
+      datas: [],
+      hasBindDatas: false,
+      tableIndex: 1
+    };
+  },
+  methods: {
+    changeTableIndex: function(tableIndex) {
+      if (this.hasBindDatas) {
+        this.tableIndex = tableIndex;
+      }
     },
-    data: function () {
-        return {
-            layerInfo: null,
-            datas: [],
-            hasBindDatas: false,
-            tableIndex: 1
-        }
-    },
-    methods: {
-        changeTableIndex: function (tableIndex) {
-            if (this.hasBindDatas) {
-                this.tableIndex = tableIndex;
-            }
-        },
-        dataClick: function (data) {
-            // create demo data
-            if (data.id === 1) {
-                data.data = tools.create.createPointData();
-            }
-            if (data.id === 2) {
-                data.data = tools.create.createLineData();
-            }
-            //
-            this.datas.forEach(item => {
-                item.active = item.id === data.id
-            });
-            this.hasBindDatas = true;
-            this.tableIndex = 2;
-            Action.home.emit('changeData', data);
-        }
-    },
-    mounted: function () {
-        Store.on('home.importData', (storeData) => {
-            setTimeout(() => {
-                // wait untill insert data, create new layer finished
-                // auto choose the import data
-                const datasObj = this.datas.filter(data => {
-                    return data.data === storeData.data;
-                })
-                if (datasObj.length >= 1) {
-                    this.dataClick(datasObj[0]);
-                    // foucus on the data
-                    Action.home.emit("layerFocusOn");
-                }
-            })
-        });
-        Store.on('home.removeLayer', StoreData => {
-            this.layerInfo = null;
-        });
-        Store.on('home.changeActiveLayer', StoreData => {
-            this.layerInfo = StoreData.data;
-            this.hasBindDatas = false;
-            this.datas.forEach(item => {
-                if (item.id === (this.layerInfo.data && this.layerInfo.data.id)) {
-                    this.hasBindDatas = true;
-                }
-                item.active = item.id === (this.layerInfo.data && this.layerInfo.data.id)
-            });
-            this.tableIndex = this.hasBindDatas ? 2 : 1
-        });
-        Store.on('home.receiveDatas', StoreData => {
-            StoreData.data.forEach(item => {
-                this.$set(item, 'active', false)
-            })
-            this.datas = StoreData.data;
-        });
-        Action.home.emit('getDatas');
+    dataClick: function(data) {
+      // create demo data
+      if (data.id === 1) {
+        data.data = tools.create.createPointData();
+      }
+      if (data.id === 2) {
+        data.data = tools.create.createLineData();
+      }
+      //
+      this.datas.forEach(item => {
+        item.active = item.id === data.id;
+      });
+      this.hasBindDatas = true;
+      this.tableIndex = 2;
+      console.log("changeData", data);
+      Action.home.emit("changeData", data);
     }
-}
+  },
+  mounted: function() {
+    Store.on("home.importData", storeData => {
+      setTimeout(() => {
+        // wait untill insert data, create new layer finished
+        // auto choose the import data
+        const datasObj = this.datas.filter(data => {
+          return data.data === storeData.data;
+        });
+        if (datasObj.length >= 1) {
+          this.dataClick(datasObj[0]);
+          // foucus on the data
+          Action.home.emit("layerFocusOn");
+        }
+      });
+    });
+    Store.on("home.removeLayer", StoreData => {
+      this.layerInfo = null;
+    });
+    Store.on("home.changeActiveLayer", StoreData => {
+      this.layerInfo = StoreData.data;
+      this.hasBindDatas = false;
+      this.datas.forEach(item => {
+        if (item.id === (this.layerInfo.data && this.layerInfo.data.id)) {
+          this.hasBindDatas = true;
+        }
+        item.active =
+          item.id === (this.layerInfo.data && this.layerInfo.data.id);
+      });
+      this.tableIndex = this.hasBindDatas ? 2 : 1;
+    });
+    Store.on("home.receiveDatas", StoreData => {
+      StoreData.data.forEach(item => {
+        this.$set(item, "active", false);
+      });
+      this.datas = StoreData.data;
+    });
+    Action.home.emit("getDatas");
+  }
+};
 </script>
 
 <style lang="scss">

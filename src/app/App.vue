@@ -23,27 +23,27 @@ import { Action, Store } from "marine";
 Action.def("home", {});
 
 export default {
-    name: "app",
-    data: function () {
-        return {
-            nav: null
-        };
-    },
-    components: {
-        NavComp: Nav,
-        MapComp,
-        Layers,
-        MapV,
-        DatasCore,
-        DatasLayer,
-        MapLayers,
-        Export
-    },
-    mounted: function () {
-        Store.on("home.changeNav", StoreData => {
-            this.nav = this.nav === StoreData.data ? null : StoreData.data;
-        });
-    }
+  name: "app",
+  data: function() {
+    return {
+      nav: null
+    };
+  },
+  components: {
+    NavComp: Nav,
+    MapComp,
+    Layers,
+    MapV,
+    DatasCore,
+    DatasLayer,
+    MapLayers,
+    Export
+  },
+  mounted: function() {
+    Store.on("home.changeNav", StoreData => {
+      this.nav = this.nav === StoreData.data ? null : StoreData.data;
+    });
+  }
 };
 </script>
 
@@ -81,6 +81,7 @@ export default {
     color: #b9b9b9;
     border-bottom: 1px solid #717070;
   }
+
   .md-button.layers-new-btn {
     margin-top: 10px;
     width: 250px - 30px;
@@ -96,6 +97,17 @@ export default {
 }
 
 .layers-lists {
+  cursor: pointer;
+  // position: absolute;
+  // top: 100px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #b9b9b9;
+  overflow: auto;
   input {
     width: 160px;
     padding: 5px;
@@ -116,17 +128,7 @@ export default {
     //   text-overflow: clip;
     // }
   }
-  cursor: pointer;
-  position: absolute;
-  top: 100px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  color: #b9b9b9;
-  overflow: auto;
+
   li {
     border-left: 2px solid rgba(0, 0, 0, 0);
     border-bottom: 2px solid #323232;

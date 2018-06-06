@@ -62,34 +62,37 @@ export default {
     };
   },
   components: {},
-  mounted: function() {
-    // this.getPointsByNames();
-  },
+  mounted: function() {},
   computed: {
     receiveData: function() {
       if (this.importData) {
         let maxWidth = 0;
         let lineCellTypes = [];
-        // 去除符号("/'/)
-        // 替换多空格为单空格(\s+)
-        let lines = JSON.parse(JSON.stringify(this.importData.trim()))
-          .replace(/"/gi, "")
-          .replace(/'/gi, "")
-          .replace(/\s+/gi, " ")
-          .split("\n");
-        if (lines && lines.length > 0) {
-          let tl = [];
-          lines.map(l => {
-            tl = [...tl, ...l.split(this.lineDividerSymbol)];
-          });
-          if (tl && tl.length > 0) {
-            lines.length = 0;
-            tl.map(item => {
-              item = item.trim();
-              if (item !== "" && item !== null && item !== " ") {
-                lines.push(item);
-              }
+        let lines = [];
+        if (this.importData instanceof Array) {
+          lines = this.importData;
+        } else {
+          // 去除符号("/'/)
+          // 替换多空格为单空格(\s+)
+          lines = JSON.parse(JSON.stringify(this.importData.trim()))
+            .replace(/"/gi, "")
+            .replace(/'/gi, "")
+            .replace(/\s+/gi, " ")
+            .split("\n");
+          if (lines && lines.length > 0) {
+            let tl = [];
+            lines.map(l => {
+              tl = [...tl, ...l.split(this.lineDividerSymbol)];
             });
+            if (tl && tl.length > 0) {
+              lines.length = 0;
+              tl.map(item => {
+                item = item.trim();
+                if (item !== "" && item !== null && item !== " ") {
+                  lines.push(item);
+                }
+              });
+            }
           }
         }
         // 分割依据(split principles)：
@@ -101,9 +104,7 @@ export default {
         //   2.(null): default,no split
         //   3.(\s):split by space
         //   4.(, ):split by comma
-
         let lineDatas = lines.map((item, index) => {
-          console.log(1, item);
           let cellDatas = item.split("\t");
           // if not split by \t use space as the split chart
           if (cellDatas.length === 1) {
@@ -119,7 +120,6 @@ export default {
             jointCells.push(con.join());
           }
           cellDatas = jointCells;
-          console.log(1, cellDatas);
           // only support the first 10 files
           // if (cellDatas.length > 10) {
           //   cellDatas = cellDatas.slice(0, 10);
@@ -128,7 +128,6 @@ export default {
           // auto choose type of this filed
           // only show the first 5 line
           if (index < Infinity) {
-            console.log(cellDatas);
             cellDatas.forEach((item, fileIndex) => {
               // every line have same type or data structure
               // so we only need to maintain one line cell types :lineCellTypes
@@ -176,8 +175,10 @@ export default {
                   }
                 }
               } else {
-                fileObj.text = fileObj.text || 0;
-                fileObj.text++;
+                fileObj.poiName = fileObj.poiName || 0;
+                fileObj.poiName++;
+                // fileObj.text = fileObj.text || 0;
+                // fileObj.text++;
               }
             });
           }
@@ -186,12 +187,11 @@ export default {
           return cellDatas;
         });
         const usedNames = {};
-        // console.log(lineCellTypes)
+        console.log("lineCellTypes", lineCellTypes);
         const filteredCellTypes = lineCellTypes.map(item => {
           let cacheName = "null";
           let cacheMax = 0;
           Object.keys(item).forEach(name => {
-            // console.log(item[name])
             if (item[name] > cacheMax) {
               cacheName = name;
               cacheMax = item[name];
@@ -225,8 +225,8 @@ export default {
               return l[0];
             });
             console.log("start Geocoding");
-            this.getPointsByNames(nameList, poiList => {
-              this.geoCodedPoiList = poiList;
+            this.bufferedGetPointsByNames(nameList, poiList => {
+              // this.geoCodedPoiList = poiList;
               console.log("end Geocoding");
             });
           }
@@ -239,7 +239,6 @@ export default {
       deep: true,
       immediate: true,
       handler: function(newVal, oldVal) {
-        console.log("可以了");
         // let firstCellType = newVal[0];
         // if (firstCellType == "poiName") {
         //   let nameList = lineDatas.map(l => {
@@ -247,7 +246,7 @@ export default {
         //   });
         //   console.log("start Geocoding");
         //   geoCodedPoiList = 0;
-        //   this.getPointsByNames(nameList, poiList => {
+        //   this.bufferedGetPointsByNames(nameList, poiList => {
         //     this.geoCodedPoiList = poiList;
         //     console.log("end Geocoding");
         //     return poiList;
@@ -257,12 +256,37 @@ export default {
     }
   },
   methods: {
-    getPointsByNames: function(nameList, callback) {
-      batchGeoCoding(nameList, poiList => {
-        console.log("poiList:", poiList);
-        callback && callback(poiList);
-      });
-    },
+    bufferedGetPointsByNames: (function() {
+      var bufferedList = [];
+      var bufferNamelist = [];
+      let callbackList = [];
+      let reqStatus = {
+        reqCnt: 0,
+        waiting: false
+      };
+      return function(nameList, callback) {
+        if (JSON.stringify(bufferNamelist) !== JSON.stringify(nameList)) {
+          callbackList.push(callback);
+          bufferNamelist = nameList;
+          bufferedList = [];
+          reqStatus.waiting = true;
+          batchGeoCoding(nameList, poiList => {
+            reqStatus.waiting = false;
+            bufferedList = poiList;
+            while (callbackList.length) {
+              let cb = callbackList.shift();
+              cb && cb(bufferedList);
+            }
+          });
+        } else {
+          if (reqStatus.waiting) {
+            callbackList.push(callback);
+          } else {
+            callback && callback(bufferedList);
+          }
+        }
+      };
+    })(),
     webWorkerGeoCoding: function(d) {
       // let worker = new Worker(require.resolve("./geoWorker.js"));
       // setTimeout(() => {
@@ -304,7 +328,6 @@ export default {
       // numberColum record poi right weight
       let valueColum = null;
       let numberColum = null;
-      console.log(this.filedTypes);
       this.filedTypes.forEach((key, index) => {
         if (values.indexOf(key) !== -1 && !valueColum) {
           valueColum = {
@@ -321,10 +344,40 @@ export default {
         }
       });
 
-      const useData = [];
+      // const useData = [];
+      const status = {
+        total: 0,
+        _useData: []
+      };
+      Object.defineProperty(status, "useData", {
+        get: function() {
+          return this._useData;
+        },
+
+        set: function(newValue) {
+          this._useData = newValue;
+          console.log(this.total, this._useData.length);
+          if (this._useData.length == this.total) {
+            console.log("emit");
+            Action.home.emit("importData", this._useData);
+          }
+        }
+      });
       // one line represent an single complete info
       // if valueColum.key is poiName ,use geo
-      this.tempData.forEach(lineData => {
+      const pushData = (coordinates, valueColum, numberColum, lineData) => {
+        let list = JSON.parse(JSON.stringify(status.useData));
+        list.push({
+          geometry: {
+            type: valueColum.type,
+            coordinates
+          },
+          count: numberColum ? lineData[numberColum.index] : 0
+        });
+        console.log("p");
+        status.useData = list;
+      };
+      this.tempData.forEach((lineData, ind) => {
         const originData = lineData[valueColum.index];
         if (originData) {
           let coordinates;
@@ -339,19 +392,23 @@ export default {
               if (!(lnglat.lat < 50 && lnglat.lat > 20)) {
                 console.log("!!", lnglat, originData);
               }
-            }
-            if (valueColum.key === "poiName") {
-              while (!(this.geoCodedPoiList.length > 0)) {
-                consle.log(".");
-              }
-              if (this.geoCodedPoiList.length > 0) {
-                coordinates = [];
-                debugger;
-                let poi = this.geoCodedPoiList[valueColum.index];
-                if (poi.location && poi.name && poi.name == originData) {
-                  [poi.location.lng, poi.location.lat];
+              pushData(coordinates, valueColum, numberColum, lineData);
+            } else if (valueColum.key === "poiName") {
+              let nameList = this.tempData.map(l => {
+                return l[0];
+              });
+              this.bufferedGetPointsByNames(nameList, list => {
+                console.log("l", list.length);
+                status.total = list.length;
+                if (list.length > 0) {
+                  let poi = list[ind];
+                  // if (poi.location && poi.name && poi.name == originData) {
+                  if (poi && poi.location && poi.location.lng) {
+                    coordinates = [poi.location.lng, poi.location.lat];
+                  }
                 }
-              }
+                pushData(coordinates, valueColum, numberColum, lineData);
+              });
             }
           }
 
@@ -361,6 +418,7 @@ export default {
             for (let i = 0; i < splitedData.length; i += 2) {
               coordinates.push([splitedData[i], splitedData[i + 1]]);
             }
+            pushData(coordinates, valueColum, numberColum, lineData);
           }
 
           if (valueColum.type === "Polygon") {
@@ -371,18 +429,10 @@ export default {
               tempCoordinates.push([splitedData[i], splitedData[i + 1]]);
             }
             coordinates.push(tempCoordinates);
+            pushData(coordinates, valueColum, numberColum, lineData);
           }
-
-          useData.push({
-            geometry: {
-              type: valueColum.type,
-              coordinates
-            },
-            count: numberColum ? lineData[numberColum.index] : 0
-          });
         }
       });
-      Action.home.emit("importData", useData);
     }
   }
 };

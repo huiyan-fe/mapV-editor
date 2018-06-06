@@ -3,11 +3,11 @@
 
 <script>
 import { Action, Store } from "marine";
-import styleConfig from '../config/styleConfig.js';
-import Config from '../map/config.js';
-import * as mapv from 'mapv';
+import styleConfig from "../config/styleConfig.js";
+import Config from "../map/config.js";
+import * as mapv from "mapv";
 export default {
-  data: function () {
+  data: function() {
     return {
       list: [],
       layerid: null
@@ -15,7 +15,7 @@ export default {
   },
   computed: {},
   methods: {
-    updateConfig: function (config) {
+    updateConfig: function(config) {
       let target = null;
       for (let i in this.list) {
         if (this.list[i].id === this.layerid) {
@@ -24,14 +24,14 @@ export default {
         }
       }
       Object.keys(config).forEach(key => {
-        console.log(key, config[key])
+        console.log(key, config[key]);
       });
       target.mapv.setOptions(config);
     }
   },
-  mounted: function () {
+  mounted: function() {
     this.stores = [
-      Store.on('home.layerFocusOn', () => {
+      Store.on("home.layerFocusOn", () => {
         let target = null;
         for (let i in this.list) {
           if (this.list[i].id === this.layerid) {
@@ -44,15 +44,20 @@ export default {
           const allPoints = [];
           datas.forEach(point => {
             switch (point.geometry.type) {
-              case 'Point':
-                allPoints.push(new BMap.Point(point.geometry.coordinates[0], point.geometry.coordinates[1]));
+              case "Point":
+                allPoints.push(
+                  new BMap.Point(
+                    point.geometry.coordinates[0],
+                    point.geometry.coordinates[1]
+                  )
+                );
                 break;
-              case 'LineString':
+              case "LineString":
                 point.geometry.coordinates.forEach(point => {
                   allPoints.push(new BMap.Point(point[0], point[1]));
                 });
                 break;
-              case 'Polygon':
+              case "Polygon":
                 point.geometry.coordinates.forEach(boundary => {
                   boundary.forEach(point => {
                     allPoints.push(new BMap.Point(point[0], point[1]));
@@ -60,7 +65,7 @@ export default {
                 });
                 break;
               default:
-                console.log(point.geometry)
+                console.log(point.geometry);
             }
           });
           map.setViewport(allPoints, {
@@ -68,13 +73,16 @@ export default {
           });
         }
       }),
-      Store.on('home.layerFocusOut', () => {
-        map.centerAndZoom(new BMap.Point(Config.center[0], Config.center[1]), Config.zoom);
+      Store.on("home.layerFocusOut", () => {
+        map.centerAndZoom(
+          new BMap.Point(Config.center[0], Config.center[1]),
+          Config.zoom
+        );
       }),
       Store.on("home.getLayers", () => {
         Action.home.emit("receiveLayers", this.list);
       }),
-      Store.on('home.hideLayer', StoreData => {
+      Store.on("home.hideLayer", StoreData => {
         this.list.forEach(mapvObj => {
           if (StoreData.data.id === mapvObj.id) {
             mapvObj.layerHide = true;
@@ -84,7 +92,7 @@ export default {
           }
         });
       }),
-      Store.on('home.showLayer', StoreData => {
+      Store.on("home.showLayer", StoreData => {
         this.list.forEach(mapvObj => {
           if (StoreData.data.id === mapvObj.id) {
             mapvObj.layerHide = false;
@@ -111,6 +119,7 @@ export default {
         this.updateConfig(newConfig);
       }),
       Store.on("home.changeData", StoreData => {
+        console.log("home.changeData", StoreData);
         let target = null;
         for (let i in this.list) {
           if (this.list[i].id === this.layerid) {
@@ -124,7 +133,9 @@ export default {
             target.mapv.dataSet.set(StoreData.data.data);
           } else {
             const dataSet = new mapv.DataSet(StoreData.data.data);
-            target.mapv = new mapv.baiduMapLayer(map, dataSet, { zIndex: target.zIndex });
+            target.mapv = new mapv.baiduMapLayer(map, dataSet, {
+              zIndex: target.zIndex
+            });
             // console.log(target.mapv)
             if (target.layerHide) {
               target.mapv.hide();
@@ -133,7 +144,11 @@ export default {
           // set defalut options
           const defalutDrawType = StoreData.data.data[0].geometry.type;
           if (styleConfig.styleMap[defalutDrawType]) {
-            const defalutConfig = JSON.parse(JSON.stringify(styleConfig.styleMap[defalutDrawType].simple.config));
+            const defalutConfig = JSON.parse(
+              JSON.stringify(
+                styleConfig.styleMap[defalutDrawType].simple.config
+              )
+            );
             console.warn(defalutConfig);
             if (StoreData.data.data.length > 100 && defalutConfig.useShadow) {
               defalutConfig.useShadow = false;
@@ -154,7 +169,7 @@ export default {
               options: {
                 zIndex
               }
-            })
+            });
           }
         });
       })

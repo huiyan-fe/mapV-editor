@@ -4633,6 +4633,10 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "http://registry.npm.taobao.org/pako/download/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
+papaparse@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.npmjs.org/papaparse/-/papaparse-4.5.0.tgz#fb625d390b6e5d544db20658ce3665002c3d8e80"
+
 param-case@2.1.x:
   version "2.1.1"
   resolved "http://registry.npm.taobao.org/param-case/download/param-case-2.1.1.tgz#df94fd8cf6531ecf75e6bef9a0858fbc72be2247"

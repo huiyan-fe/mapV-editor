@@ -8,10 +8,10 @@ function Status() {
             count = value;
             if (count % 100 == 0) {
                 if (!lastDate) {
-                    lastDate = geoCodingStart;
+                    lastDate = new Date();
                 }
                 let d = new Date();
-                console.log(`${count},time:$${d-lastDate}`);
+                // console.log(`${count},time:$${d-lastDate}`);
                 lastDate = new Date();
             }
         },
@@ -30,6 +30,7 @@ function getPoint(name, callback) {
     fetchJsonp(geoCodingUrl, {
             // mode: "cors",
             credentials: "include",
+            // timeout: 3000,
             // jsonpCallback: null,
             // jsonCallbackFunction: null,
             method: "GET",
@@ -49,12 +50,16 @@ function getPoint(name, callback) {
                 let ret = res.result;
                 ret['name'] = name;
                 callback && callback(ret);
+            } else {
+                throw (new Error(res));
             }
             return res;
         })
         .catch(error => {
+            console.log("failed");
+            // console.log(name, "failed", error);
             callback && callback(null);
-            console.log("request failed", error);
+            // throw (error);
         });
 }
 
@@ -66,18 +71,30 @@ function batchGeoCoding(nameList, callback) {
     let cnte = 0;
     nameList.map(name => {
         cnts++;
-        getPoint(name, function (poiInfo) {
+        try {
+            getPoint(name, function (poiInfo) {
+                cnte++;
+                if (poiInfo) {
+                    poiList.push(poiInfo);
+                } else {
+                    throw (new Error());
+                }
+                // resStatus.count = resStatus.count + 1;
+                // if (resStatus.count >= nameList.length) {
+                if (cnte == cnts) {
+                    let d = new Date();
+                    console.log('requests,spend:', d - geoCodingStart);
+                    callback && callback(poiList);
+                }
+            });
+        } catch (error) {
             cnte++;
-            resStatus.count = resStatus.count + 1;
-            if (poiInfo) {
-                poiList.push(poiInfo);
-            }
-            if (resStatus.count >= nameList.length) {
+            if (cnte == cnts) {
                 let d = new Date();
-                console.log('requests,spend:', d - geoCodingStart, poiList);
+                console.log('requests,spend:', d - geoCodingStart);
                 callback && callback(poiList);
             }
-        });
+        }
     });
 }
 // onmessage = function (e) {
