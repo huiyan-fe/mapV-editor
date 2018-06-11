@@ -40,44 +40,51 @@
 </template>
 
 <script>
-import { Action, Store } from 'marine';
-const version = require('../../../package.json').version;
+import { Action, Store } from "marine";
+import { mapState, mapActions } from "vuex";
+const version = require("../../../package.json").version;
 
 export default {
-    data: function () {
-        return {
-            duration: 4000,
-            showSnackbar: true,
-            nav: null,
-            shwoConfig: false,
-            version
-        }
-    },
-    computed: {
-    },
-    methods: {
-        changeNav: function (data) {
-            this.nav = this.nav === data ? '' : data;
-            Action.home.emit('changeNav', data);
-        },
-        showinfo: function () {
-            this.shwoConfig = true;
-        }
-    },
-    mounted: function () {
-        setTimeout(() => {
-            this.showSnackbar = false;
-        }, 5000);
-
-        Store.on('home.importData', (data) => {
-            console.log(this.nav)
-            if (this.nav !== 'layer') {
-                this.nav = 'layer';
-                Action.home.emit('changeNav', 'layer');
-            }
-        })
+  data: function() {
+    return {
+      duration: 4000,
+      showSnackbar: true,
+      shwoConfig: false,
+      version
+    };
+  },
+  computed: {
+    ...mapState({
+      nav: state => state.activeNavTab,
+      dataSources: state => state.dataSources
+    })
+  },
+  watch: {
+    // 数据变化后
+    dataSources: function(val, oldVal) {
+      if (val.length > oldVal.length && this.nav !== "layer") {
+        this.changeNavTab("layer");
+      }
     }
-}
+  },
+  methods: {
+    ...mapActions({
+      changeNavTab: "changeNavTab"
+    }),
+    changeNav: function(v) {
+      debugger;
+      this.changeNavTab(v);
+    },
+    showinfo: function() {
+      this.shwoConfig = true;
+    }
+  },
+  mounted: function() {
+    setTimeout(() => {
+      this.showSnackbar = false;
+    }, 5000);
+  }
+};
 </script>
 
 <style lang="scss">

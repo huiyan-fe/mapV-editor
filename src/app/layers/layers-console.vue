@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import { Action, Store } from "marine";
 import tools from "../tools/tools";
 import ConsoleStyle from "./layers-console-style.vue";
@@ -40,10 +41,21 @@ export default {
   data: function() {
     return {
       layerInfo: null,
-      datas: [],
+      // datas: [],
       hasBindDatas: false,
       tableIndex: 1
     };
+  },
+  computed: {
+    ...mapState({
+      datas: state => state.dataSources,
+      layers: "layers console",
+      test(state) {
+        let s = "console:" + state.dataSources.length;
+        console.log(s);
+        return s;
+      }
+    })
   },
   methods: {
     changeTableIndex: function(tableIndex) {
@@ -70,24 +82,26 @@ export default {
     }
   },
   mounted: function() {
-    Store.on("home.importData", storeData => {
-      setTimeout(() => {
-        // wait untill insert data, create new layer finished
-        // auto choose the import data
-        const datasObj = this.datas.filter(data => {
-          return data.data === storeData.data;
-        });
-        if (datasObj.length >= 1) {
-          this.dataClick(datasObj[0]);
-          // foucus on the data
-          Action.home.emit("layerFocusOn");
-        }
-      });
-    });
+    // Store.on("home.importData", storeData => {
+    //   console.log("home.importData", StoreData);
+    //   setTimeout(() => {
+    //     // wait untill insert data, create new layer finished
+    //     // auto choose the import data
+    //     const datasObj = this.datas.filter(data => {
+    //       return data.data === storeData.data;
+    //     });
+    //     if (datasObj.length >= 1) {
+    //       this.dataClick(datasObj[0]);
+    //       // foucus on the data
+    //       Action.home.emit("layerFocusOn");
+    //     }
+    //   });
+    // });
     Store.on("home.removeLayer", StoreData => {
       this.layerInfo = null;
     });
     Store.on("home.changeActiveLayer", StoreData => {
+      console.log("home.changeActiveLayer", StoreData);
       this.layerInfo = StoreData.data;
       this.hasBindDatas = false;
       this.datas.forEach(item => {
@@ -99,13 +113,14 @@ export default {
       });
       this.tableIndex = this.hasBindDatas ? 2 : 1;
     });
-    Store.on("home.receiveDatas", StoreData => {
-      StoreData.data.forEach(item => {
-        this.$set(item, "active", false);
-      });
-      this.datas = StoreData.data;
-    });
-    Action.home.emit("getDatas");
+    // Store.on("home.receiveDatas", StoreData => {
+    //   console.log("home.receiveDatas");
+    //   StoreData.data.forEach(item => {
+    //     this.$set(item, "active", false);
+    //   });
+    //   this.datas = StoreData.data;
+    // });
+    // Action.home.emit("getDatas");
   }
 };
 </script>

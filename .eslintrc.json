@@ -17,11 +17,11 @@
         "react"
     ],
     "rules": {
-        "indent": [
-            "error",
-            4,
-            { "ArrayExpression": 1, "ObjectExpression": 1 }
-        ],
+        // "indent": [
+        //     "error",
+        //     4,
+        //     { "ArrayExpression": 1, "ObjectExpression": 1 }
+        // ],
         "linebreak-style": [
             "error",
             "unix"

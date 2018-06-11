@@ -59,7 +59,8 @@ while (randomCount--) {
 datas.push({
     id: 1,
     name: '示例点数据',
-    data
+    visiable:true,
+    data,
 });
 
 // line data
@@ -94,7 +95,8 @@ while (randomCount--) {
 datas.push({
     id: 2,
     name: '示例线数据',
-    data
+    data,
+    visiable:true,    
 });
 
 data = [
@@ -433,7 +435,8 @@ data = [
 datas.push({
     id: 3,
     name: '示例面数据',
-    data
+    data,
+    visiable:true,
 });
 
 

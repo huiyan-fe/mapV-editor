@@ -21,13 +21,12 @@ import MapLayers from "./map/mapLayer.vue";
 import Export from "./export/export.vue";
 import { Action, Store } from "marine";
 Action.def("home", {});
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "app",
   data: function() {
-    return {
-      nav: null
-    };
+    return {};
   },
   components: {
     NavComp: Nav,
@@ -39,10 +38,12 @@ export default {
     MapLayers,
     Export
   },
-  mounted: function() {
-    Store.on("home.changeNav", StoreData => {
-      this.nav = this.nav === StoreData.data ? null : StoreData.data;
-    });
+  mounted: function() {},
+  computed: {
+    ...mapState({
+      nav: state => state.activeNavTab,
+      // dataSources: state => state.dataSources
+    })
   }
 };
 </script>

@@ -138,11 +138,11 @@ export default {
     },
     mounted: function () {
         // add a new leayer while import new data 
-        Store.on('home.importData', StoreData => {
-            this.addLayer({
-                name: '导入数据'
-            });
-        });
+        // Store.on('home.importData', StoreData => {
+        //     this.addLayer({
+        //         name: '导入数据'
+        //     });
+        // });
         Store.on('home.receiveLayers', StoreData => {
             StoreData.data.forEach(item => {
                 item.active = false;

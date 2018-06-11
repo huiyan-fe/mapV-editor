@@ -215,7 +215,6 @@ export default {
   watch: {
     stringFiledTypes: {
       handler: function(newVal, oldVal) {
-        console.log("new: %s, old: %s", newVal, oldVal);
         if (newVal && newVal.indexOf("]") > -1) {
           newVal = typeof newVal == "string" ? JSON.parse(newVal) : newVal;
           let firstCellType = newVal[0];
@@ -358,7 +357,6 @@ export default {
           this._useData = newValue;
           console.log(this.total, this._useData.length);
           if (this._useData.length == this.total) {
-            console.log("emit");
             Action.home.emit("importData", this._useData);
           }
         }

@@ -14,7 +14,7 @@
         "build:gulp": "gulp",
         "build:webpack": "webpack -p",
         "build": "rm -rf dist && mkdir -p dist/static && npm run build:gulp && npm run build:webpack "
-    },  
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/huiyan-fe/mapV-editor.git"
@@ -44,7 +44,8 @@
         "vue-color": "^2.4.3",
         "vue-loader": "^13.0.4",
         "vue-material": "^1.0.0-beta-4",
-        "vue-template-compiler": "^2.5.9"
+        "vue-template-compiler": "^2.5.9",
+        "vuex": "^3.0.1"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

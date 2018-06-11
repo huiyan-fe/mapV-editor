@@ -103,3 +103,12 @@ or
 ```
 yarn dev:gulp
 ```
+
+#### 4.开发注意事项：
+##### 数据导入：
+1. 数据可以直接paste粘贴/或者点击上传文件
+    dataCore监听paste和importData事件
+    datasLayer上传文件->dataTransfor 处理数据
+      ->Action分发importData事件给dataCore
+2. 所有的数据添加都放在了datas/datasCore.vue 
+    通过addDataToSource添加到状态树中

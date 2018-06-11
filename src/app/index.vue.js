@@ -9,8 +9,10 @@ Vue.use(VueMaterial);
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI, { size: 'mini' });
+import store from './store/index.js';
 
 new Vue({
     el: '#content',
+    store,
     render: h => h(App)
 });
