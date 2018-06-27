@@ -4,20 +4,31 @@ import types from './types.js';
 // 	layers: [], // record the layer configs and dataSource pointer
 // 	mapStyle: null,
 export default {
-	[types.ADD_DATASOURCE](state, {data, name = '未命名'}) {
-		state.dataSources.push({
-			id: Math.random() + state.dataSources.length,
+	[types.ADD_DATASOURCE](state, {
+		data,
+		name = '未命名'
+	}) {
+		let ts = JSON.parse(JSON.stringify(state.dataSources));
+		ts.push({
+			id: Math.random() + ts.length,
 			name: name,
 			data: data,
 			visible: true,
 		});
+		state.dataSources = ts
 	},
-	[types.DELETE_DATASOURCE](state, {id}) {
+	[types.DELETE_DATASOURCE](state, {
+		id
+	}) {
 		state.dataSources = state.dataSources.filter(s => {
 			return s.id != id;
 		});
 	},
-	[types.ADD_LAYER](state, {dataId, style, name = '未命名'}) {
+	[types.ADD_LAYER](state, {
+		dataId,
+		style,
+		name = '未命名'
+	}) {
 		state.layers.push({
 			id: Math.random() + state.layers.length,
 			dataId: dataId,
@@ -26,12 +37,22 @@ export default {
 			style: style,
 		});
 	},
-	[types.DELETE_LAYER](state, {id}) {
+	[types.CHANGE_LAYER_DATA](state, {
+		id
+	}) {
+		
+	},
+	[types.DELETE_LAYER](state, {
+		id
+	}) {
 		state.layers = state.layers.filter(s => {
 			return s.id != id;
 		});
 	},
-	[types.CHANEGE_LAYER_VISIBLE](state,{ id, v}) {
+	[types.CHANEGE_LAYER_VISIBLE](state, {
+		id,
+		v
+	}) {
 		let pos = null;
 		state.layers.map((s, i) => {
 			if (s.id == id) {
@@ -42,7 +63,10 @@ export default {
 			state.layers[pos]['visible'] = v;
 		}
 	},
-	[types.CHANEGE_LAYER_STYLE](state, {id, newStyle}) {
+	[types.CHANEGE_LAYER_STYLE](state, {
+		id,
+		newStyle
+	}) {
 		let pos = null;
 		state.layers.map((s, i) => {
 			if (s.id == id) {
@@ -53,10 +77,14 @@ export default {
 			state.layers[pos]['style'] = newStyle;
 		}
 	},
-	[types.CHANGE_MAP_STYLE](state, {newStyle}) {
+	[types.CHANGE_MAP_STYLE](state, {
+		newStyle
+	}) {
 		state['mapStyle'] = newStyle;
 	},
-	[types.CHANGE_ACTIVE_TAB](state, {newTab}) {
+	[types.CHANGE_ACTIVE_TAB](state, {
+		newTab
+	}) {
 		state['activeNavTab'] = newTab;
 	},
 };

@@ -72,7 +72,6 @@ export default {
       changeNavTab: "changeNavTab"
     }),
     changeNav: function(v) {
-      debugger;
       this.changeNavTab(v);
     },
     showinfo: function() {

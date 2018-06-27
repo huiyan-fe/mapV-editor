@@ -110,6 +110,7 @@ export default {
     });
 
     Store.on("home.changeActiveLayer", StoreData => {
+      console.log('style',StoreData.data);
       this.config = StoreData.data.config || {};
       this.styleMap = styleConfig.styleMap[this.config.dataType];
     });

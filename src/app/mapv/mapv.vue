@@ -119,7 +119,7 @@ export default {
         this.updateConfig(newConfig);
       }),
       Store.on("home.changeData", StoreData => {
-        console.log("home.changeData", StoreData);
+        console.log("home.changeData", this.list,StoreData);
         let target = null;
         for (let i in this.list) {
           if (this.list[i].id === this.layerid) {

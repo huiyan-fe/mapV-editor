@@ -10,5 +10,6 @@ const types = {
     // global map style
     CHANGE_MAP_STYLE: 'CHANGE_MAP_STYLE',
     CHANGE_ACTIVE_TAB: 'CHANGE_ACTIVE_TAB',
+    CHANGE_LAYER_DATA: 'CHANGE_LAYER_DATA',
 };
 export default types;

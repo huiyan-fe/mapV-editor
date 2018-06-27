@@ -43,7 +43,6 @@ export default {
                         (preWidth - currentHeight + map.height) / 2 + (currentHeight - preWidth) :
                         currentHeight - preWidth / 2;
                     // if (currentHeight > map.height) {
-                    // console.log(useX, useY)
                     centers.push({
                         x: useX,
                         y: useY,

@@ -35,126 +35,150 @@
 </template>
 
 <script>
-import Console from './layers-console.vue';
-import { Action, Store } from 'marine';
+import Console from "./layers-console.vue";
+import { Action, Store } from "marine";
+import { mapState, mapActions } from "vuex";
 let index = 0;
 export default {
-    components: {
-        Console
-    },
-    data: function () {
-        return {
-            list: []
-        }
-    },
-    methods: {
-        changeName: function (e, item) {
-            item.name = e.target.innerText;
-        },
-        addLayer: function (layerInfo = {}) {
-            let hasActive = this.list.forEach(item => item.active = false);
-            const newLayer = {
-                visiable: true,
-                name: `${(layerInfo && layerInfo.name) ? layerInfo.name : '新建图层'}-${this.list.length + 1}`,
-                active: true,
-                id: `${+new Date()}_${index++}`,
-                zIndex: index * 10
-            }
-            this.list.unshift(newLayer);
-            Action.home.emit('addNewLayer', newLayer);
-            Action.home.emit('changeActiveLayer', newLayer);
-        },
-        changeActive: function (index) {
-            let hasActive = this.list.forEach((item, listIndex) => {
-                const isActive = index === listIndex;
-                item.active = isActive;
-                if (isActive) {
-                    Action.home.emit('changeActiveLayer', this.list[index]);
-                }
-            });
-
-        },
-        hideLayer: function (clickItem) {
-            this.list.forEach(item => {
-                if (clickItem === item) {
-                    item.visiable = false;
-                }
-            });
-            Action.home.emit('hideLayer', clickItem);
-        },
-        removeLayer: function (clickItem) {
-            this.list.forEach((item, index) => {
-                if (clickItem === item) {
-                    const mapvtraget = this.list.splice(index, 1);
-                    if (mapvtraget[0].mapv) {
-                        mapvtraget[0].mapv.destroy();
-                    }
-                }
-            });
-            Action.home.emit('removeLayer', clickItem);
-        },
-        showLayer: function (clickItem) {
-            this.list.forEach(item => {
-                if (clickItem === item) {
-                    item.visiable = true;
-                }
-            });
-            Action.home.emit('showLayer', clickItem);
-        },
-        listitemDrag: function (e, index) {
-            e.target.style.opacity = 0.9;
-            this.hasDroped = false;
-            this.dragIndex = index;
-        },
-        listitemDragEnd: function (e) {
-            e.target.style.opacity = 1;
-        },
-        listitemDrop: function (e, index) {
-            e.currentTarget.style.borderBottom = '2px solid #323232';
-            this.hasDroped = true;
-            // sort
-            this.reRangeIndex(this.dragIndex, index);
-            // console.log('drop')
-        },
-        listitemDragOver: function (e, index) {
-            this.itemDragOverIndex = index;
-            e.currentTarget.style.borderBottom = '2px solid #4a4a4a';
-        },
-        listitemDragLeave: function (e, index) {
-            this.itemDragOverIndex = null;
-            this.itemDragLeave = index;
-            e.currentTarget.style.borderBottom = '2px solid #323232';
-        },
-        reRangeIndex: function (start, to) {
-            const old = this.list.splice(start, 1);
-            this.list.splice(to, 0, old[0]);
-
-            this.list.forEach((list, index) => {
-                list.zIndex = (this.list.length - index) * 10;
-            });
-
-            Action.home.emit('updateZIndex', [start, to])
-        }
-    },
-    mounted: function () {
-        // add a new leayer while import new data 
-        // Store.on('home.importData', StoreData => {
-        //     this.addLayer({
-        //         name: '导入数据'
-        //     });
-        // });
-        Store.on('home.receiveLayers', StoreData => {
-            StoreData.data.forEach(item => {
-                item.active = false;
-                return item;
-            });
-            this.list = StoreData.data;
+  components: {
+    Console
+  },
+  data: function() {
+    return {
+      list: []
+    };
+  },
+  computed: {
+    ...mapState({
+      nav: state => state.activeNavTab,
+      dataSources: state => state.dataSources
+    })
+  },
+  watch: {
+    // 数据变化后
+    dataSources: function(val, oldVal) {
+      if (val.length > 2 && val.length > oldVal.length) {
+        let newestDataItem = val[val.length - 1];
+        this.addLayer({
+          name: "导入数据",
+          id: newestDataItem && newestDataItem.id,
+          data: newestDataItem
         });
-        Action.home.emit('getLayers');
+      }
     }
-}
+  },
+  methods: {
+    changeName: function(e, item) {
+      item.name = e.target.innerText;
+    },
+    addLayer: function(layerInfo = {}) {
+      let hasActive = this.list.forEach(item => (item.active = false));
+      let id = `${layerInfo.id || new Date() + index}`;
+      index++;
+      let data = layerInfo.data || null;
+      const newLayer = {
+        visiable: true,
+        name: `${
+          layerInfo && layerInfo.name ? layerInfo.name : "新建图层"
+        }-${this.list.length + 1}`,
+        active: true,
+        id: id,
+        data: data,
+        zIndex: index * 10
+      };
+      this.list.unshift(newLayer);
+      Action.home.emit("addNewLayer", newLayer);
+      Action.home.emit("changeActiveLayer", newLayer);
+    },
+    changeActive: function(index) {
+      let hasActive = this.list.forEach((item, listIndex) => {
+        const isActive = index === listIndex;
+        item.active = isActive;
+        if (isActive) {
+          // Action.home.emit("changeActiveLayer", this.list[index]);
+        }
+      });
+    },
+    hideLayer: function(clickItem) {
+      this.list.forEach(item => {
+        if (clickItem === item) {
+          item.visiable = false;
+        }
+      });
+      Action.home.emit("hideLayer", clickItem);
+    },
+    removeLayer: function(clickItem) {
+      this.list.forEach((item, index) => {
+        if (clickItem === item) {
+          const mapvtraget = this.list.splice(index, 1);
+          if (mapvtraget[0].mapv) {
+            mapvtraget[0].mapv.destroy();
+          }
+        }
+      });
+      Action.home.emit("removeLayer", clickItem);
+    },
+    showLayer: function(clickItem) {
+      this.list.forEach(item => {
+        if (clickItem === item) {
+          item.visiable = true;
+        }
+      });
+      Action.home.emit("showLayer", clickItem);
+    },
+    listitemDrag: function(e, index) {
+      e.target.style.opacity = 0.9;
+      this.hasDroped = false;
+      this.dragIndex = index;
+    },
+    listitemDragEnd: function(e) {
+      e.target.style.opacity = 1;
+    },
+    listitemDrop: function(e, index) {
+      e.currentTarget.style.borderBottom = "2px solid #323232";
+      this.hasDroped = true;
+      // sort
+      this.reRangeIndex(this.dragIndex, index);
+      // console.log('drop')
+    },
+    listitemDragOver: function(e, index) {
+      this.itemDragOverIndex = index;
+      e.currentTarget.style.borderBottom = "2px solid #4a4a4a";
+    },
+    listitemDragLeave: function(e, index) {
+      this.itemDragOverIndex = null;
+      this.itemDragLeave = index;
+      e.currentTarget.style.borderBottom = "2px solid #323232";
+    },
+    reRangeIndex: function(start, to) {
+      const old = this.list.splice(start, 1);
+      this.list.splice(to, 0, old[0]);
+
+      this.list.forEach((list, index) => {
+        list.zIndex = (this.list.length - index) * 10;
+      });
+
+      Action.home.emit("updateZIndex", [start, to]);
+    }
+  },
+  mounted: function() {
+    // add a new leayer while import new data
+    // Store.on('home.importData', StoreData => {
+    //     this.addLayer({
+    //         name: '导入数据'
+    //     });
+    // });
+    Store.on("home.receiveLayers", StoreData => {
+      StoreData.data.forEach(item => {
+        item.active = false;
+        return item;
+      });
+      this.list = StoreData.data;
+    });
+    Action.home.emit("getLayers");
+  }
+};
 </script>
 
 <style lang="scss">
-
 </style>

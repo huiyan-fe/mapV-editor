@@ -50,11 +50,6 @@ export default {
     ...mapState({
       datas: state => state.dataSources,
       layers: "layers console",
-      test(state) {
-        let s = "console:" + state.dataSources.length;
-        console.log(s);
-        return s;
-      }
     })
   },
   methods: {
@@ -73,17 +68,15 @@ export default {
       }
       //
       this.datas.forEach(item => {
-        item.active = item.id === data.id;
+        item.active = item.id == data.id;
       });
       this.hasBindDatas = true;
       this.tableIndex = 2;
-      console.log("changeData", data);
       Action.home.emit("changeData", data);
     }
   },
   mounted: function() {
     // Store.on("home.importData", storeData => {
-    //   console.log("home.importData", StoreData);
     //   setTimeout(() => {
     //     // wait untill insert data, create new layer finished
     //     // auto choose the import data
@@ -101,15 +94,14 @@ export default {
       this.layerInfo = null;
     });
     Store.on("home.changeActiveLayer", StoreData => {
-      console.log("home.changeActiveLayer", StoreData);
       this.layerInfo = StoreData.data;
       this.hasBindDatas = false;
       this.datas.forEach(item => {
-        if (item.id === (this.layerInfo.data && this.layerInfo.data.id)) {
+        if (item.id == (this.layerInfo.data && this.layerInfo.data.id)) {
           this.hasBindDatas = true;
         }
         item.active =
-          item.id === (this.layerInfo.data && this.layerInfo.data.id);
+          item.id == (this.layerInfo.data && this.layerInfo.data.id);
       });
       this.tableIndex = this.hasBindDatas ? 2 : 1;
     });

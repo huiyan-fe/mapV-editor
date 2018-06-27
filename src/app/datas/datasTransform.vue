@@ -187,7 +187,6 @@ export default {
           return cellDatas;
         });
         const usedNames = {};
-        console.log("lineCellTypes", lineCellTypes);
         const filteredCellTypes = lineCellTypes.map(item => {
           let cacheName = "null";
           let cacheMax = 0;
@@ -197,7 +196,6 @@ export default {
               cacheMax = item[name];
             }
           });
-          // console.warn(item, cacheName, cacheMax)
           if (!usedNames[cacheName]) {
             usedNames[cacheName] = true;
             return cacheName;
@@ -223,10 +221,8 @@ export default {
             let nameList = this.tempData.map(l => {
               return l[0];
             });
-            console.log("start Geocoding");
             this.bufferedGetPointsByNames(nameList, poiList => {
               // this.geoCodedPoiList = poiList;
-              console.log("end Geocoding");
             });
           }
         }
@@ -243,11 +239,9 @@ export default {
         //   let nameList = lineDatas.map(l => {
         //     return l[0];
         //   });
-        //   console.log("start Geocoding");
         //   geoCodedPoiList = 0;
         //   this.bufferedGetPointsByNames(nameList, poiList => {
         //     this.geoCodedPoiList = poiList;
-        //     console.log("end Geocoding");
         //     return poiList;
         //   });
         // }
@@ -302,7 +296,6 @@ export default {
       this.lineDividerSymbol = e.target.value ? e.target.value : null;
     },
     typeChange: function(e, index) {
-      console.log("filedTypes change");
       this.filedTypes[index] = e.target.value;
       this.stringFiledTypes = JSON.stringify(this.filedTypes);
     },
@@ -311,7 +304,6 @@ export default {
     },
     onImportData: function() {
       this.showTips = false;
-      // console.log(this.filedTypes, this.tempData)
       // const values = ["point-mercator", "poiName", "point", "line", "polygon",''];
       const valueMaps = {
         "point-mercator": "Point",
@@ -355,7 +347,6 @@ export default {
 
         set: function(newValue) {
           this._useData = newValue;
-          console.log(this.total, this._useData.length);
           if (this._useData.length == this.total) {
             Action.home.emit("importData", this._useData);
           }
@@ -372,7 +363,6 @@ export default {
           },
           count: numberColum ? lineData[numberColum.index] : 0
         });
-        console.log("p");
         status.useData = list;
       };
       this.tempData.forEach((lineData, ind) => {
@@ -396,7 +386,6 @@ export default {
                 return l[0];
               });
               this.bufferedGetPointsByNames(nameList, list => {
-                console.log("l", list.length);
                 status.total = list.length;
                 if (list.length > 0) {
                   let poi = list[ind];

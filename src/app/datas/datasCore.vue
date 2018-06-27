@@ -20,7 +20,6 @@ export default {
       layers: "layers",
       test(state) {
         let s = "data Core Test,data len:" + state.dataSources.length;
-        console.log(s);
         return s;
       }
     })
