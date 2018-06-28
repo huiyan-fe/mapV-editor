@@ -6588,9 +6588,9 @@ vue-style-loader@^3.0.0:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-template-compiler@^2.5.9:
-  version "2.5.9"
-  resolved "https://registry.npmjs.org/vue-template-compiler/-/vue-template-compiler-2.5.9.tgz#7fabc73c8d3d12d32340cd86c5fc33e00e86d686"
+vue-template-compiler@^2.5.16:
+  version "2.5.16"
+  resolved "https://registry.npmjs.org/vue-template-compiler/-/vue-template-compiler-2.5.16.tgz#93b48570e56c720cdf3f051cc15287c26fbd04cb"
   dependencies:
     de-indent "^1.0.2"
     he "^1.1.0"
@@ -6599,13 +6599,13 @@ vue-template-es2015-compiler@^1.5.3:
   version "1.5.3"
   resolved "http://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.5.3.tgz#22787de4e37ebd9339b74223bc467d1adee30545"
 
+vue@^2.5.16:
+  version "2.5.16"
+  resolved "https://registry.npmjs.org/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
+
 vue@^2.5.3:
   version "2.5.7"
   resolved "https://registry.npmjs.org/vue/-/vue-2.5.7.tgz#313ab26025915d9fdbc39db756548cb4bb50eb44"
-
-vue@^2.5.9:
-  version "2.5.9"
-  resolved "https://registry.npmjs.org/vue/-/vue-2.5.9.tgz#b2380cd040915dca69881dafd121d760952e65f7"
 
 vuex@^3.0.1:
   version "3.0.1"

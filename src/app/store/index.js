@@ -10,7 +10,8 @@ const state = {
 	layers: [], // record the layer configs and dataSource pointer
 	mapStyle: null,
 	activeNavTab: '', //data,layer,map
-	test:1
+	test:1,
+	activeLayer:null,
 };
 
 export default new Vuex.Store({

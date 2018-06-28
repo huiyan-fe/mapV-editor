@@ -1,7 +1,7 @@
 <template lang="pug">
-    .layers-console(v-if="layerInfo")
+    .layers-console(v-if="edittingLayer")
         .layers-console-head 
-            .layers-console-title {{layerInfo.name}}
+            .layers-console-title {{edittingLayer.name}}
             .layers-btns
                 button(:class="tableIndex===1?'active':''" @click="changeTableIndex(1)")
                     svg(viewBox="0 0 24 24")
@@ -15,10 +15,10 @@
         .layers-console-body(:class="tableIndex===1?'':'second'")
             .layers-console-body-block
                 ul
-                    li(v-for="item in datas" @click="dataClick(item)" :class="item.active?'active':''")
+                    li(v-for="item in dataSources" @click="dataClick(item)" :class="item.id == edittingLayer.data.id ? 'active':''")
                         span.icon
                         span {{item.name}}
-                .tipsbox(v-if="datas.length < 4")
+                .tipsbox(v-if="dataSources.length < 4")
                     .tips 想要添加自定义数据? 
                     .tips 您可以通过点击左侧导航中的数据按钮
                         svg(viewBox="0 0 24 24")
@@ -27,6 +27,7 @@
                     .tips 您也可以将符合规则的数据文件直接拖入到页面中快速添加数据。PS:添加完成之后别忘了在数据页面进行管理数据哦。
             .layers-console-body-block
                 ConsoleStyle
+  
 </template>
 
 <script>
@@ -40,80 +41,59 @@ export default {
   },
   data: function() {
     return {
-      layerInfo: null,
-      // datas: [],
       hasBindDatas: false,
       tableIndex: 1
     };
   },
   computed: {
     ...mapState({
-      datas: state => state.dataSources,
-      layers: "layers console",
+      dataSources: state => state.dataSources,
+      layers: state => state.layers,
+      edittingLayer: state => state.activeLayer
     })
   },
+  watch: {
+    edittingLayer: {
+      handler: function(newVal, oldVal) {
+        this.$forceUpdate();
+        console.info("editingLayer changed ", newVal.data.id, this.dataSources);
+        // this.$emit('e1', newVal)
+      },
+      deep: true
+    }
+  },
+  updated:function() {
+    let ids = this.dataSources.map(d=>{
+      return d.id;
+    })
+    console.log('life cycle updated',this.edittingLayer.data.id,ids.join(','))
+  },
   methods: {
+    ...mapActions({
+      changeLayerData: "changeLayerData"
+    }),
     changeTableIndex: function(tableIndex) {
+      if (
+        this.edittingLayer &&
+        this.edittingLayer.data &&
+        this.edittingLayer.data.id
+      ) {
+        this.hasBindDatas = true;
+      }
       if (this.hasBindDatas) {
         this.tableIndex = tableIndex;
       }
     },
     dataClick: function(data) {
-      // create demo data
-      if (data.id === 1) {
-        data.data = tools.create.createPointData();
-      }
-      if (data.id === 2) {
-        data.data = tools.create.createLineData();
-      }
-      //
-      this.datas.forEach(item => {
-        item.active = item.id == data.id;
-      });
-      this.hasBindDatas = true;
       this.tableIndex = 2;
-      Action.home.emit("changeData", data);
+      console.log("dataClick", data.id);
+      this.changeLayerData({
+        layerid: this.edittingLayer.id,
+        newData: data
+      });
     }
   },
-  mounted: function() {
-    // Store.on("home.importData", storeData => {
-    //   setTimeout(() => {
-    //     // wait untill insert data, create new layer finished
-    //     // auto choose the import data
-    //     const datasObj = this.datas.filter(data => {
-    //       return data.data === storeData.data;
-    //     });
-    //     if (datasObj.length >= 1) {
-    //       this.dataClick(datasObj[0]);
-    //       // foucus on the data
-    //       Action.home.emit("layerFocusOn");
-    //     }
-    //   });
-    // });
-    Store.on("home.removeLayer", StoreData => {
-      this.layerInfo = null;
-    });
-    Store.on("home.changeActiveLayer", StoreData => {
-      this.layerInfo = StoreData.data;
-      this.hasBindDatas = false;
-      this.datas.forEach(item => {
-        if (item.id == (this.layerInfo.data && this.layerInfo.data.id)) {
-          this.hasBindDatas = true;
-        }
-        item.active =
-          item.id == (this.layerInfo.data && this.layerInfo.data.id);
-      });
-      this.tableIndex = this.hasBindDatas ? 2 : 1;
-    });
-    // Store.on("home.receiveDatas", StoreData => {
-    //   console.log("home.receiveDatas");
-    //   StoreData.data.forEach(item => {
-    //     this.$set(item, "active", false);
-    //   });
-    //   this.datas = StoreData.data;
-    // });
-    // Action.home.emit("getDatas");
-  }
+  mounted: function() {}
 };
 </script>
 

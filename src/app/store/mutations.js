@@ -25,22 +25,31 @@ export default {
 		});
 	},
 	[types.ADD_LAYER](state, {
-		dataId,
-		style,
-		name = '未命名'
+		layer
 	}) {
-		state.layers.push({
-			id: Math.random() + state.layers.length,
-			dataId: dataId,
-			nmae: name,
-			visible: true,
-			style: style,
-		});
+		state.layers.map(l => {
+			l.active = false;
+		})
+		layer.active = true;
+		state.layers.unshift(layer);
+		state.activeLayer = layer;
 	},
 	[types.CHANGE_LAYER_DATA](state, {
-		id
+		layerid,
+		newData
 	}) {
-		
+		let target = null;
+		for (let i in state.layers) {
+			if (state.layers[i].id === layerid) {
+				target = state.layers[i];
+				break;
+			}
+		}
+		if (target) {
+			target.data = newData;
+			state.activeLayer = target;
+			console.log('change layer data', layerid, newData.id)
+		}
 	},
 	[types.DELETE_LAYER](state, {
 		id

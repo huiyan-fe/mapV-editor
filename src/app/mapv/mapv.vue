@@ -2,6 +2,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import { Action, Store } from "marine";
 import styleConfig from "../config/styleConfig.js";
 import Config from "../map/config.js";
@@ -9,17 +10,30 @@ import * as mapv from "mapv";
 export default {
   data: function() {
     return {
-      list: [],
+      mapvLayers: [],
       layerid: null
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      datas: state => state.dataSources,
+      layers: state => state.layers,
+      layers: "layers console"
+    })
+  },
+  watch: {
+    layers: {
+      handler: function(newVal, oldVal) {
+        this.mapvLayers = newVal;
+      }
+    }
+  },
   methods: {
     updateConfig: function(config) {
       let target = null;
-      for (let i in this.list) {
-        if (this.list[i].id === this.layerid) {
-          target = this.list[i];
+      for (let i in this.mapvLayers) {
+        if (this.mapvLayers[i].id === this.layerid) {
+          target = this.mapvLayers[i];
           break;
         }
       }
@@ -33,9 +47,9 @@ export default {
     this.stores = [
       Store.on("home.layerFocusOn", () => {
         let target = null;
-        for (let i in this.list) {
-          if (this.list[i].id === this.layerid) {
-            target = this.list[i];
+        for (let i in this.mapvLayers) {
+          if (this.mapvLayers[i].id === this.layerid) {
+            target = this.mapvLayers[i];
             break;
           }
         }
@@ -80,10 +94,10 @@ export default {
         );
       }),
       Store.on("home.getLayers", () => {
-        Action.home.emit("receiveLayers", this.list);
+        Action.home.emit("receiveLayers", this.mapvLayers);
       }),
       Store.on("home.hideLayer", StoreData => {
-        this.list.forEach(mapvObj => {
+        this.mapvLayers.forEach(mapvObj => {
           if (StoreData.data.id === mapvObj.id) {
             mapvObj.layerHide = true;
             if (mapvObj.mapv) {
@@ -93,7 +107,7 @@ export default {
         });
       }),
       Store.on("home.showLayer", StoreData => {
-        this.list.forEach(mapvObj => {
+        this.mapvLayers.forEach(mapvObj => {
           if (StoreData.data.id === mapvObj.id) {
             mapvObj.layerHide = false;
             if (mapvObj.mapv) {
@@ -119,11 +133,11 @@ export default {
         this.updateConfig(newConfig);
       }),
       Store.on("home.changeData", StoreData => {
-        console.log("home.changeData", this.list,StoreData);
+        console.log("home.changeData", this.mapvLayers, StoreData);
         let target = null;
-        for (let i in this.list) {
-          if (this.list[i].id === this.layerid) {
-            target = this.list[i];
+        for (let i in this.mapvLayers) {
+          if (this.mapvLayers[i].id === this.layerid) {
+            target = this.mapvLayers[i];
             break;
           }
         }
@@ -161,7 +175,7 @@ export default {
         }
       }),
       Store.on("home.updateZIndex", StoreData => {
-        this.list.forEach(list => {
+        this.mapvLayers.forEach(list => {
           if (list.mapv) {
             const zIndex = list.zIndex;
             // console.log(list.mapv.getOption)

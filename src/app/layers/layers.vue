@@ -4,16 +4,16 @@
             .layers-fn
                 .layers-title 图层管理
                 .layers-new 
-                    md-button.md-raised.layers-new-btn(@click="addLayer") 新建图层
-            .layers-tips(v-if="list.length<=0")
+                    md-button.md-raised.layers-new-btn(@click="createNewLayer") 新建图层
+            .layers-tips(v-if="layers.length<=0")
                 .tips 还没有图层？
                 .tips 请点击“新建图层”按钮以添加图层
                 .tips
                 .tips 什么是图层？
                 .tips 图层是mapV编辑器的重要概念，它相当于一张透明的纸，对于每一个样的图层，你可以指定其绑定的数据以及绘制数据的样式，不同图层的叠加可以创造出各种神奇的效果。
                 .tips 就像如果你在第一个图层上绘制陆地，第二个图层上绘制河流，第三个图层上绘制山脉，第四个图层上绘制城市...在你把所有的图层合并起来之后，你就会获得一个非常完美的地图。
-            ul.layers-lists(v-if="list.length>0")
-                li(draggable v-for="(item, index) in list" :class="item.active?'active':''" 
+            ul.layers-lists(v-if="layers.length>0")
+                li(draggable v-for="(item, index) in layers" :class="item.active?'active':''" 
                     @click='changeActive(index)'
                     @dragstart='listitemDrag($event, index)' 
                     @dragend='listitemDragEnd($event)'
@@ -44,14 +44,13 @@ export default {
     Console
   },
   data: function() {
-    return {
-      list: []
-    };
+    return {};
   },
   computed: {
     ...mapState({
       nav: state => state.activeNavTab,
-      dataSources: state => state.dataSources
+      dataSources: state => state.dataSources,
+      layers: state => state.layers
     })
   },
   watch: {
@@ -59,8 +58,8 @@ export default {
     dataSources: function(val, oldVal) {
       if (val.length > 2 && val.length > oldVal.length) {
         let newestDataItem = val[val.length - 1];
-        this.addLayer({
-          name: "导入数据",
+        this.createNewLayer({
+          name: val.length < 4 ? "示例数据" : "导入数据",
           id: newestDataItem && newestDataItem.id,
           data: newestDataItem
         });
@@ -68,39 +67,43 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      addLayer: "addLayer"
+    }),
     changeName: function(e, item) {
       item.name = e.target.innerText;
     },
-    addLayer: function(layerInfo = {}) {
-      let hasActive = this.list.forEach(item => (item.active = false));
+    createNewLayer: function(layerInfo = {}) {
       let id = `${layerInfo.id || new Date() + index}`;
       index++;
       let data = layerInfo.data || null;
       const newLayer = {
-        visiable: true,
+        id: id,
         name: `${
           layerInfo && layerInfo.name ? layerInfo.name : "新建图层"
-        }-${this.list.length + 1}`,
+        }-${this.layers.length + 1}`,
+        visiable: true,
         active: true,
-        id: id,
         data: data,
-        zIndex: index * 10
+        zIndex: index * 10,
+        style: null
       };
-      this.list.unshift(newLayer);
-      Action.home.emit("addNewLayer", newLayer);
-      Action.home.emit("changeActiveLayer", newLayer);
+      this.addLayer(newLayer);
+      // this.layers.unshift(newLayer);
+      // Action.home.emit("addNewLayer", newLayer);
+      // Action.home.emit("changeActiveLayer", newLayer);
     },
     changeActive: function(index) {
-      let hasActive = this.list.forEach((item, listIndex) => {
+      let hasActive = this.layers.forEach((item, listIndex) => {
         const isActive = index === listIndex;
         item.active = isActive;
         if (isActive) {
-          // Action.home.emit("changeActiveLayer", this.list[index]);
+          // Action.home.emit("changeActiveLayer", this.layers[index]);
         }
       });
     },
     hideLayer: function(clickItem) {
-      this.list.forEach(item => {
+      this.layers.forEach(item => {
         if (clickItem === item) {
           item.visiable = false;
         }
@@ -108,9 +111,9 @@ export default {
       Action.home.emit("hideLayer", clickItem);
     },
     removeLayer: function(clickItem) {
-      this.list.forEach((item, index) => {
+      this.layers.forEach((item, index) => {
         if (clickItem === item) {
-          const mapvtraget = this.list.splice(index, 1);
+          const mapvtraget = this.layers.splice(index, 1);
           if (mapvtraget[0].mapv) {
             mapvtraget[0].mapv.destroy();
           }
@@ -119,7 +122,7 @@ export default {
       Action.home.emit("removeLayer", clickItem);
     },
     showLayer: function(clickItem) {
-      this.list.forEach(item => {
+      this.layers.forEach(item => {
         if (clickItem === item) {
           item.visiable = true;
         }
@@ -151,32 +154,17 @@ export default {
       e.currentTarget.style.borderBottom = "2px solid #323232";
     },
     reRangeIndex: function(start, to) {
-      const old = this.list.splice(start, 1);
-      this.list.splice(to, 0, old[0]);
+      const old = this.layers.splice(start, 1);
+      this.layers.splice(to, 0, old[0]);
 
-      this.list.forEach((list, index) => {
-        list.zIndex = (this.list.length - index) * 10;
+      this.layers.forEach((layers, index) => {
+        layers.zIndex = (this.layers.length - index) * 10;
       });
 
       Action.home.emit("updateZIndex", [start, to]);
     }
   },
-  mounted: function() {
-    // add a new leayer while import new data
-    // Store.on('home.importData', StoreData => {
-    //     this.addLayer({
-    //         name: '导入数据'
-    //     });
-    // });
-    Store.on("home.receiveLayers", StoreData => {
-      StoreData.data.forEach(item => {
-        item.active = false;
-        return item;
-      });
-      this.list = StoreData.data;
-    });
-    Action.home.emit("getLayers");
-  }
+  mounted: function() {}
 };
 </script>
 
