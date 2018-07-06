@@ -1,8 +1,6 @@
 import types from './types.js';
-//  demoDataSources: [], // only demoDates
-// 	dataSources: [], // record all the datas you uploaded
-// 	layers: [], // record the layer configs and dataSource pointer
-// 	mapStyle: null,
+import styleConfig from "../config/styleConfig.js";
+
 export default {
 	[types.ADD_DATASOURCE](state, {
 		data,
@@ -32,7 +30,7 @@ export default {
 		})
 		layer.active = true;
 		state.layers.unshift(layer);
-		state.activeLayer = layer;
+		state.edittingLayer = layer;
 	},
 	[types.CHANGE_LAYER_DATA](state, {
 		layerid,
@@ -46,8 +44,24 @@ export default {
 			}
 		}
 		if (target) {
+			// set defalut options
+			const defalutDrawType = newData.data[0].geometry.type;
+			if (styleConfig.styleMap[defalutDrawType]) {
+			  const defalutConfig = JSON.parse(
+				JSON.stringify(
+				  styleConfig.styleMap[defalutDrawType].simple.config
+				)
+			  );
+			  console.warn(defalutConfig);
+			  if (newData.data.length > 100 && defalutConfig.useShadow) {
+				defalutConfig.useShadow = false;
+				defalutConfig.shadowBlur = 0;
+			  }
+			  defalutConfig.dataType = defalutDrawType;
+			  target.config = defalutConfig;
+			}
 			target.data = newData;
-			state.activeLayer = target;
+			state.edittingLayer = target;
 			console.log('change layer data', layerid, newData.id)
 		}
 	},

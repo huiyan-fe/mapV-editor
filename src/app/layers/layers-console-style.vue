@@ -1,7 +1,7 @@
 <template lang="pug">
     .layers-console-body-block
         .btns-typsbtn
-            md-button(v-for="(value, key) in styleMap" :key='key' :class="key===config.draw?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
+            md-button(v-for="(value, key) in styleMap" :key='key' :class="(config && key===config.draw)?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
         .btns-block(v-for="(value, key) in config" v-if="configMap[key]&&configMap[key].name")
             label(v-if="configMap[key]") {{configMap[key]&&configMap[key].name}} 
             el-color-picker(v-model="config[key]" 
@@ -47,6 +47,7 @@
 import { Sketch } from "vue-color";
 import { Action, Store } from "marine";
 import tools from "../tools/tools";
+import { mapState, mapActions } from "vuex";
 import styleConfig from "../config/styleConfig.js";
 export default {
   components: {
@@ -55,9 +56,24 @@ export default {
   data: function() {
     return {
       styleMap: styleConfig.styleMap,
-      configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap)),
-      config: {}
+      configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap))
+      // config: {}
     };
+  },
+  computed: {
+    ...mapState({
+      dataSources: state => state.dataSources,
+      config: state => state.edittingLayer && state.edittingLayer.config
+    })
+  },
+  watch: {
+    "config": {
+      handler: function(newVal, oldVal) {
+        this.styleMap = styleConfig.styleMap[this.config.dataType];
+        console.info("styleMap changed ");
+      },
+      deep: true
+    }
   },
   methods: {
     focusOn: function() {
@@ -67,6 +83,7 @@ export default {
       Action.home.emit("layerFocusOut");
     },
     changeconfig: function(e, key) {
+      debugger;
       if (key === "useShadow") {
         if (this.config.useShadow) {
           this.config.shadowBlur =
@@ -86,15 +103,16 @@ export default {
           this.config.shadowColor = undefined;
         }
       }
+
       Action.home.emit("changeConfig", this.config);
     },
     changeDrawType: function(key) {
+      debugger;
       if (this.styleMap[key].config) {
         const newConfig = JSON.parse(JSON.stringify(this.styleMap[key].config));
         newConfig.dataType = this.config.dataType;
         this.config = newConfig;
       }
-
       this.styleMap = styleConfig.styleMap[this.config.dataType];
       // console.warn(this.styleMap, this.config.dataType)
       this.cachedShadowBlurCache = null;
@@ -110,7 +128,7 @@ export default {
     });
 
     Store.on("home.changeActiveLayer", StoreData => {
-      console.log('style',StoreData.data);
+      console.log("style", StoreData.data);
       this.config = StoreData.data.config || {};
       this.styleMap = styleConfig.styleMap[this.config.dataType];
     });

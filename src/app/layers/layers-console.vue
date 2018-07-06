@@ -49,7 +49,7 @@ export default {
     ...mapState({
       dataSources: state => state.dataSources,
       layers: state => state.layers,
-      edittingLayer: state => state.activeLayer
+      edittingLayer: state => state.edittingLayer
     })
   },
   watch: {

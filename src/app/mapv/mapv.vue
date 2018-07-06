@@ -18,14 +18,15 @@ export default {
     ...mapState({
       datas: state => state.dataSources,
       layers: state => state.layers,
-      layers: "layers console"
+      config: state => state.edittingLayer && state.edittingLayer.config
     })
   },
   watch: {
     layers: {
       handler: function(newVal, oldVal) {
         this.mapvLayers = newVal;
-      }
+      },
+      deep: true
     }
   },
   methods: {
