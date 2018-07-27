@@ -58,9 +58,12 @@ export default {
     },
     onFileUploaded: function(e) {
       const self = this;
-      Papa.parse(e.target.files[0], {
+      let file = e.target.files[0];
+      console.log('onFileUploaded',file)
+      Papa.parse(file, {
         // header: true,
         encoding: "GB2312",
+        // encoding: "UTF-8",
         complete(results, file) {
           console.warn(results.data);
           let list = results.data;

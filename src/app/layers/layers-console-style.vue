@@ -56,21 +56,24 @@ export default {
   data: function() {
     return {
       styleMap: styleConfig.styleMap,
-      configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap))
-      // config: {}
+      configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap)),
+      config: {}
     };
   },
   computed: {
     ...mapState({
       dataSources: state => state.dataSources,
-      config: state => state.edittingLayer && state.edittingLayer.config
+      edittingLayer: state => state.edittingLayer
+      // config data is a property of  editinglayer
+      // config: state => state.edittingLayer.config
     })
   },
   watch: {
-    "config": {
+    edittingLayer: {
       handler: function(newVal, oldVal) {
+        console.warn("edittingLayer changed ");
+        this.config = this.edittingLayer.config;
         this.styleMap = styleConfig.styleMap[this.config.dataType];
-        console.info("styleMap changed ");
       },
       deep: true
     }

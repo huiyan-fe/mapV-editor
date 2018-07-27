@@ -104,6 +104,7 @@ export default {
         //   2.(null): default,no split
         //   3.(\s):split by space
         //   4.(, ):split by comma
+        console.log('lines',lines);
         let lineDatas = lines.map((item, index) => {
           let cellDatas = item.split("\t");
           // if not split by \t use space as the split chart

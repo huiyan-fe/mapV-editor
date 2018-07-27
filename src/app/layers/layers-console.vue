@@ -56,7 +56,7 @@ export default {
     edittingLayer: {
       handler: function(newVal, oldVal) {
         this.$forceUpdate();
-        console.info("editingLayer changed ", newVal.data.id, this.dataSources);
+        // console.info("editingLayer changed ", newVal.data.id, this.dataSources);
         // this.$emit('e1', newVal)
       },
       deep: true
@@ -66,7 +66,6 @@ export default {
     let ids = this.dataSources.map(d=>{
       return d.id;
     })
-    console.log('life cycle updated',this.edittingLayer.data.id,ids.join(','))
   },
   methods: {
     ...mapActions({

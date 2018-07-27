@@ -52,7 +52,6 @@ export default {
 				  styleConfig.styleMap[defalutDrawType].simple.config
 				)
 			  );
-			  console.warn(defalutConfig);
 			  if (newData.data.length > 100 && defalutConfig.useShadow) {
 				defalutConfig.useShadow = false;
 				defalutConfig.shadowBlur = 0;
