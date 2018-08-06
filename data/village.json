@@ -2,6 +2,7 @@
     {
         "geometry": {
             "type": "Polygon",
+	    "count": 100,
             "coordinates": [
                 [
                     [116.364767, 39.883374],
