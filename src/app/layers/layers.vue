@@ -75,7 +75,6 @@ export default {
     },
     createNewLayer: function(layerInfo = {}) {
       let id = `${layerInfo.id || new Date() + index}`;
-      index++;
       let data = layerInfo.data || null;
       const newLayer = {
         id: id,
@@ -88,6 +87,7 @@ export default {
         zIndex: index * 10,
         style: null
       };
+      index++;
       this.addLayer(newLayer);
       // this.layers.unshift(newLayer);
       // Action.home.emit("addNewLayer", newLayer);

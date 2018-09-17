@@ -28,7 +28,9 @@ export default {
       handler: function(newVal, oldVal) {
         console.log("layers handler", newVal, this.layers);
         let _mapvLayers = obj.deepClone(this.mapvLayers);
-        let _layers = obj.deepClone(this.layers);
+        // let _layers = obj.deepClone(this.layers);
+        let _layers = Object.assign({}, this.layers);
+        console.log('oooooooooooo',_layers)
 
         _mapvLayers.sort((a, b) => {
           a.id += "";
@@ -68,7 +70,7 @@ export default {
           newLayer,
           oldLayer
         );
-        debugger;
+        // debugger;
         if (newLayer && newLayer.id) {
           if (!oldLayer || !oldLayer.id || newLayer.id != oldLayer.id) {
             this.layerid = this.edittingLayer.id;

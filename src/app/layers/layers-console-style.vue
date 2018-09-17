@@ -71,9 +71,11 @@ export default {
   watch: {
     edittingLayer: {
       handler: function(newVal, oldVal) {
-        console.warn("edittingLayer changed ");
+        console.warn("edittingLayer changed ",this.edittingLayer);
         this.config = this.edittingLayer.config;
-        this.styleMap = styleConfig.styleMap[this.config.dataType];
+        if (this.config) {
+          this.styleMap = styleConfig.styleMap[this.config.dataType];
+        }
       },
       deep: true
     }
@@ -86,7 +88,7 @@ export default {
       Action.home.emit("layerFocusOut");
     },
     changeconfig: function(e, key) {
-      debugger;
+      // debugger;
       if (key === "useShadow") {
         if (this.config.useShadow) {
           this.config.shadowBlur =
@@ -110,7 +112,7 @@ export default {
       Action.home.emit("changeConfig", this.config);
     },
     changeDrawType: function(key) {
-      debugger;
+      // debugger;
       if (this.styleMap[key].config) {
         const newConfig = JSON.parse(JSON.stringify(this.styleMap[key].config));
         newConfig.dataType = this.config.dataType;

@@ -15,7 +15,7 @@
         .layers-console-body(:class="tableIndex===1?'':'second'")
             .layers-console-body-block
                 ul
-                    li(v-for="item in dataSources" @click="dataClick(item)" :class="item.id == edittingLayer.data.id ? 'active':''")
+                    li(v-for="item in dataSources" @click="dataClick(item)" :class="edittingLayer.data && item.id == edittingLayer.data.id ? 'active':''")
                         span.icon
                         span {{item.name}}
                 .tipsbox(v-if="dataSources.length < 4")
@@ -86,6 +86,7 @@ export default {
     dataClick: function(data) {
       this.tableIndex = 2;
       console.log("dataClick", data.id);
+      console.log("eeeee",this.edittingLayer)
       this.changeLayerData({
         layerid: this.edittingLayer.id,
         newData: data
