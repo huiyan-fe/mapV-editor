@@ -28,8 +28,9 @@ export default {
       handler: function(newVal, oldVal) {
         console.log("layers handler", newVal, this.layers);
         let _mapvLayers = obj.deepClone(this.mapvLayers);
+        // let _mapvLayers = JSON.parse(JSON.stringify(this.mapvLayers));  // deep copy
         // let _layers = obj.deepClone(this.layers);
-        let _layers = Object.assign({}, this.layers);
+        let _layers = JSON.parse(JSON.stringify(this.layers));  // deep copy
         console.log('oooooooooooo',_layers)
 
         _mapvLayers.sort((a, b) => {
