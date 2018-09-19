@@ -31,7 +31,11 @@ export default {
         Manage
     },
     computed: {},
-    methods: {},
+    methods: {
+        changeActive: function (index) {
+            console.log(this.datas)
+        }
+    },
     mounted: function () {
     }
 };
