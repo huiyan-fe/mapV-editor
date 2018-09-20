@@ -32,19 +32,22 @@
                         path(d="M10 10c-0.55 0-1 0.45-1 1v6c0 0.55 0.45 1 1 1s1-0.45 1-1v-6c0-0.55-0.45-1-1-1z")
                         path(d="M14 10c-0.55 0-1 0.45-1 1v6c0 0.55 0.45 1 1 1s1-0.45 1-1v-6c0-0.55-0.45-1-1-1z")
         Console
+        DataModal
 </template>
 
 <script>
 import Console from './layers-console.vue';
+import DataModal from './layers-datamodal.vue';
 import { Action, Store } from 'marine';
 let index = 0;
 export default {
     components: {
-        Console
+        Console,
+        DataModal
     },
     data: function () {
         return {
-            list: []
+            list: [],
         }
     },
     methods: {

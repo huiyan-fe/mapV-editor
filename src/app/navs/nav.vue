@@ -67,7 +67,7 @@ export default {
     mounted: function () {
         setTimeout(() => {
             this.showSnackbar = false;
-        }, 5000);
+        }, this.duration);
 
         Store.on('home.importData', (data) => {
             console.log(this.nav)
@@ -82,7 +82,7 @@ export default {
 
 <style lang="scss">
 .md-dialog {
-  z-index: 10001 !important;
+  z-index: 200 !important;
 }
 .md-dialog-concent {
   padding: 0 20px 20px 20px;

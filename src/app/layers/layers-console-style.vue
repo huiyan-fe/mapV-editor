@@ -20,7 +20,7 @@
                 el-option(v-for="value in configMap[key].values" v-bind:key="value.id+Math.random()" :value="value.id" :label="value.name")
             el-switch(v-else-if="configMap[key]&&configMap[key].type==='checkbox'"
                 @change="changeconfig($event, key)" 
-                v-model="config[key]"   
+                v-model="config[key]"
             )
             input(v-else-if="configMap[key]&&configMap[key].type!=='select'" 
                 :type='configMap[key]&&configMap[key].type' 
