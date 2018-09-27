@@ -30,20 +30,20 @@
                     svg.tarsh(viewBox="0 0 24 24" @click='removeLayer(item)')
                         path(d="M21 5h-4v-1c0-1.656-1.344-3-3-3h-4c-1.656 0-3 1.344-3 3v1h-4c-0.55 0-1 0.45-1 1s0.45 1 1 1h1v13c0 1.656 1.344 3 3 3h10c1.656 0 3-1.344 3-3v-13h1c0.55 0 1-0.45 1-1s-0.45-1-1-1zM9 4c0-0.55 0.45-1 1-1h4c0.55 0 1 0.45 1 1v1h-6v-1zM18 20c0 0.55-0.45 1-1 1h-10c-0.55 0-1-0.45-1-1v-13h12v13z")
                         path(d="M10 10c-0.55 0-1 0.45-1 1v6c0 0.55 0.45 1 1 1s1-0.45 1-1v-6c0-0.55-0.45-1-1-1z")
-                        path(d="M14 10c-0.55 0-1 0.45-1 1v6c0 0.55 0.45 1 1 1s1-0.45 1-1v-6c0-0.55-0.45-1-1-1z")
+                        path(d="M14 10c-0.55 0-1 0.45-1 1v6c0 0.55 0.45 1 1 1s1-0.45 1-1v-6c0-0.55-0.45-1-1-1z")        
+        ConsoleData(:list="list")
         Console
-        DataModal
 </template>
 
 <script>
 import Console from './layers-console.vue';
-import DataModal from './layers-datamodal.vue';
+import ConsoleData from './layers-console-data.vue';
 import { Action, Store } from 'marine';
 let index = 0;
 export default {
     components: {
         Console,
-        DataModal
+        ConsoleData
     },
     data: function () {
         return {

@@ -119,6 +119,8 @@ export default {
 
 <style lang="scss">
 .layers-console-body-block {
+  width: 300px;
+  float: left;
   .md-button.md-theme-default {
     color: #999;
     min-height: initial;
