@@ -37,9 +37,11 @@ export default {
             })
         });
         Store.on('home.removeLayer', StoreData => {
+            console.log(this.datas)
             this.layerInfo = null;
         });
         Store.on('home.submitImport', StoreData => {
+            // this.layerInfo = StoreData.data;
         });
         Store.on('home.changeActiveLayer', StoreData => {
             this.layerInfo = StoreData.data;

@@ -119,7 +119,7 @@ export default {
           }
         }
         if (target) {
-          target.data = StoreData.data;
+          this.$set(target, 'data', StoreData.data);
           if (target.mapv) {
             target.mapv.dataSet.set(StoreData.data.data);
           } else {
