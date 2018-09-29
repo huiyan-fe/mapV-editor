@@ -6,9 +6,9 @@
         md-dialog-title 新建图层
         div.dialog-body
             el-radio-group.radio-btn-gp(v-model="dataTab" @change="changeDataTab")
-                el-radio-button(label=1) 上传数据
-                el-radio-button(label=2) 查看示例数据
-            div(v-if="dataTab == 1")
+                el-radio-button(label="1") 上传数据
+                el-radio-button(label="2") 查看示例数据
+            div(v-if="dataTab === '1'")
                 el-row.data-type
                     el-col(:span="6") 
                         span.type-title 选择数据类型: 
@@ -40,7 +40,7 @@
                     el-col(:span="18")
                         el-radio-group(v-model="positionType")
                             el-radio(label="lnglat") 经纬度
-                            el-radio(label="position") 位置
+                            el-radio(label="address") 位置
                 el-row.data-select(v-if="positionType === 'lnglat'")
                     el-col(:span="6")
                         div.input-title 经度: 
@@ -52,13 +52,13 @@
                     el-col(:span="18")
                         el-select.pos-input(placeholder="纬度lat" v-model="selectLat")
                             el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
-                el-row.data-select(v-if="positionType === 'position'")
+                el-row.data-select(v-if="positionType === 'address'")
                     el-col(:span="6")
                         div.input-title 位置: 
                     el-col(:span="18")
                         el-select.pos-input(placeholder="位置address" v-model="selectAddr")
                             el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
-            div(v-if="dataTab == 2")
+            div(v-if="dataTab === '2'")
                 el-row.data-type
                     el-col(:span="6") 
                         span.type-title 示例数据类型: 
@@ -80,7 +80,7 @@ export default {
         return {
             layerInfo: null,
             showDialog: false,
-            dataTab: 1,
+            dataTab: '1',
             dataType: 'point',
             positionType: 'lnglat',
             selectOptions: [],
@@ -150,6 +150,14 @@ export default {
                 // Action.home.emit('submitImport', this.layerInfo);
             } else {
                 //upload datas
+                if (!this.uploadFile) {
+                    this.$message.error('您还没有上传文件！');
+                    return false;
+                } else if (this.positionType == 'lnglat' && !(this.selectLng && this.selectLat)
+                || this.positionType == 'address' && !this.selectAddr) {
+                    this.$message.error('请正确选择解析文件的字段名！');
+                    return false;
+                }
                 let options = {
                     layerInfo: this.layerInfo,
                     file: this.uploadFile,

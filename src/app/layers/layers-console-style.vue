@@ -13,6 +13,8 @@
                 show-input
                 :xstep="Number(configMap[key]&&configMap[key].step)"
                 :step="Number(configMap[key]&&configMap[key].step)||1"
+                :max="Number(configMap[key]&&configMap[key].max)||100"
+                :min="Number(configMap[key]&&configMap[key].min)||0"
                 @change="changeconfig($event,key)")
             el-select(v-else-if="configMap[key]&&configMap[key].type==='select'" 
                 @change="changeconfig($event,key)" 

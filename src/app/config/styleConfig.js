@@ -137,6 +137,8 @@ export default {
         lineWidth: {
             name: '线宽',
             type: 'range',
+            max: 10,
+            min: 0.1,
             step: 0.1
         },
         label: {
@@ -154,7 +156,7 @@ export default {
             name: '透明度',
             type: 'range',
             max: 1,
-            min: 0,
+            min: 0.01,
             step: 0.01
         },
         min: {
@@ -192,10 +194,12 @@ export default {
         shadowBlur: {
             name: '投影半径',
             type: 'range',
+            min: 1
         },
         size: {
             name: '半径大小',
             type: 'range',
+            min: 1
         },
         globalCompositeOperation: {
             name: '渲染方式',
