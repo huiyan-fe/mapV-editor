@@ -52,11 +52,21 @@
                     el-col(:span="18")
                         el-select.pos-input(placeholder="纬度lat" v-model="selectLat")
                             el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
+                    el-col(:span="6")
+                        div.input-title 权重: 
+                    el-col(:span="18")
+                        el-select.pos-input(placeholder="权重count" v-model="selectCount1")
+                            el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
                 el-row.data-select(v-if="positionType === 'address'")
                     el-col(:span="6")
                         div.input-title 位置: 
                     el-col(:span="18")
                         el-select.pos-input(placeholder="位置address" v-model="selectAddr")
+                            el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
+                    el-col(:span="6")
+                        div.input-title 权重: 
+                    el-col(:span="18")
+                        el-select.pos-input(placeholder="权重count" v-model="selectCount2")
                             el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
             div(v-if="dataTab === '2'")
                 el-row.data-type
@@ -87,6 +97,8 @@ export default {
             selectLng: null,
             selectLat: null,
             selectAddr: null,
+            selectCount1: null,
+            selectCount2: null,
             exampleType: 1,
             datas: [],
             ExampleData: null,
@@ -100,6 +112,8 @@ export default {
             this.selectLng = null;
             this.selectLat = null;
             this.selectAddr = null;
+            this.selectCount1 = null;
+            this.selectCount2 = null;
             this.uploadFile = null;
             this.uploadData = null;
         },
@@ -153,8 +167,8 @@ export default {
                 if (!this.uploadFile) {
                     this.$message.error('您还没有上传文件！');
                     return false;
-                } else if (this.positionType == 'lnglat' && !(this.selectLng && this.selectLat)
-                || this.positionType == 'address' && !this.selectAddr) {
+                } else if (this.positionType == 'lnglat' && !(this.selectLng && this.selectLat && this.selectCount1)
+                || this.positionType == 'address' && !(this.selectAddr && this.selectCount2)) {
                     this.$message.error('请正确选择解析文件的字段名！');
                     return false;
                 }
@@ -165,7 +179,9 @@ export default {
                     positionType: this.positionType,
                     selectLng: this.selectLng,
                     selectLat: this.selectLat,
-                    selectAddr: this.selectAddr
+                    selectAddr: this.selectAddr,
+                    selectCount1: this.selectCount1,
+                    selectCount2: this.selectCount2,
                 };
                 Action.home.emit('getUploads', options);
             }
@@ -203,16 +219,18 @@ export default {
 </script>
 
 <style lang="scss">
+.md-dialog .md-dialog-container {
+    overflow-y: auto;
+}
 .dialog-body {
     padding: 0 20px;
     min-height: 400px;
-    min-width: 600px;
-    overflow-y: auto;
+    width: 600px;
 }
 .radio-btn-gp {
     display: block;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 .data-type {
     margin-bottom: 10px;
@@ -231,10 +249,12 @@ export default {
         margin-top: 5px;
         .el-upload-dragger {
             width: 100%;
-            .el-icon-success {
+            height: 120px;
+            .el-icon-success,
+            .el-icon-upload {
                 font-size: 67px;
                 color: #c0c4cc;
-                margin: 40px 0 16px;
+                margin: 20px 0 16px;
                 line-height: 50px;
             }
         }
@@ -253,7 +273,7 @@ export default {
         font-size: 14px;
     }
     .pos-input {
-        width: 180px;
+        width: 160px;
         display: block;
         margin-top: 10px;
         .el-input__inner {

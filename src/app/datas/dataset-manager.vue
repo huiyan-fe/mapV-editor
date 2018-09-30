@@ -33,33 +33,33 @@ export default {
                 } else {
                     dataSetManager.importXLSX(rs);
                 }
-                let data = dataSetManager.getData();
-                if (data.length) {
-                    let selects = Object.keys(data[0]);
-                    Action.home.emit('receiveSelects', selects);
-                }
+                let selects = dataSetManager.getFields();
+                Action.home.emit('receiveSelects', selects);
             }
         });
 
         Store.on("home.getUploads", storeData => {
-            let {file, dataType, positionType, selectLng, selectLat, selectAddr} = storeData.data;
+            let {file, dataType, positionType, selectLng, selectLat, selectAddr, selectCount1, selectCount2} = storeData.data;
 
-            if (positionType === 'lnglat') {
-                dataSetManager.geoPoint(selectLng, selectLat);
-            } else {
-                dataSetManager.geoAddress(selectAddr, rs => {
-                    console.log(rs)
-                });
-            }
-            console.log(dataSetManager.getData());
             let data = {
                 active: true,
-                data: dataSetManager.getData(),
+                data: [],
                 id: file.uid,
                 name: file.name,
                 visible: true
             };
-            Action.home.emit('receiveUploads', data);
+            if (positionType === 'lnglat') {
+                dataSetManager.geoPointWithCount(selectLng, selectLat, selectCount1);
+                data.data = dataSetManager.getGeoData();
+                Action.home.emit('receiveUploads', data);
+            } else {
+                // 解析地址是异步
+                dataSetManager.geoAddressWithCount(selectAddr, selectCount2, rs => {
+                    data.data = dataSetManager.getGeoData();
+                    Action.home.emit('receiveUploads', data);
+                });
+            }
+            console.log(dataSetManager.getGeoData());
         });
     }
 };
