@@ -205,8 +205,9 @@ export default {
 <style lang="scss">
 .dialog-body {
     padding: 0 20px;
-    min-height: 450px;
+    min-height: 400px;
     min-width: 600px;
+    overflow-y: auto;
 }
 .radio-btn-gp {
     display: block;

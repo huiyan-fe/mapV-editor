@@ -64,6 +64,7 @@ export default {
             const promises = [];
             centers.forEach(item => {
                 let url = `//api.map.baidu.com/customimage/staticmap?`;
+                // url += `styles=${localStorage.getItem('e-mapstyle') || 'visualization'}&`;
                 url += `center=${item.point.lng},${item.point.lat}&`;
                 url += `zoom=${item.zoom}&`;
                 url += `width=${item.width}&`;
@@ -104,7 +105,7 @@ export default {
                 });
 
                 this.mapvLayers.forEach(item => {
-                    if (item.mapv) {
+                    if (item.mapv && item.visible) {
                         const mapvCanvas = item.mapv.getContext().canvas;
                         ctx.drawImage(
                             mapvCanvas,
