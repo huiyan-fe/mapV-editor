@@ -49,21 +49,79 @@ export default {
                 name: file.name,
                 visible: true
             };
-            if (positionType === 'lnglat') {
-                const lngCol = selectConfig.longitude.value;
-                const latCol = selectConfig.latitude.value;
-                const countCol = selectConfig.count.value;
-                dataSetManager.geoPointWithCount(lngCol, latCol, countCol);
-                data.data = dataSetManager.getGeoData();
-                Action.home.emit('receiveUploads', data);
-            } else if(positionType === 'address') {
-                const addrCol = selectConfig.address.value;
-                const countCol = selectConfig.count.value;
-                // 解析地址是异步
-                dataSetManager.geoAddressWithCount(addrCol, countCol, rs => {
+
+            // 解析点数据
+            if (dataType === 'Point') {
+                if (positionType === 'lnglat') {
+                    const lngCol = selectConfig.longitude.value;
+                    const latCol = selectConfig.latitude.value;
+                    const countCol = selectConfig.count.value;
+                    // 解析坐标是同步
+                    dataSetManager.geoPoint(lngCol, latCol, countCol);
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
-                });
+                } else if(positionType === 'address') {
+                    const addrCol = selectConfig.address.value;
+                    const countCol = selectConfig.count.value;
+                    // 解析地址是异步
+                    dataSetManager.geoAddress(addrCol, countCol, rs => {
+                        data.data = dataSetManager.getGeoData();
+                        Action.home.emit('receiveUploads', data);
+                    });
+                } else {
+                    console.error('解析数据类型错误!');
+                }
+            // 解析线数据
+            } else if (dataType === 'LineString') {
+                if (positionType === 'lnglat') {
+                    const lngSCol = selectConfig.longitudeStart.value;
+                    const latSCol = selectConfig.latitudeStart.value;
+                    const lngECol = selectConfig.longitudeEnd.value;
+                    const latECol = selectConfig.latitudeEnd.value;
+                    const countCol = selectConfig.count.value;
+                    // 解析坐标是同步
+                    dataSetManager.geoLine(lngSCol, latSCol, lngECol, latECol, countCol);
+                    data.data = dataSetManager.getGeoData();
+                    Action.home.emit('receiveUploads', data);
+                } else if(positionType === 'position') {
+                    const posCol = selectConfig.position.value;
+                    const countCol = selectConfig.count.value;
+                    // 解析坐标是同步
+                    dataSetManager.geoLineString(posCol, countCol);
+                    data.data = dataSetManager.getGeoData();
+                    Action.home.emit('receiveUploads', data);
+                } else if(positionType === 'address') {
+                    const startCol = selectConfig.start.value;
+                    const endCol = selectConfig.end.value;
+                    const countCol = selectConfig.count.value;
+                    // 解析地址是异步
+                    dataSetManager.geoRoute(startCol, endCol, countCol, rs => {
+                        data.data = dataSetManager.getGeoData();
+                        Action.home.emit('receiveUploads', data);
+                    });
+                } else {
+                    console.error('解析数据类型错误!');
+                }
+            // 解析面数据
+            } else {
+                if (positionType === 'position') {
+                    const posCol = selectConfig.position.value;
+                    const countCol = selectConfig.count.value;
+                    // 解析坐标是同步
+                    dataSetManager.geoPolygon(posCol, countCol);
+                    data.data = dataSetManager.getGeoData();
+                    Action.home.emit('receiveUploads', data);
+                } else if(positionType === 'area') {
+                    const areaCol = selectConfig.area.value;
+                    const countCol = selectConfig.count.value;
+                    // 解析地址是异步
+                    dataSetManager.geoArea(areaCol, countCol, rs => {
+                        data.data = dataSetManager.getGeoData();
+                        Action.home.emit('receiveUploads', data);
+                    });
+                } else {
+                    console.error('解析数据类型错误!');
+                }
             }
             console.log(dataSetManager.getGeoData());
         });

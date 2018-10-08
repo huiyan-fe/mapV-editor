@@ -89,12 +89,12 @@ export default {
             address: {
                 name: '位置',
                 children: {
-                    addressStart: {
+                    start: {
                         title: '起点位置',
                         placeholder: '位置addressS',
                         value: ''
                     },
-                    addressStart: {
+                    end: {
                         title: '终点位置',
                         placeholder: '位置addressE',
                         value: ''
