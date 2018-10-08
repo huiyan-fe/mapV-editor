@@ -39,7 +39,8 @@ export default {
         });
 
         Store.on("home.getUploads", storeData => {
-            let {file, dataType, positionType, selectLng, selectLat, selectAddr, selectCount1, selectCount2} = storeData.data;
+            let {file, dataType, positionType, selectConfig} = storeData.data;
+            console.log(selectConfig)
 
             let data = {
                 active: true,
@@ -49,12 +50,17 @@ export default {
                 visible: true
             };
             if (positionType === 'lnglat') {
-                dataSetManager.geoPointWithCount(selectLng, selectLat, selectCount1);
+                const lngCol = selectConfig.longitude.value;
+                const latCol = selectConfig.latitude.value;
+                const countCol = selectConfig.count.value;
+                dataSetManager.geoPointWithCount(lngCol, latCol, countCol);
                 data.data = dataSetManager.getGeoData();
                 Action.home.emit('receiveUploads', data);
-            } else {
+            } else if(positionType === 'address') {
+                const addrCol = selectConfig.address.value;
+                const countCol = selectConfig.count.value;
                 // 解析地址是异步
-                dataSetManager.geoAddressWithCount(selectAddr, selectCount2, rs => {
+                dataSetManager.geoAddressWithCount(addrCol, countCol, rs => {
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
                 });

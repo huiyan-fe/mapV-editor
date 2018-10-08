@@ -14,9 +14,9 @@
                         span.type-title 选择数据类型: 
                     el-col(:span="18") 
                         el-radio-group(v-model="dataType" @change="changeDataType")
-                            el-radio(label="point") 点
-                            el-radio(label="line") 线
-                            el-radio(label="polygon") 面
+                            el-radio(label="Point") 点
+                            el-radio(label="LineString") 线
+                            el-radio(label="Polygon") 面
                 el-row.data-upload
                     el-col(:span="24") 
                         span.upload-title 上传文件
@@ -35,46 +35,25 @@
                             div.el-upload__text(v-if="uploadFile") 文件上传成功！
                             div.el-upload__tip(slot="tip" v-if="uploadFile") 已上传 {{uploadFile.name}}
                 el-row.data-input
-                    el-col(:span="6") 
+                    el-col(:span="6")
                         span.input-title 选择字段名: 
                     el-col(:span="18")
                         el-radio-group(v-model="positionType")
-                            el-radio(label="lnglat") 经纬度
-                            el-radio(label="address") 位置
-                el-row.data-select(v-if="positionType === 'lnglat'")
+                            el-radio(v-for="(value, key) in rConfig" :key="key" :label="key" @change="changePositionType(value)") {{value.name}}
+                el-row.data-select(v-if="sConfig" v-for="(value, key) in sConfig" :key="key")
                     el-col(:span="6")
-                        div.input-title 经度: 
+                        div.input-title {{value.title}}: 
                     el-col(:span="18")
-                        el-select.pos-input(placeholder="经度lng" v-model="selectLng")
+                        el-select.pos-input(:placeholder="value.placeholder" v-model="value.value")
                             el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
-                    el-col(:span="6")
-                        div.input-title 纬度: 
-                    el-col(:span="18")
-                        el-select.pos-input(placeholder="纬度lat" v-model="selectLat")
-                            el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
-                    el-col(:span="6")
-                        div.input-title 权重: 
-                    el-col(:span="18")
-                        el-select.pos-input(placeholder="权重count" v-model="selectCount1")
-                            el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
-                el-row.data-select(v-if="positionType === 'address'")
-                    el-col(:span="6")
-                        div.input-title 位置: 
-                    el-col(:span="18")
-                        el-select.pos-input(placeholder="位置address" v-model="selectAddr")
-                            el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
-                    el-col(:span="6")
-                        div.input-title 权重: 
-                    el-col(:span="18")
-                        el-select.pos-input(placeholder="权重count" v-model="selectCount2")
-                            el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
+            
             div(v-if="dataTab === '2'")
                 el-row.data-type
                     el-col(:span="6") 
                         span.type-title 示例数据类型: 
                     el-col(:span="18") 
                         el-radio-group(v-model="exampleType")
-                            el-radio(v-for="item in datas" :label="item.id" @change="changeExample(item)" :key="item.id") {{item.name}}
+                            el-radio(v-for="item in exampleDatas" :label="item.id" @change="changeExample(item)" :key="item.id") {{item.name}}
         md-dialog-actions
             md-button.md-primary(@click="cancelDialog") 取消
             md-button.md-primary(@click="submitImport") 导入数据
@@ -83,6 +62,7 @@
 <script>
 import { Action, Store } from 'marine';
 import tools from '../tools/tools';
+import selectConfig from "../config/selectConfig.js";
 
 export default {
     props: ["list"],
@@ -91,17 +71,15 @@ export default {
             layerInfo: null,
             showDialog: false,
             dataTab: '1',
-            dataType: 'point',
+            dataType: 'Point',
             positionType: 'lnglat',
+            selectMap: selectConfig.selectMap,
+            rConfig: selectConfig.selectMap.Point,
+            sConfig: {},
             selectOptions: [],
-            selectLng: null,
-            selectLat: null,
-            selectAddr: null,
-            selectCount1: null,
-            selectCount2: null,
             exampleType: 1,
-            datas: [],
-            ExampleData: null,
+            exampleDatas: [],
+            exampleData: null,
             uploadFile: null,
             uploadData: null
         }
@@ -109,22 +87,28 @@ export default {
     methods: {
         clearData: function() {
             this.selectOptions = [];
-            this.selectLng = null;
-            this.selectLat = null;
-            this.selectAddr = null;
-            this.selectCount1 = null;
-            this.selectCount2 = null;
             this.uploadFile = null;
             this.uploadData = null;
+            for (const i in this.sConfig) {
+                if (this.sConfig.hasOwnProperty(i)) {
+                    this.sConfig[i].value = "";
+                }
+            }
         },
         changeDataTab: function(tab) {
             console.log(tab)
         },
         changeDataType: function(type) {
             this.clearData();
+            this.rConfig = this.selectMap[type];
+            this.positionType = Object.keys(this.rConfig)[0];
+            this.sConfig = this.rConfig[this.positionType] && this.rConfig[this.positionType].children;
+        },
+        changePositionType: function(type) {
+            this.sConfig = type.children || {};
         },
         changeExample: function(data) {
-            this.ExampleData = data;
+            this.exampleData = data;
         },
         beforeUpload: function(file) {
             this.clearData();
@@ -148,7 +132,7 @@ export default {
         submitImport: function(e) {
             if (this.dataTab == 2) {
                 // example datas
-                const data = this.ExampleData;
+                const data = this.exampleData;
                 if (data.id === 1) {
                     data.data = tools.create.createPointData();
                 }
@@ -156,7 +140,7 @@ export default {
                     data.data = tools.create.createLineData();
                 }
                 //
-                this.datas.forEach(item => {
+                this.exampleDatas.forEach(item => {
                     item.active = item.id === data.id
                 });
                 
@@ -167,21 +151,19 @@ export default {
                 if (!this.uploadFile) {
                     this.$message.error('您还没有上传文件！');
                     return false;
-                } else if (this.positionType == 'lnglat' && !(this.selectLng && this.selectLat && this.selectCount1)
-                || this.positionType == 'address' && !(this.selectAddr && this.selectCount2)) {
-                    this.$message.error('请正确选择解析文件的字段名！');
-                    return false;
+                }
+                for (const i in this.sConfig) {
+                    if (this.sConfig.hasOwnProperty(i) && !this.sConfig[i].value) {
+                        this.$message.error('请选择解析文件的字段名！');
+                        return false;
+                    }
                 }
                 let options = {
                     layerInfo: this.layerInfo,
                     file: this.uploadFile,
                     dataType: this.dataType,
                     positionType: this.positionType,
-                    selectLng: this.selectLng,
-                    selectLat: this.selectLat,
-                    selectAddr: this.selectAddr,
-                    selectCount1: this.selectCount1,
-                    selectCount2: this.selectCount2,
+                    selectConfig: this.sConfig
                 };
                 Action.home.emit('getUploads', options);
             }
@@ -190,6 +172,9 @@ export default {
         }
     },
     mounted: function() {
+        this.positionType = Object.keys(this.rConfig)[0];
+        this.sConfig = this.rConfig[this.positionType] && this.rConfig[this.positionType].children;
+
         Store.on("home.addNewLayer", storeData => {
             this.layerInfo = storeData.data;
             this.showDialog = true;
@@ -209,9 +194,9 @@ export default {
             StoreData.data.forEach(item => {
                 this.$set(item, 'active', false)
             })
-            this.datas = StoreData.data;
-            this.ExampleData = StoreData.data[0];
-            console.log('guagua',this.datas)
+            this.exampleDatas = StoreData.data;
+            this.exampleData = StoreData.data[0];
+            console.log('guagua',this.exampleDatas)
         });
         Action.home.emit('getDatas');
     }
@@ -219,13 +204,11 @@ export default {
 </script>
 
 <style lang="scss">
-.md-dialog .md-dialog-container {
-    overflow-y: auto;
-}
 .dialog-body {
     padding: 0 20px;
-    min-height: 400px;
+    height: 400px;
     width: 600px;
+    overflow-y: auto;
 }
 .radio-btn-gp {
     display: block;
@@ -273,7 +256,7 @@ export default {
         font-size: 14px;
     }
     .pos-input {
-        width: 160px;
+        width: 180px;
         display: block;
         margin-top: 10px;
         .el-input__inner {
