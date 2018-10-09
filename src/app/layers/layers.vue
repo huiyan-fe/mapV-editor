@@ -20,7 +20,7 @@
                     @dragover='listitemDragOver($event, index)' 
                     @dragleave='listitemDragLeave($event, index)'
                     @drop='listitemDrop($event, index)' )
-                    svg.tarsh(viewBox="0 0 24 24" @click='removeLayer(item)')
+                    svg.tarsh(viewBox="0 0 24 24" @click='removeLayer(item, $event)')
                         path(d="M21 5h-4v-1c0-1.656-1.344-3-3-3h-4c-1.656 0-3 1.344-3 3v1h-4c-0.55 0-1 0.45-1 1s0.45 1 1 1h1v13c0 1.656 1.344 3 3 3h10c1.656 0 3-1.344 3-3v-13h1c0.55 0 1-0.45 1-1s-0.45-1-1-1zM9 4c0-0.55 0.45-1 1-1h4c0.55 0 1 0.45 1 1v1h-6v-1zM18 20c0 0.55-0.45 1-1 1h-10c-0.55 0-1-0.45-1-1v-13h12v13z")
                         path(d="M10 10c-0.55 0-1 0.45-1 1v6c0 0.55 0.45 1 1 1s1-0.45 1-1v-6c0-0.55-0.45-1-1-1z")
                         path(d="M14 10c-0.55 0-1 0.45-1 1v6c0 0.55 0.45 1 1 1s1-0.45 1-1v-6c0-0.55-0.45-1-1-1z")        
@@ -34,7 +34,7 @@
                     div.data-source 数据源: 
                         span(v-if="item.data") {{item.data.name}}
         ConsoleData(:list="list")
-        Console
+        Console(:list="list")
 </template>
 
 <script>
@@ -57,7 +57,7 @@ export default {
             item.name = e.target.innerText;
         },
         addLayer: function (layerInfo = {}) {
-            let hasActive = this.list.forEach(item => item.active = false);
+            this.list.forEach(item => item.active = false);
             const newLayer = {
                 visiable: true,
                 name: `${(layerInfo && layerInfo.name) ? layerInfo.name : '新建图层'}-${this.list.length + 1}`,
@@ -70,14 +70,13 @@ export default {
             Action.home.emit('changeActiveLayer', newLayer);
         },
         changeActive: function (index) {
-            let hasActive = this.list.forEach((item, listIndex) => {
+            this.list.forEach((item, listIndex) => {
                 const isActive = index === listIndex;
                 item.active = isActive;
                 if (isActive) {
                     Action.home.emit('changeActiveLayer', this.list[index]);
                 }
             });
-
         },
         hideLayer: function (clickItem) {
             this.list.forEach(item => {
@@ -87,9 +86,12 @@ export default {
             });
             Action.home.emit('hideLayer', clickItem);
         },
-        removeLayer: function (clickItem) {
+        removeLayer: function (clickItem, e) {
+            e.stopPropagation();
+            var bingo;
             this.list.forEach((item, index) => {
                 if (clickItem === item) {
+                    bingo = index;
                     const mapvtraget = this.list.splice(index, 1);
                     if (mapvtraget[0].mapv) {
                         mapvtraget[0].mapv.destroy();
@@ -147,6 +149,22 @@ export default {
             this.addLayer({
                 name: '导入数据'
             });
+        });
+        Store.on('home.resetActive', StoreData => {
+            if (this.list.length) {
+                let index = 0;
+                let hasActive = false;
+                for (let i = 0; i < this.list.length; i++) {
+                    const element = this.list[i];
+                    if (element.active) {
+                        index = i;
+                        hasActive = true;
+                        break;
+                    }
+                }
+                this.list[index].active = true;
+                Action.home.emit('changeActiveLayer',this.list[index]);
+            }
         });
         Store.on('home.receiveLayers', StoreData => {
             StoreData.data.forEach(item => {

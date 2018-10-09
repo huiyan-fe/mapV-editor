@@ -13,6 +13,7 @@ export default {
     components: {
         ConsoleStyle
     },
+    props: ["list"],
     data: function () {
         return {
             layerInfo: null,
@@ -22,23 +23,23 @@ export default {
     methods: {
     },
     mounted: function () {
-        Store.on('home.importData', (storeData) => {
-            setTimeout(() => {
-                // wait untill insert data, create new layer finished
-                // auto choose the import data
-                const datasObj = this.datas.filter(data => {
-                    return data.data === storeData.data;
-                })
-                if (datasObj.length >= 1) {
-                    this.dataClick(datasObj[0]);
-                    // foucus on the data
-                    Action.home.emit("layerFocusOn");
-                }
-            })
-        });
+        // Store.on('home.importData', (storeData) => {
+        //     setTimeout(() => {
+        //         // wait untill insert data, create new layer finished
+        //         // auto choose the import data
+        //         const datasObj = this.datas.filter(data => {
+        //             return data.data === storeData.data;
+        //         })
+        //         if (datasObj.length >= 1) {
+        //             this.dataClick(datasObj[0]);
+        //             // foucus on the data
+        //             Action.home.emit("layerFocusOn");
+        //         }
+        //     })
+        // });
         Store.on('home.removeLayer', StoreData => {
-            console.log(this.datas)
             this.layerInfo = null;
+            Action.home.emit('resetActive');
         });
         Store.on('home.submitImport', StoreData => {
             // this.layerInfo = StoreData.data;
