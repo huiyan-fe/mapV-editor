@@ -13,7 +13,6 @@ export default {
     components: {
         ConsoleStyle
     },
-    props: ["list"],
     data: function () {
         return {
             layerInfo: null,
@@ -40,6 +39,9 @@ export default {
         Store.on('home.removeLayer', StoreData => {
             this.layerInfo = null;
             Action.home.emit('resetActive');
+        });
+        Store.on('home.changeConfig', StoreData => {
+            this.layerInfo.config = StoreData.data;
         });
         Store.on('home.submitImport', StoreData => {
             // this.layerInfo = StoreData.data;
