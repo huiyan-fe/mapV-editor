@@ -7,7 +7,7 @@
     .layers-choose
         .layers-block(v-for="(item, index) in styles")
             div(@click="changeStyle(index)" :class="index===activeStyle?'layers-mapblock-name active':'layers-mapblock-name'") 
-                img(:src="'http://api.map.baidu.com/customimage/staticmap?center=116.3975,39.9087&zoom=10&width=220&height=135&customid='+index+'&scaler=1'")
+                img(:src="'//api.map.baidu.com/customimage/staticmap?center=116.3975,39.9087&zoom=10&width=220&height=135&customid='+index+'&scaler=1'")
                 p {{item.title}}
 
 </template>
