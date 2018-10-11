@@ -102,6 +102,21 @@ export default {
                         value: ''
                     }
                 }
+            },
+            area: {
+                name: '区域名称',
+                children: {
+                    position: {
+                        title: '区域名称',
+                        placeholder: '例如：北京市',
+                        value: ''
+                    },
+                    count: {
+                        title: '权重',
+                        placeholder: '权重count',
+                        value: ''
+                    }
+                }
             }
         }
     }

@@ -5,6 +5,9 @@ body {
             line-height: 30px;
         }
     }
+    .el-color-picker__mask {
+        background-color: rgba(0,0,0,.5);
+    }
     .el-color-picker__trigger {
         padding: 0;
     }
@@ -32,6 +35,18 @@ body {
         border-color: #757575;
         color: #ccc;
         background-color: #404040;
+    }
+    .el-input.is-disabled .el-input__inner {
+        background: #505050;
+        border-color: #636363;
+        color: #999;
+    }
+    .el-input-number.is-disabled .el-input-number__decrease, 
+    .el-input-number.is-disabled .el-input-number__increase,
+    .el-input-number.is-disabled .el-input-number__decrease:hover, 
+    .el-input-number.is-disabled .el-input-number__increase:hover {
+        border-color: #636363;
+        color: #999;
     }
     .el-input-number__decrease,
     .el-input-number__increase {

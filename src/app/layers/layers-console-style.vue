@@ -4,13 +4,15 @@
             md-button(v-for="(value, key) in styleMap" :key='key' :class="key===config.draw?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
         .btns-block(v-for="(value, key) in config" v-if="configMap[key]&&configMap[key].name")
             label(v-if="configMap[key]") {{configMap[key]&&configMap[key].name}} 
-            el-color-picker(v-model="config[key]" 
+            el-color-picker(v-if="configMap[key]&&configMap[key].type==='color'"
+                v-model="config[key]" 
                 show-alpha 
-                v-if="configMap[key]&&configMap[key].type==='color'"
+                :disabled="(key==='shadowColor')&&(config.useShadow===false)"
                 @change="changeconfig($event,key)")
             el-slider(v-else-if="configMap[key]&&configMap[key].type==='range'" 
                 v-model="config[key]"
                 show-input
+                :disabled="(key==='shadowBlur')&&(config.useShadow===false)"
                 :xstep="Number(configMap[key]&&configMap[key].step)"
                 :step="Number(configMap[key]&&configMap[key].step)||1"
                 :max="Number(configMap[key]&&configMap[key].max)||100"
