@@ -201,44 +201,44 @@ export default {
             type: 'range',
             min: 1
         },
-        globalCompositeOperation: {
-            name: '渲染方式',
-            type: 'select',
-            value: 'lighter',
-            values: [{
-                name: 'lighter',
-                id: 'lighter'
-            }, {
-                name: 'xor',
-                id: 'xor'
-            }, {
-                name: 'source-over',
-                id: 'source-over'
-            }, {
-                name: 'source-in',
-                id: 'source-in'
-            }, {
-                name: 'source-out',
-                id: 'source-out'
-            }, {
-                name: 'source-atop',
-                id: 'source-atop'
-            }, {
-                name: 'destination-over',
-                id: 'destination-over'
-            }, {
-                name: 'destination-in',
-                id: 'destination-in'
-            }, {
-                name: 'destination-out',
-                id: 'destination-out'
-            }, {
-                name: 'destination-atop',
-                id: 'destination-atop'
-            }, {
-                name: 'copy',
-                id: 'cpoy'
-            }]
-        }
+        // globalCompositeOperation: {
+        //     name: '渲染方式',
+        //     type: 'select',
+        //     value: 'lighter',
+        //     values: [{
+        //         name: 'lighter',
+        //         id: 'lighter'
+        //     }, {
+        //         name: 'xor',
+        //         id: 'xor'
+        //     }, {
+        //         name: 'source-over',
+        //         id: 'source-over'
+        //     }, {
+        //         name: 'source-in',
+        //         id: 'source-in'
+        //     }, {
+        //         name: 'source-out',
+        //         id: 'source-out'
+        //     }, {
+        //         name: 'source-atop',
+        //         id: 'source-atop'
+        //     }, {
+        //         name: 'destination-over',
+        //         id: 'destination-over'
+        //     }, {
+        //         name: 'destination-in',
+        //         id: 'destination-in'
+        //     }, {
+        //         name: 'destination-out',
+        //         id: 'destination-out'
+        //     }, {
+        //         name: 'destination-atop',
+        //         id: 'destination-atop'
+        //     }, {
+        //         name: 'copy',
+        //         id: 'cpoy'
+        //     }]
+        // }
     }
 };

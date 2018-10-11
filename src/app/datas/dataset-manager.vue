@@ -90,15 +90,6 @@ export default {
                     dataSetManager.geoLineString(posCol, countCol);
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
-                } else if(positionType === 'address') {
-                    const startCol = selectConfig.start.value;
-                    const endCol = selectConfig.end.value;
-                    const countCol = selectConfig.count.value;
-                    // 解析地址是异步
-                    dataSetManager.geoRoute(startCol, endCol, countCol, rs => {
-                        data.data = dataSetManager.getGeoData();
-                        Action.home.emit('receiveUploads', data);
-                    });
                 } else {
                     console.error('解析数据类型错误!');
                 }
@@ -111,14 +102,6 @@ export default {
                     dataSetManager.geoPolygon(posCol, countCol);
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
-                } else if(positionType === 'area') {
-                    const areaCol = selectConfig.area.value;
-                    const countCol = selectConfig.count.value;
-                    // 解析地址是异步
-                    dataSetManager.geoArea(areaCol, countCol, rs => {
-                        data.data = dataSetManager.getGeoData();
-                        Action.home.emit('receiveUploads', data);
-                    });
                 } else {
                     console.error('解析数据类型错误!');
                 }

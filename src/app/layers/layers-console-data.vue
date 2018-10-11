@@ -145,7 +145,6 @@ export default {
                 });
                 
                 Action.home.emit('changeData', data);
-                // Action.home.emit('submitImport', this.layerInfo);
             } else {
                 //upload datas
                 if (!this.uploadFile) {
@@ -187,7 +186,6 @@ export default {
         Store.on("home.receiveUploads", storeData => {
             this.uploadData = storeData.data;
             Action.home.emit('changeData', this.uploadData);
-            // Action.home.emit('submitImport', this.layerInfo);
         });
 
         Store.on('home.receiveDatas', StoreData => {

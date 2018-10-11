@@ -43,9 +43,6 @@ export default {
         Store.on('home.changeConfig', StoreData => {
             this.layerInfo.config = StoreData.data;
         });
-        Store.on('home.submitImport', StoreData => {
-            // this.layerInfo = StoreData.data;
-        });
         Store.on('home.changeActiveLayer', StoreData => {
             this.layerInfo = StoreData.data;
         });

@@ -75,7 +75,7 @@ export default {
                 name: '坐标串',
                 children: {
                     position: {
-                        title: '坐标字符串',
+                        title: '坐标串geoString',
                         placeholder: '起点lng,起点lat,终点lng,终点lat',
                         value: ''
                     },
@@ -85,34 +85,14 @@ export default {
                         value: ''
                     }
                 }
-            },
-            address: {
-                name: '位置',
-                children: {
-                    start: {
-                        title: '起点位置',
-                        placeholder: '位置addressS',
-                        value: ''
-                    },
-                    end: {
-                        title: '终点位置',
-                        placeholder: '位置addressE',
-                        value: ''
-                    },
-                    count: {
-                        title: '权重',
-                        placeholder: '权重count',
-                        value: ''
-                    }
-                }
-            },
+            }
         },
         Polygon: {
             position: {
                 name: '坐标串',
                 children: {
                     position: {
-                        title: '坐标串',
+                        title: '坐标串geoString',
                         placeholder: 'lng1,lat1,lng2,lat2,...',
                         value: ''
                     },
@@ -122,22 +102,7 @@ export default {
                         value: ''
                     }
                 }
-            },
-            area: {
-                name: '位置区域',
-                children: {
-                    area: {
-                        title: '位置区域',
-                        placeholder: '位置区域area',
-                        value: ''
-                    },
-                    count: {
-                        title: '权重',
-                        placeholder: '权重count',
-                        value: ''
-                    }
-                }
-            },
+            }
         }
     }
 };
