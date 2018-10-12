@@ -3,7 +3,9 @@
         :md-active.sync="showDialog"
         :md-click-outside-to-close="false"
     )
-        md-dialog-title 新建图层
+        md-dialog-title 
+            span 新建图层
+            span.small 创建图层，首先需要上传位置数据
         div.dialog-body
             el-radio-group.radio-btn-gp(v-model="dataTab" @change="changeDataTab")
                 el-radio-button(label="1") 上传数据
@@ -25,6 +27,9 @@
                                 p asad 
                                 p ddd
                             a(href="javascript:") 文件说明
+                        a.download-data(href="./examples/data.zip") 
+                            i.el-icon-download
+                            span 示例数据下载
                     el-col(:span="24") 
                         el-upload(drag action="" :before-upload="beforeUpload")
                             i.el-icon-upload(v-if="!uploadFile")
@@ -202,6 +207,15 @@ export default {
 </script>
 
 <style lang="scss">
+.md-dialog-title {
+    padding: 16px 24px 10px;
+    border-bottom: 1px solid #ccc;
+    .small {
+        margin-left: 12px;
+        color: #999;
+        font-size: 12px;
+    }
+}
 .dialog-body {
     padding: 0 20px;
     height: 400px;
@@ -225,6 +239,13 @@ export default {
         font-size: 14px;
         margin-right: 10px;
     }
+    .download-data {
+        float: right;
+        .el-icon-download {
+            font-size: 16px;
+            vertical-align: middle;
+        }
+    }
     .el-upload {
         display: block;
         margin-top: 5px;
@@ -237,6 +258,12 @@ export default {
                 color: #c0c4cc;
                 margin: 20px 0 16px;
                 line-height: 50px;
+            }
+            .el-upload__text em {
+                color: #ff5252;
+            }
+            &:hover {
+                border-color: #ff5252;
             }
         }
     }
@@ -268,5 +295,24 @@ export default {
     .input-title {
         margin-top: 10px;
     }
+}
+.el-radio-button__inner:hover {
+    color: #ff5252;
+}
+.el-radio-button__orig-radio:checked+.el-radio-button__inner {
+    background-color: #ff5252;
+    border-color: #ff5252;
+    -webkit-box-shadow: -1px 0 0 0 #ff5252;
+    box-shadow: -1px 0 0 0 #ff5252;
+}
+.el-radio__inner:hover {
+    border-color: #ff5252;
+}
+.el-radio__input.is-checked .el-radio__inner {
+    border-color: #ff5252;
+    background: #ff5252;
+}
+.el-radio__input.is-checked+.el-radio__label {
+    color: #ff5252;
 }
 </style>

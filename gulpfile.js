@@ -27,11 +27,17 @@ gulp.task('static', () => {
         .pipe(gulp.dest('./dist/static'));
 });
 
+gulp.task('examples', () => {
+    gulp.src(['data/examples/data.zip'])
+        .pipe(gulp.dest('./dist/examples'));
+});
+
 
 if (env === 'development') {
     gulp.watch('src/page/*.*', ['page']);
     gulp.watch('src/scss/**/{*.scss,!_*.scss}', ['sass']);
     gulp.watch('src/static/**/{*.*,!*.scss}', ['static']);
+    gulp.watch('data/examples/data.zip', ['examples']);
 }
 
-gulp.task('default', ['page', 'sass', 'static']);
+gulp.task('default', ['page', 'sass', 'static', 'examples']);

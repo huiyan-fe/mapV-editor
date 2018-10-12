@@ -21,7 +21,7 @@ export default {
             styles: {
                 'visualization': {
                     title: '默认',
-                    desc: '百度地图官网采用的地图样式。'
+                    desc: 'mapv编辑器默认样式。'
                 },
                 'normal': {
                     title: '百度地图',
