@@ -37,17 +37,19 @@
                                 em 点击上传
                             div.el-upload__tip(slot="tip" v-if="!uploadFile") 请上传 {{dataType}}数据 的文件
                             i.el-icon-success(v-if="uploadFile")
-                            div.el-upload__text(v-if="uploadFile") 文件上传成功！
+                            div.el-upload__text(v-if="uploadFile") 
+                                em 文件上传成功！
                             div.el-upload__tip(slot="tip" v-if="uploadFile") 已上传 {{uploadFile.name}}
-                el-row.data-input
+                el-row.data-input(v-if="uploadFile")
                     el-col(:span="6")
                         span.input-title 选择字段名: 
                     el-col(:span="18")
                         el-radio-group(v-model="positionType")
                             el-radio(v-for="(value, key) in rConfig" :key="key" :label="key" @change="changePositionType(value)") {{value.name}}
-                el-row.data-select(v-if="sConfig" v-for="(value, key) in sConfig" :key="key")
+                el-row.data-select(v-if="uploadFile" v-for="(value, key) in sConfig" :key="key")
                     el-col(:span="6")
-                        div.input-title {{value.title}}: 
+                        span.input-required(:class="key!=='count'?'':'hidden'") *
+                        span.input-title {{value.title}}: 
                     el-col(:span="18")
                         el-select.pos-input(:placeholder="value.placeholder" v-model="value.value")
                             el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
@@ -85,15 +87,13 @@ export default {
             exampleType: 1,
             exampleDatas: [],
             exampleData: null,
-            uploadFile: null,
-            uploadData: null
+            uploadFile: null
         }
     },
     methods: {
         clearData: function() {
             this.selectOptions = [];
             this.uploadFile = null;
-            this.uploadData = null;
             for (const i in this.sConfig) {
                 if (this.sConfig.hasOwnProperty(i)) {
                     this.sConfig[i].value = "";
@@ -104,7 +104,7 @@ export default {
             console.log(tab)
         },
         changeDataType: function(type) {
-            this.clearData();
+            // this.clearData();
             this.rConfig = this.selectMap[type];
             this.positionType = Object.keys(this.rConfig)[0];
             this.sConfig = this.rConfig[this.positionType] && this.rConfig[this.positionType].children;
@@ -157,8 +157,11 @@ export default {
                     return false;
                 }
                 for (const i in this.sConfig) {
-                    if (this.sConfig.hasOwnProperty(i) && !this.sConfig[i].value) {
-                        this.$message.error('请选择解析文件的字段名！');
+                    if (this.sConfig.hasOwnProperty(i) && i === 'count') {
+                        // 权重非必选项
+                        break;
+                    } else if (this.sConfig.hasOwnProperty(i) && !this.sConfig[i].value) {
+                        this.$message.error(`${this.sConfig[i].title} 是必选项！`);
                         return false;
                     }
                 }
@@ -189,8 +192,8 @@ export default {
         });
 
         Store.on("home.receiveUploads", storeData => {
-            this.uploadData = storeData.data;
-            Action.home.emit('changeData', this.uploadData);
+            const uploadData = storeData.data;
+            Action.home.emit('changeData', uploadData);
         });
 
         Store.on('home.receiveDatas', StoreData => {
@@ -259,6 +262,10 @@ export default {
                 margin: 20px 0 16px;
                 line-height: 50px;
             }
+            .el-icon-success {
+                color: #ff5252;
+                opacity: 0.8;
+            }
             .el-upload__text em {
                 color: #ff5252;
             }
@@ -277,7 +284,17 @@ export default {
 }
 .data-input,
 .data-select {
+    .input-required {
+        display: inline-block;
+        color: #ff5252;
+        font-weight: bold;
+        width: 10px;
+    }
+    .input-required.hidden {
+        visibility: hidden;
+    }
     .input-title {
+        display: inline-block;
         font-size: 14px;
     }
     .pos-input {
@@ -293,7 +310,7 @@ export default {
 }
 .data-select {
     .input-title {
-        margin-top: 10px;
+        margin-top: 15px;
     }
 }
 .el-radio-button__inner:hover {

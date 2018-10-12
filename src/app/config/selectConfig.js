@@ -19,22 +19,22 @@ export default {
                     },
                     count: {
                         title: '权重',
-                        placeholder: '权重count',
+                        placeholder: '可选，权重count',
                         value: ''
                     }
                 }
             },
             address: {
-                name: '位置',
+                name: '地址名称',
                 children: {
                     address: {
-                        title: '位置',
-                        placeholder: '位置address',
+                        title: '地址名称',
+                        placeholder: '地址名称address',
                         value: ''
                     },
                     count: {
                         title: '权重',
-                        placeholder: '权重count',
+                        placeholder: '可选，权重count',
                         value: ''
                     }
                 }
@@ -66,7 +66,7 @@ export default {
                     },
                     count: {
                         title: '权重',
-                        placeholder: '权重count',
+                        placeholder: '可选，权重count',
                         value: ''
                     }
                 }
@@ -81,7 +81,7 @@ export default {
                     },
                     count: {
                         title: '权重',
-                        placeholder: '权重count',
+                        placeholder: '可选，权重count',
                         value: ''
                     }
                 }
@@ -98,7 +98,7 @@ export default {
                     },
                     count: {
                         title: '权重',
-                        placeholder: '权重count',
+                        placeholder: '可选，权重count',
                         value: ''
                     }
                 }
@@ -113,7 +113,7 @@ export default {
                     },
                     count: {
                         title: '权重',
-                        placeholder: '权重count',
+                        placeholder: '可选，权重count',
                         value: ''
                     }
                 }
