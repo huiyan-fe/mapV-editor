@@ -284,8 +284,8 @@ export default {
     }
 }
 .el-tooltip__popper {
-    width: 320px;
     .tip-content {
+        width: 300px;
         p {
             margin: 0;
         }

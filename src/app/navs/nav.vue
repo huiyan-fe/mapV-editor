@@ -5,6 +5,7 @@
             span.logo
             span.text MAPV
         .app-nav-btn(@click="addLayer" :class="nav==='layer'?'active':''") 新建图层
+        Layers
         .app-nav-btn.map(@click="changeNav('map')" :class="nav==='map'?'active':''") 地图样式设置
         //- .app-nav-block(@click="changeNav('layer')" :class="nav==='layer'?'active':''") 图层
             .svg
@@ -73,7 +74,7 @@ export default {
             if (data !== this.nav) {
                 // close layer-console active
                 if (this.nav && data !== 'layer') {
-                    Action.home.emit('changeActiveLayer', null);
+                    Action.home.emit('closeLayer');
                 }
                 this.nav = data;
                 Action.home.emit('changeNav', data);
@@ -167,10 +168,6 @@ export default {
     &.active {
       background-color: #f5533d;
       border-color: #f5533d;
-    }
-    &.map {
-      position: absolute;
-      top: 550px;
     }
   }
   .app-nav-block {

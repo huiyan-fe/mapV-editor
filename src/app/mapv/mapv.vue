@@ -160,6 +160,9 @@ export default {
         });
       })
     ];
+  },
+  beforeDestroy() {
+    this.stores.forEach(store=>store());
   }
 };
 </script>

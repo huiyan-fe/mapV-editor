@@ -24,7 +24,9 @@ export default {
     },
     methods: {
         closeLayer: function (params) {
-            this.layerInfo.active = false;
+            if (this.layerInfo) {
+                this.layerInfo.active = false;
+            }
             this.layerInfo = null;
             Action.home.emit('changeNav', null)
         }
@@ -59,15 +61,13 @@ export default {
             this.layerInfo.config = StoreData.data;
         });
         Store.on('home.changeActiveLayer', StoreData => {
-            // marine bug
-            if (StoreData.data instanceof Array && StoreData.data.length == 0) {
-                if (this.layerInfo) {
-                    this.layerInfo.active = false;
-                }
-                this.layerInfo = null;
-            } else {
-                this.layerInfo = StoreData.data;
+            this.layerInfo = StoreData.data;
+        });
+        Store.on('home.closeLayer', StoreData => {
+            if (this.layerInfo) {
+                this.layerInfo.active = false;
             }
+            this.layerInfo = null;
         });
     }
 }
@@ -80,6 +80,7 @@ export default {
   left: 220px;
   top: 0;
   bottom: 0;
+  z-index: 1;
   width: 300px;
   background: #222;
   border-left: 1px solid #717070;

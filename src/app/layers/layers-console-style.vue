@@ -109,16 +109,19 @@ export default {
     }
   },
   mounted: function() {
-    Store.on("home.initConfig", StoreData => {
-      this.config = StoreData.data;
-      console.warn("init config", this.config, StoreData.data);
-      this.styleMap = styleConfig.styleMap[this.config.dataType];
-    });
-
-    Store.on("home.changeActiveLayer", StoreData => {
-      this.config = StoreData.data.config || {};
-      this.styleMap = styleConfig.styleMap[this.config.dataType];
-    });
+    this.stores = [
+      Store.on("home.initConfig", StoreData => {
+        this.config = StoreData.data;
+        this.styleMap = styleConfig.styleMap[this.config.dataType];
+      }),
+      Store.on("home.changeActiveLayer", StoreData => {
+        this.config = StoreData.data.config || {};
+        this.styleMap = styleConfig.styleMap[this.config.dataType];
+      })
+    ];
+  },
+  beforeDestroy() {
+    this.stores.forEach(store=>store());
   }
 };
 </script>

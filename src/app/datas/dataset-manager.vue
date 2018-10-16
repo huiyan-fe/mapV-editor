@@ -83,25 +83,42 @@ export default {
                     dataSetManager.geoLine(lngSCol, latSCol, lngECol, latECol, countCol);
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
-                } else if(positionType === 'position') {
-                    const posCol = selectConfig.position.value;
+                } else if(positionType === 'geostring') {
+                    const geoCol = selectConfig.geostring.value;
                     const countCol = selectConfig.count.value;
                     // 解析坐标是同步
-                    dataSetManager.geoLineString(posCol, countCol);
+                    dataSetManager.geoLineString(geoCol, countCol);
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
+                } else if(positionType === 'od') {
+                    const startCol = selectConfig.start.value;
+                    const endCol = selectConfig.end.value;
+                    const countCol = selectConfig.count.value;
+                    // 解析地址是异步
+                    dataSetManager.geoOd(startCol, endCol, countCol, rs => {
+                        data.data = dataSetManager.getGeoData();
+                        Action.home.emit('receiveUploads', data);
+                    });
                 } else {
                     console.error('解析数据类型错误!');
                 }
             // 解析面数据
             } else {
-                if (positionType === 'position') {
-                    const posCol = selectConfig.position.value;
+                if (positionType === 'geostring') {
+                    const geoCol = selectConfig.geostring.value;
                     const countCol = selectConfig.count.value;
                     // 解析坐标是同步
-                    dataSetManager.geoPolygon(posCol, countCol);
+                    dataSetManager.geoPolygon(geoCol, countCol);
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
+                } else if(positionType === 'od') {
+                    const boundaryCol = selectConfig.boundary.value;
+                    const countCol = selectConfig.count.value;
+                    // 解析地址是异步
+                    dataSetManager.geoBoundary(boundaryCol, countCol, rs => {
+                        data.data = dataSetManager.getGeoData();
+                        Action.home.emit('receiveUploads', data);
+                    });
                 } else {
                     console.error('解析数据类型错误!');
                 }

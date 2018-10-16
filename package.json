@@ -67,7 +67,7 @@
         "gulp": "^3.9.1",
         "gulp-sass": "^3.1.0",
         "html-webpack-plugin": "^2.30.1",
-        "marine": "^1.0.5",
+        "marine": "^1.0.16",
         "pug": "^2.0.0-rc.4",
         "sass-loader": "^6.0.6",
         "style-loader": "^0.18.2",

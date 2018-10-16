@@ -25,11 +25,11 @@ export default {
                 }
             },
             address: {
-                name: '地址名称',
+                name: '地点名称',
                 children: {
                     address: {
-                        title: '地址名称',
-                        placeholder: '地址名称address',
+                        title: '地点名称',
+                        placeholder: '地点名称address',
                         value: ''
                     },
                     count: {
@@ -71,12 +71,32 @@ export default {
                     }
                 }
             },
-            position: {
+            geostring: {
                 name: '坐标串',
                 children: {
-                    position: {
+                    geostring: {
                         title: '坐标串geoString',
                         placeholder: '起点lng,起点lat,终点lng,终点lat',
+                        value: ''
+                    },
+                    count: {
+                        title: '权重',
+                        placeholder: '可选，权重count',
+                        value: ''
+                    }
+                }
+            },
+            od: {
+                name: '地点名称',
+                children: {
+                    start: {
+                        title: '起点',
+                        placeholder: '起点start',
+                        value: ''
+                    },
+                    end: {
+                        title: '终点',
+                        placeholder: '终点end',
                         value: ''
                     },
                     count: {
@@ -88,10 +108,10 @@ export default {
             }
         },
         Polygon: {
-            position: {
+            geostring: {
                 name: '坐标串',
                 children: {
-                    position: {
+                    geostring: {
                         title: '坐标串geoString',
                         placeholder: 'lng1,lat1,lng2,lat2,...',
                         value: ''
@@ -106,7 +126,7 @@ export default {
             boundary: {
                 name: '区域名称',
                 children: {
-                    position: {
+                    boundary: {
                         title: '区域名称',
                         placeholder: '例如：北京市',
                         value: ''

@@ -1,12 +1,12 @@
 <template lang="pug">
 #app
+    DatasCore
     NavComp
     MapComp
     MapV
     DatasetManager
-    DatasCore
     DatasLayer(v-show="nav==='data'")
-    Layers
+    //- Layers
     MapLayers(v-show="nav==='map'")
     Export
     Fullscreen
@@ -48,7 +48,6 @@ export default {
     mounted: function () {
         Store.on("home.changeNav", StoreData => {
             this.nav = this.nav === StoreData.data ? null : StoreData.data;
-            console.log(this.nav)
         });
     }
 };
