@@ -2,12 +2,12 @@
 #mapv
 </template>
 
-
 <script>
 import Config from './config.js';
 export default {
     name: 'mapv',
-    components: {},
+    components: {
+    },
     mounted: function () {
         let navigationControl = new BMap.NavigationControl({
             anchor: BMAP_ANCHOR_TOP_LEFT,
@@ -34,7 +34,7 @@ export default {
   position: absolute;
   overflow: hidden;
   top: 0;
-  left: 60px;
+  left: 220px;
   right: 0px;
   bottom: 0;
   background: #021019;

@@ -35,7 +35,9 @@
                 :step="configMap[key]&&configMap[key].step"
                 @change="changeconfig($event,key)"
             )
-            span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'" class="layers-console-value") {{value}}
+            span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'&&typeof value!=='boolean'" class="layers-console-value") {{value}}
+            span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'&&value===true" class="layers-console-value") 是
+            span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'&&value===false" class="layers-console-value") 否
         .btns-focus
             md-button(@click="focusOn()" title="聚焦图层")
               svg(viewBox="0 0 1024 1024")

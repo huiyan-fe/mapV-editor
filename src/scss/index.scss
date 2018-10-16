@@ -1,5 +1,5 @@
 :root {
-    --md-theme-default-primary-on-background: #ff5252;
+    --md-theme-default-primary-on-background: #f5533d;
     --md-theme-default-background: #efefef;
 }
 body {
@@ -80,5 +80,25 @@ body {
         .el-switch__button {
             background: #999;
         }
+    }
+
+    ::-webkit-scrollbar {
+        height: 10px;
+        overflow: visible;
+        width: 6px;
+    }
+    ::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: #333;
+        background-clip: padding-box;
+        border: 1px solid #666;
+        border-width: 1px 1px 1px 1px;
+        min-height: 28px;
+        max-height: 100px;
+        padding: 10px 0 0;
+        box-shadow: inset 0px 0px 2px rgba(256, 256, 256, 0.25);
     }
 }

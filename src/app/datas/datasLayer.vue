@@ -19,7 +19,7 @@ div
 import { Action, Store } from "marine";
 import datas from "./defaultDatas.js";
 import Manage from "./datasLayer-manage.vue";
-datas.forEach(item => (item.visiable = true));
+datas.forEach(item => (item.visible = true));
 export default {
     data: function () {
         return {

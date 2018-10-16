@@ -1,7 +1,10 @@
 <template lang="pug">
-    .layers-console(v-if="layerInfo")
+    .layers-console(v-show="layerInfo")
         .layers-console-head 
-            .layers-console-title {{layerInfo.name}} 图层样式
+            .layers-console-title {{layerInfo && layerInfo.name}} 图层样式
+            .layers-close(@click="closeLayer")
+                svg(viewBox="0 0 1024 1024")
+                    path(d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z")
         .layers-console-body
             ConsoleStyle
 </template>
@@ -20,6 +23,18 @@ export default {
         }
     },
     methods: {
+        closeLayer: function (params) {
+            this.layerInfo.active = false;
+            this.layerInfo = null;
+            Action.home.emit('changeNav', null)
+        }
+    },
+    watch: {
+        layerInfo (newVal, oldVal) {
+            if (oldVal == null && newVal != null) {
+                Action.home.emit('changeNav', 'layer');
+            }
+        }
     },
     mounted: function () {
         // Store.on('home.importData', (storeData) => {
@@ -44,7 +59,15 @@ export default {
             this.layerInfo.config = StoreData.data;
         });
         Store.on('home.changeActiveLayer', StoreData => {
-            this.layerInfo = StoreData.data;
+            // marine bug
+            if (StoreData.data instanceof Array && StoreData.data.length == 0) {
+                if (this.layerInfo) {
+                    this.layerInfo.active = false;
+                }
+                this.layerInfo = null;
+            } else {
+                this.layerInfo = StoreData.data;
+            }
         });
     }
 }
@@ -54,21 +77,32 @@ export default {
 .layers-console {
   overflow: hidden;
   position: absolute;
-  left: 310px;
+  left: 220px;
   top: 0;
   bottom: 0;
   width: 300px;
-  background: #404040;
+  background: #222;
+  border-left: 1px solid #717070;
   .layers-console-head {
     height: 47px;
   }
   .layers-console-title {
-    height: 40px;
+    height: 50px;
     font-size: 16px;
-    line-height: 40px;
+    line-height: 50px;
     margin: 0 15px;
     color: #b9b9b9;
     border-bottom: 1px solid #717070;
+  }
+  .layers-close {
+    transition: all 0.3s ease;
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    fill: #b9b9b9;
+    cursor: pointer;
   }
   .layers-btns {
     padding: 0 15px;
@@ -106,13 +140,11 @@ export default {
 }
 
 .layers-console-body {
-  position: absolute;
-  left: 0;
-  top: 27px;
-  bottom: 0;
   width: 300px;
   overflow: auto;
   transition: all 0.2s ease-in;
+  padding-top: 5px;
+  color: #b9b9b9;
   &.second {
     left: -300px;
   }
@@ -125,8 +157,6 @@ export default {
       stroke-width: 1;
     }
   }
-  padding-top: 10px;
-  color: #b9b9b9;
   ul,
   li {
     list-style: none;

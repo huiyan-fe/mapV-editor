@@ -45,7 +45,7 @@ export default {
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     maxSize: 40,
-                    minSize: 0,
+                    minSize: 2,
                     max: 100,
                     draw: 'bubble'
                 }
@@ -58,7 +58,7 @@ export default {
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     max: 100,
-                    min: 0,
+                    min: 2,
                     draw: 'intensity'
                 }
             },
@@ -71,7 +71,7 @@ export default {
                     globalCompositeOperation: 'lighter',
                     size: 50,
                     max: 100,
-                    min: 0,
+                    min: 2,
                     label: true,
                     draw: 'grid'
                 }
@@ -94,7 +94,7 @@ export default {
                     globalCompositeOperation: 'lighter',
                     size: 50,
                     max: 100,
-                    min: 0,
+                    min: 2,
                     label: true,
                     draw: 'honeycomb'
                 }

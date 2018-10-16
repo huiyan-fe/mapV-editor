@@ -64,7 +64,7 @@ export default {
             }
           });
           map.setViewport(allPoints, {
-            margins: [0, 0, 0, 610]
+            margins: [0, 0, 0, 300]
           });
         }
       }),
@@ -138,6 +138,7 @@ export default {
             if (StoreData.data.data.length > 100 && defalutConfig.useShadow) {
               defalutConfig.useShadow = false;
               defalutConfig.shadowBlur = 0;
+              defalutConfig.shadowColor = undefined;
             }
             defalutConfig.dataType = defalutDrawType;
             target.config = defalutConfig;

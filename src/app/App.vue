@@ -6,9 +6,10 @@
     DatasetManager
     DatasCore
     DatasLayer(v-show="nav==='data'")
-    Layers(v-show="nav==='layer'")
+    Layers
     MapLayers(v-show="nav==='map'")
     Export
+    Fullscreen
 </template>
 
 <script>
@@ -21,6 +22,7 @@ import DatasLayer from "./datas/datasLayer.vue";
 import DatasetManager from './datas/dataset-manager.vue';
 import MapLayers from "./map/mapLayer.vue";
 import Export from "./export/export.vue";
+import Fullscreen from './mapComponents/full-screen.vue';
 import { Action, Store } from "marine";
 Action.def("home", {});
 
@@ -40,11 +42,13 @@ export default {
         DatasCore,
         DatasLayer,
         MapLayers,
-        Export
+        Export,
+        Fullscreen
     },
     mounted: function () {
         Store.on("home.changeNav", StoreData => {
             this.nav = this.nav === StoreData.data ? null : StoreData.data;
+            console.log(this.nav)
         });
     }
 };

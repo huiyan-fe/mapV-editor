@@ -103,7 +103,7 @@ export default {
                     }
                 }
             },
-            area: {
+            boundary: {
                 name: '区域名称',
                 children: {
                     position: {

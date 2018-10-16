@@ -24,10 +24,10 @@
                         span.upload-title 上传文件
                         el-tooltip(effect="dark" placement="right")
                             div.tip-content(slot="content") 
-                                p asad 
-                                p ddd
+                                p 1.上传的数据文件格式为excel或csv； 
+                                p 2.数据文件需设置字段名称（即列名称），且必须包含位置字段，可以是地址、坐标或者行政区名称；更多说明请参考下载文件。
                             a(href="javascript:") 文件说明
-                        a.download-data(href="./examples/data.zip") 
+                        a.download-data(href="./examples/示例数据&文件格式说明.zip") 
                             i.el-icon-download
                             span 示例数据下载
                     el-col(:span="24") 
@@ -35,7 +35,11 @@
                             i.el-icon-upload(v-if="!uploadFile")
                             div.el-upload__text(v-if="!uploadFile") 将文件拖到此处，或
                                 em 点击上传
-                            div.el-upload__tip(slot="tip" v-if="!uploadFile") 请上传 {{dataType}}数据 的文件
+                            div.el-upload__tip(slot="tip" v-if="!uploadFile") 请上传 
+                                em(v-if="dataType=='Point'") 点数据
+                                em(v-if="dataType=='LineString'") 线数据
+                                em(v-if="dataType=='Polygon'") 面数据
+                                |  的文件
                             i.el-icon-success(v-if="uploadFile")
                             div.el-upload__text(v-if="uploadFile") 
                                 em 文件上传成功！
@@ -263,19 +267,24 @@ export default {
                 line-height: 50px;
             }
             .el-icon-success {
-                color: #ff5252;
+                color: #f5533d;
                 opacity: 0.8;
             }
             .el-upload__text em {
-                color: #ff5252;
+                color: #f5533d;
             }
             &:hover {
-                border-color: #ff5252;
+                border-color: #f5533d;
             }
         }
     }
+    .el-upload__tip em {
+        color: #f5533d;
+        font-style: normal;
+    }
 }
 .el-tooltip__popper {
+    width: 320px;
     .tip-content {
         p {
             margin: 0;
@@ -286,7 +295,7 @@ export default {
 .data-select {
     .input-required {
         display: inline-block;
-        color: #ff5252;
+        color: #f5533d;
         font-weight: bold;
         width: 10px;
     }
@@ -314,22 +323,22 @@ export default {
     }
 }
 .el-radio-button__inner:hover {
-    color: #ff5252;
+    color: #f5533d;
 }
 .el-radio-button__orig-radio:checked+.el-radio-button__inner {
-    background-color: #ff5252;
-    border-color: #ff5252;
-    -webkit-box-shadow: -1px 0 0 0 #ff5252;
-    box-shadow: -1px 0 0 0 #ff5252;
+    background-color: #f5533d;
+    border-color: #f5533d;
+    -webkit-box-shadow: -1px 0 0 0 #f5533d;
+    box-shadow: -1px 0 0 0 #f5533d;
 }
 .el-radio__inner:hover {
-    border-color: #ff5252;
+    border-color: #f5533d;
 }
 .el-radio__input.is-checked .el-radio__inner {
-    border-color: #ff5252;
-    background: #ff5252;
+    border-color: #f5533d;
+    background: #f5533d;
 }
 .el-radio__input.is-checked+.el-radio__label {
-    color: #ff5252;
+    color: #f5533d;
 }
 </style>
