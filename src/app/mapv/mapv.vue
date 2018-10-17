@@ -52,6 +52,13 @@ export default {
                   allPoints.push(new BMap.Point(point[0], point[1]));
                 });
                 break;
+              case 'MultiLineString':
+                point.geometry.coordinates.forEach(line => {
+                  line.forEach(point => {
+                    allPoints.push(new BMap.Point(point[0], point[1]));
+                  });
+                });
+                break;
               case 'Polygon':
                 point.geometry.coordinates.forEach(boundary => {
                   boundary.forEach(point => {

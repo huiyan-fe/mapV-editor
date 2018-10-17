@@ -131,6 +131,38 @@ export default {
                     draw: 'intensity'
                 }
             }
+        },
+        MultiLineString: {
+            simple: {
+                name: '默认',
+                config: {
+                    strokeStyle: 'rgba(255, 250, 50, 0.3)',
+                    lineWidth: 0.7,
+                    useShadow: true,
+                    shadowColor: 'rgba(255, 250, 50, 1)',
+                    shadowBlur: 20,
+                    draw: 'simple'
+                }
+            },
+            heatmap: {
+                name: '热力',
+                config: {
+                    max: 50,
+                    draw: 'heatmap',
+                    // lineWidth: 0.7,
+                }
+            },
+            intensity: {
+                name: '密度',
+                config: {
+                    lineWidth: 0.5,
+                    max: 30,
+                    useShadow: true,
+                    shadowColor: 'rgba(255, 250, 50, 1)',
+                    shadowBlur: 20,
+                    draw: 'intensity'
+                }
+            }
         }
     },
     configLabelMap: {

@@ -87,7 +87,7 @@ export default {
                     const geoCol = selectConfig.geostring.value;
                     const countCol = selectConfig.count.value;
                     // 解析坐标是同步
-                    dataSetManager.geoLineString(geoCol, countCol);
+                    dataSetManager.geoMultiLineString(geoCol, countCol);
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
                 } else if(positionType === 'od') {
