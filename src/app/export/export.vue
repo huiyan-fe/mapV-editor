@@ -70,7 +70,7 @@ export default {
                 url += `zoom=${item.zoom}&`;
                 url += `width=${item.width}&`;
                 url += `height=${item.height}&`;
-                url += `customid=visualization&scaler=2`;
+                url += `customid=${localStorage.getItem('e-mapstyle') || 'visualization'}&scaler=2`;
 
                 const imgFetch = fetch(url)
                     .then(res => res.blob())
