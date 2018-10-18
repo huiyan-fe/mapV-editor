@@ -8,8 +8,8 @@ module.exports.entry
 
 ```
 entry: {
-    // 'app/index': './src/app/index.jsx',
-    'app/index': './src/app/index.vue.js',
+    'app/index': './src/app/index.jsx',
+    // 'app/index': './src/app/index.vue.js',
 },
 ```
 
