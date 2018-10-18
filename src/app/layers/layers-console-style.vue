@@ -4,6 +4,10 @@
             md-button(v-for="(value, key) in styleMap" :key='key' :class="key===config.draw?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
         .btns-block(v-for="(value, key) in config" v-if="configMap[key]&&configMap[key].name")
             label(v-if="configMap[key]") {{configMap[key]&&configMap[key].name}} 
+            el-tooltip(effect="light" placement="right" v-if="configMap[key]&&configMap[key].name==='最大权重'")
+                div.tip-content-count(slot="content") 
+                    p aadsadsadsadsads
+                i.el-icon-question.tip-icon
             el-color-picker(v-if="configMap[key]&&configMap[key].type==='color'"
                 v-model="config[key]" 
                 show-alpha 
@@ -154,6 +158,10 @@ export default {
     label {
       margin-right: 10px;
     }
+    .tip-icon {
+      cursor: pointer;
+      margin-left: -10px;
+    }
     overflow: hidden;
   }
   .layers-console-value {
@@ -189,5 +197,14 @@ export default {
 
 .btns-typsbtn {
   padding: 10px 0;
+}
+
+.el-tooltip__popper {
+  .tip-content-count {
+    max-width: 200px;
+    p {
+        margin: 0;
+    }
+  }
 }
 </style>

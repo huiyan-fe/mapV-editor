@@ -40,7 +40,6 @@ export default {
 
         Store.on("home.getUploads", storeData => {
             let {file, dataType, positionType, selectConfig} = storeData.data;
-            console.log(selectConfig)
 
             let data = {
                 active: true,
@@ -110,7 +109,7 @@ export default {
                     dataSetManager.geoPolygon(geoCol, countCol);
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
-                } else if(positionType === 'od') {
+                } else if(positionType === 'boundary') {
                     const boundaryCol = selectConfig.boundary.value;
                     const countCol = selectConfig.count.value;
                     // 解析地址是异步

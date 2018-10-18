@@ -105,7 +105,7 @@ export default {
                 name: '默认',
                 config: {
                     strokeStyle: 'rgba(255, 250, 50, 0.3)',
-                    lineWidth: 0.7,
+                    lineWidth: 2,
                     useShadow: true,
                     shadowColor: 'rgba(255, 250, 50, 1)',
                     shadowBlur: 20,
@@ -137,7 +137,7 @@ export default {
                 name: '默认',
                 config: {
                     strokeStyle: 'rgba(255, 250, 50, 0.3)',
-                    lineWidth: 0.7,
+                    lineWidth: 2,
                     useShadow: true,
                     shadowColor: 'rgba(255, 250, 50, 1)',
                     shadowBlur: 20,
