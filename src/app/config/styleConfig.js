@@ -200,11 +200,11 @@ export default {
             type: 'range'
         },
         maxSize: {
-            name: '最大值',
+            name: '最大半径',
             type: 'range'
         },
         minSize: {
-            name: '最小值',
+            name: '最小半径',
             type: 'range'
         },
         fillStyle: {
