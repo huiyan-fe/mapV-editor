@@ -216,7 +216,7 @@ export default {
             type: 'checkbox'
         },
         shadowColor: {
-            name: '投影颜色',
+            name: '阴影颜色',
             type: 'color',
         },
         strokeStyle: {
@@ -224,7 +224,7 @@ export default {
             type: 'color',
         },
         shadowBlur: {
-            name: '投影半径',
+            name: '阴影半径',
             type: 'range',
             min: 1
         },
