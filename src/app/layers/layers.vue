@@ -4,12 +4,11 @@
             //- .layers-fn
                 .layers-new 
                     md-button.md-raised.layers-new-btn(@click="addLayer") 新建图层
-            .layers-tips(v-if="list.length<=0")
+            //- .layers-tips(v-if="list.length<=0")
                 .tips 还没有图层？
                 .tips 点击“新建图层”按钮以添加图层
                 .tips 什么是图层？
-                .tips 图层是mapV编辑器的重要概念，它相当于一张透明的纸，对于每个图层，你可以指定其绑定的数据以及绘制的样式，不同图层叠加可以创造出神奇的效果。
-                .tips 就像你在第一个图层绘制陆地，第二个图层绘制河流，第三个图层绘制山脉，第四个图层...当把所有的图层合并起来之后，你就会获得一个完美的地图。
+                .tips 图层是一个绘制面板，可以设置在其上绘制的位置数据及样式，多个图层之间可以相互叠加，实现更丰富的展现形式。
             ul.layers-lists(v-if="list.length>0")
                 li(draggable v-for="(item, index) in list" :class="item.active?'active':''" 
                     @click='changeActive(index)'
@@ -185,8 +184,8 @@ export default {
 .layers {
   width: 200px;
   max-height: 340px;
-  min-height: 260px;
-  margin: 25px 10px;
+  // min-height: 260px;
+  margin: 0 10px;
   border-radius: 6px;
   background-color: #1b1b1b;
   overflow-y: auto;
@@ -210,6 +209,7 @@ export default {
   padding: 0;
   margin: 0;
   color: #b9b9b9;
+  min-height: 240px;
   input {
     font-size: 14px;
     width: 100px;

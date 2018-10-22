@@ -57,8 +57,8 @@ export default {
                     shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
-                    max: 100,
                     min: 2,
+                    max: 100,
                     draw: 'intensity'
                 }
             },
@@ -70,8 +70,8 @@ export default {
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     size: 50,
-                    max: 100,
                     min: 2,
+                    max: 100,
                     label: true,
                     draw: 'grid'
                 }
@@ -93,8 +93,8 @@ export default {
                     shadowBlur: 30,
                     globalCompositeOperation: 'lighter',
                     size: 50,
-                    max: 100,
                     min: 2,
+                    max: 100,
                     label: true,
                     draw: 'honeycomb'
                 }
@@ -116,8 +116,7 @@ export default {
                 name: '热力',
                 config: {
                     max: 50,
-                    draw: 'heatmap',
-                    // lineWidth: 0.7,
+                    draw: 'heatmap'
                 }
             },
             intensity: {
@@ -148,8 +147,7 @@ export default {
                 name: '热力',
                 config: {
                     max: 50,
-                    draw: 'heatmap',
-                    // lineWidth: 0.7,
+                    draw: 'heatmap'
                 }
             },
             intensity: {
@@ -226,7 +224,8 @@ export default {
         shadowBlur: {
             name: '阴影半径',
             type: 'range',
-            min: 1
+            min: 1,
+            tooltip: '阴影半径越大，图形边缘越模糊'
         },
         size: {
             name: '半径大小',

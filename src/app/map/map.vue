@@ -4,15 +4,16 @@
 
 <script>
 import Config from './config.js';
+
 export default {
     name: 'mapv',
     components: {
     },
     mounted: function () {
-        let navigationControl = new BMap.NavigationControl({
-            anchor: BMAP_ANCHOR_TOP_LEFT,
-            type: BMAP_NAVIGATION_CONTROL_LARGE
-        });
+        // let navigationControl = new BMap.NavigationControl({
+        //     anchor: BMAP_ANCHOR_TOP_LEFT,
+        //     type: BMAP_NAVIGATION_CONTROL_LARGE
+        // });
         let map = window.map = new BMap.Map("mapv", {
             enableMapClick: false
         });    // 创建Map实例
@@ -21,7 +22,7 @@ export default {
             mapTypes: [BMAP_NORMAL_MAP, BMAP_SATELLITE_MAP, BMAP_HYBRID_MAP]
         }));   //添加地图类型控件
         map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-        map.addControl(navigationControl);
+        // map.addControl(navigationControl);
         map.setMapStyle({
             style: localStorage.getItem('e-mapstyle') || 'visualization' || 'midnight'
         });

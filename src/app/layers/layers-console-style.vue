@@ -2,11 +2,16 @@
     .layers-console-body-block
         .btns-typsbtn
             md-button(v-for="(value, key) in styleMap" :key='key' :class="key===config.draw?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
-        .btns-block(v-for="(value, key) in config" v-if="configMap[key]&&configMap[key].name")
+        .btns-block(v-for="(value, key) in config" v-if="configMap[key]&&configMap[key].name"
+            :class="key==='globalAlpha'||key==='lineWidth'||key==='fillStyle'||key==='size'||key==='max'||key==='shadowBlur'||key==='label'||key==='maxOpacity'?'bdrdown':''")
             label(v-if="configMap[key]") {{configMap[key]&&configMap[key].name}} 
-            //- el-tooltip(effect="light" placement="right" v-if="key==='max'&&configMap[key]")
+            el-tooltip(effect="light" placement="right" v-if="key==='max'&&configMap[key]&&currentKey==='bubble'")
                 div.tip-content-count(slot="content") 
                     p 该配置对应上传文件中权重字段，举例来说，如果设置最大权重为2，那么上传文件中所有权重大于等于2的数据均按最大半径展示。
+                i.el-icon-question.tip-icon
+            el-tooltip(effect="light" placement="right" v-if="configMap[key]&&configMap[key].tooltip")
+                div.tip-content-count(slot="content") 
+                    p {{configMap[key].tooltip}}
                 i.el-icon-question.tip-icon
             el-color-picker(v-if="configMap[key]&&configMap[key].type==='color'"
                 v-model="config[key]" 
@@ -99,6 +104,7 @@ export default {
       Action.home.emit("changeConfig", this.config);
     },
     changeDrawType: function(key) {
+      this.currentKey = key;
       if (this.styleMap[key].config) {
         const newConfig = JSON.parse(JSON.stringify(this.styleMap[key].config));
         newConfig.dataType = this.config.dataType;
@@ -117,6 +123,7 @@ export default {
       Store.on("home.initConfig", StoreData => {
         this.config = StoreData.data;
         this.styleMap = styleConfig.styleMap[this.config.dataType];
+        this.focusOn();
       }),
       Store.on("home.changeActiveLayer", StoreData => {
         this.config = StoreData.data.config || {};
@@ -140,7 +147,7 @@ export default {
     min-width: initial;
     line-height: 1.6em;
     padding: 5px;
-    margin: 2px 0 0 10px;
+    margin: 2px 5px 0 5px;
     &.md-toggle {
       color: white;
       background: #505050;
@@ -154,7 +161,10 @@ export default {
   .btns-block {
     margin: 0 10px;
     padding: 10px;
-    border-top: 1px solid #4e4e4e;
+    // border-bottom: 1px solid #4e4e4e;
+    &.bdrdown {
+      border-bottom: 1px solid #4e4e4e;
+    }
     label {
       margin-right: 10px;
     }
@@ -173,7 +183,6 @@ export default {
 
   .btns-focus {
     text-align: right;
-    border-top: 1px solid #505050;
     margin: 10px 10px;
     button {
       float: right;
@@ -197,6 +206,8 @@ export default {
 
 .btns-typsbtn {
   padding: 10px 0;
+  margin: 0 10px;
+  border-bottom: 1px solid #4e4e4e;
 }
 
 .el-tooltip__popper {

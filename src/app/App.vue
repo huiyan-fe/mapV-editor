@@ -10,6 +10,8 @@
     MapLayers(v-show="nav==='map'")
     Export
     Fullscreen
+    Zoom
+    Guidance
 </template>
 
 <script>
@@ -23,6 +25,8 @@ import DatasetManager from './datas/dataset-manager.vue';
 import MapLayers from "./map/mapLayer.vue";
 import Export from "./export/export.vue";
 import Fullscreen from './mapComponents/full-screen.vue';
+import Zoom from './mapComponents/zoom.vue';
+import Guidance from './guidance/guidance.vue';
 import { Action, Store } from "marine";
 Action.def("home", {});
 
@@ -43,7 +47,9 @@ export default {
         DatasLayer,
         MapLayers,
         Export,
-        Fullscreen
+        Fullscreen,
+        Zoom,
+        Guidance
     },
     mounted: function () {
         Store.on("home.changeNav", StoreData => {
