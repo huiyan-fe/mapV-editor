@@ -61,7 +61,7 @@ export default {
                     // }
                 }
             }
-            // console.log(centers)
+
             const promises = [];
             centers.forEach(item => {
                 let url = `//api.map.baidu.com/customimage/staticmap?`;
@@ -87,6 +87,20 @@ export default {
                 promises.push(imgFetch);
             });
 
+            // add water mask
+            const maskFetch = fetch('./static/images/navs/logo.png')
+                .then(res => res.blob())
+                .then(res => {
+                    return new Promise((resolve, rej) => {
+                        const waterMask = new Image();
+                        waterMask.src = URL.createObjectURL(res);
+                        waterMask.onload = () => {
+                            resolve(waterMask);
+                        }
+                    });
+                });
+            promises.push(maskFetch);
+
             Promise.all(promises).then(res => {
                 const canvas = document.createElement('canvas');
                 canvas.height = map.height;
@@ -95,18 +109,22 @@ export default {
                 canvas.style.width = canvas.width + 'px';
                 const ctx = canvas.getContext('2d');
                 res.forEach(item => {
-                    ctx.drawImage(
-                        item.image,
-                        0, 0, item.width * 2, item.height * 2,
-                        item.left, item.top, item.width, item.height
-                    );
+                    if (item.image) {
+                        ctx.drawImage(
+                            item.image,
+                            0, 0, item.width * 2, item.height * 2,
+                            item.left, item.top, item.width, item.height
+                        );
+                    } else {
+                        // add water mask
+                        ctx.drawImage(item, 0, 0, 202, 68, 50, 50, 150, 50);
+                    }
                 });
                 this.mapvLayers.sort((a, b) => {
                     return b.zIndex - a.zIndex;
                 });
 
                 this.mapvLayers.forEach(item => {
-                        console.log(item,item.mapv , item.visible)
                     if (item.mapv && item.visible) {
                         const mapvCanvas = item.mapv.getContext().canvas;
                         ctx.drawImage(
@@ -115,7 +133,7 @@ export default {
                             0, 0, map.width, map.height
                         );
                     }
-                })
+                });
 
                 const a = document.createElement('a');
                 a.href = canvas.toDataURL().replace("image/png", "image/octet-stream");

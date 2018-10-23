@@ -27,6 +27,11 @@ gulp.task('static', () => {
         .pipe(gulp.dest('./dist/static'));
 });
 
+gulp.task('images', () => {
+    gulp.src('src/app/**/*.png')
+        .pipe(gulp.dest('./dist/static/images'));
+});
+
 gulp.task('examples', () => {
     gulp.src(['data/examples/示例数据&文件格式说明.zip'])
         .pipe(gulp.dest('./dist/examples'));
@@ -36,8 +41,9 @@ gulp.task('examples', () => {
 if (env === 'development') {
     gulp.watch('src/page/*.*', ['page']);
     gulp.watch('src/scss/**/{*.scss,!_*.scss}', ['sass']);
+    gulp.watch('src/app/**/{*.png}', ['images']);
     gulp.watch('src/static/**/{*.*,!*.scss}', ['static']);
     gulp.watch('data/examples/示例数据&文件格式说明.zip', ['examples']);
 }
 
-gulp.task('default', ['page', 'sass', 'static', 'examples']);
+gulp.task('default', ['page', 'sass', 'static', 'images', 'examples']);
