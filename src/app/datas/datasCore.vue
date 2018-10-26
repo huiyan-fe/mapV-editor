@@ -28,6 +28,14 @@ export default {
             Action.home.emit("receiveDatas", datas);
         });
 
+        window.addEventListener('message', e => {
+            console.log(e)
+            console.log(e.data)
+            if (e.origin == 'http://localhost:2009/niggaJS/test/postmessage.html') {
+                e.source.postMessage('received', e.origin);
+            }
+        }, false);
+
         // Store.on('home.importData', (storeData) => {
         //     this.userDataIndex = this.userDataIndex || 0;
         //     datas.push({

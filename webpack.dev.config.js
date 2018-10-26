@@ -16,6 +16,8 @@ module.exports = {
     },
     devServer: {
         contentBase: './dist',
+        hot: true,
+        inline: true
     },
     devtool: 'eval-source-map',
     cacheBusting: 'false',
