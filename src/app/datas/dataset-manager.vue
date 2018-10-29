@@ -1,5 +1,4 @@
 <template lang="pug">
-
 </template>
 
 <script>
@@ -14,11 +13,17 @@ export default {
     },
     mounted: function () {
         const dataSetManager = new DatasetManager();
+
+        Store.on('home.receivePostMessage', StoreData => {
+            dataSetManager.importCSV(StoreData.data);
+            console.log(StoreData.data)
+            console.log(dataSetManager.getData())
+        });
+
         Store.on("home.getSelects", (storeData) => {
-            console.log(storeData.data)
-            var file = storeData.data;
-            var fileName = file.name;
-            var fr = new FileReader() ;
+            let file = storeData.data;
+            let fileName = file.name;
+            let fr = new FileReader() ;
 
             if (fileName.indexOf('.csv') > -1) {
                 fr.readAsText(file);
@@ -27,7 +32,7 @@ export default {
             }
 
             fr.onload = function(e) {
-                var rs = e.target.result;
+                let rs = e.target.result;
                 if (fileName.indexOf('.csv') > -1) {
                     dataSetManager.importCSV(rs);
                 } else {

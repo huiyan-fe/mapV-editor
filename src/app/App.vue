@@ -1,10 +1,10 @@
 <template lang="pug">
 #app
+    DatasetManager
     DatasCore
     NavComp
     MapComp
     MapV
-    DatasetManager
     DatasLayer(v-show="nav==='data'")
     //- Layers
     MapLayers(v-show="nav==='map'")
@@ -23,7 +23,7 @@ import DatasCore from "./datas/datasCore.vue";
 import DatasLayer from "./datas/datasLayer.vue";
 import DatasetManager from './datas/dataset-manager.vue';
 import MapLayers from "./map/mapLayer.vue";
-import Export from "./export/export.vue";
+import Export from "./mapComponents/export.vue";
 import Fullscreen from './mapComponents/full-screen.vue';
 import Zoom from './mapComponents/zoom.vue';
 import Guidance from './guidance/guidance.vue';

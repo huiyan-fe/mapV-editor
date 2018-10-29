@@ -7,7 +7,7 @@
             label(v-if="configMap[key]") {{configMap[key]&&configMap[key].name}} 
             el-tooltip(effect="light" placement="right" v-if="key==='max'&&configMap[key]&&currentKey==='bubble'")
                 div.tip-content-count(slot="content") 
-                    p 该配置对应上传文件中权重字段，举例来说，如果设置最大权重为2，那么上传文件中所有权重大于等于2的数据均按最大半径展示。
+                    p 该配置对应上传文件中权重字段，举例来说，如果设置最大权重为2，那么上传文件中所有权重大于等于2的数据均按最大半径展示。目前权重最大设置为100，建议用户将权重设置到100以内，以保证显示效果最佳。
                 i.el-icon-question.tip-icon
             el-tooltip(effect="light" placement="right" v-if="configMap[key]&&configMap[key].tooltip")
                 div.tip-content-count(slot="content") 

@@ -195,7 +195,8 @@ export default {
         },
         max: {
             name: '最大权重',
-            type: 'range'
+            type: 'range',
+            max: 100
         },
         maxSize: {
             name: '最大半径',

@@ -45,18 +45,15 @@ export default {
 .fullscreen {
     cursor: pointer;
     position: absolute;
-    bottom: 70px;
+    bottom: 80px;
     right: 10px;
     z-index: 4000;
-    width: 50px;
-    height: 50px;
-    fill: #b9b9b9;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 1000px;
-    padding: 10px;
-    &:hover {
-        background: rgba(0, 0, 0, 1);
-        fill: #fff;
-    }
+    width: 30px;
+    height: 30px;
+    fill: #999;
+    background: #fff;
+    padding: 4px;
+    box-shadow: 1px 2px 1px rgba(0,0,0,.15);
+    border-radius: 2px;
 }
 </style>

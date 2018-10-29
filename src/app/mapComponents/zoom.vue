@@ -26,7 +26,7 @@ export default {
 <style lang="scss">
 .zoom {
     position: absolute;
-    top: 50px;
+    bottom: 10px;
     right: 10px;
     z-index: 4000;
     .zoom-in,
@@ -43,9 +43,11 @@ export default {
     .zoom-in {
         background-image: url('zoomin.png');
         border-bottom: 1px solid #ccc;
+        border-radius: 2px 2px 0 0;
     }
     .zoom-out {
         background-image: url('zoomout.png');
+        border-radius: 0 0 2px 2px;
     }
 }
 </style>

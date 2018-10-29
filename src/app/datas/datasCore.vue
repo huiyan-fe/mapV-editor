@@ -29,10 +29,9 @@ export default {
         });
 
         window.addEventListener('message', e => {
-            console.log(e)
-            console.log(e.data)
-            if (e.origin == 'http://localhost:2009/niggaJS/test/postmessage.html') {
-                e.source.postMessage('received', e.origin);
+            if (e.origin == 'http://localhost:2009') {
+                e.source.postMessage('received data', e.origin);
+                Action.home.emit('receivePostMessage', e.data);
             }
         }, false);
 
