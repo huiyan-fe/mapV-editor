@@ -9,7 +9,7 @@
             md-button.md-raised.layers-new-btn 请选择底图样式
     .layers-choose
         .layers-block(v-for="(item, index) in styles")
-            div(@click="changeStyle(index)" :class="index===activeStyle?'layers-mapblock-name active':'layers-mapblock-name'") 
+            div(@click="changeStyle(index)" :class="index===activeStyle?'layers-mapblock-name active':'layers-mapblock-name'" :title="item.desc") 
                 img(:src="'//api.map.baidu.com/customimage/staticmap?center=116.3975,39.9087&zoom=10&width=220&height=135&customid='+index+'&scaler=2'")
                 p {{item.title}}
 

@@ -88,7 +88,7 @@ export default {
             });
 
             // add water mask
-            const maskFetch = fetch('//huiyan.baidu.com/cms/mapV-editor/copyright_logo.png')
+            const maskFetch = fetch('//huiyan.baidu.com/cms/mapV-editor/newlogo_baidumap.png')
                 .then(res => res.blob())
                 .then(res => {
                     return new Promise((resolve, rej) => {
@@ -117,7 +117,7 @@ export default {
                         );
                     } else {
                         // add water mask
-                        ctx.drawImage(item, 0, 0, 77, 32, 20, canvas.height - 50, 77, 32);
+                        ctx.drawImage(item, 0, 0, 174, 56, 20, canvas.height - 50, 87, 28);
                     }
                 });
                 this.mapvLayers.sort((a, b) => {
@@ -150,16 +150,19 @@ export default {
 .export {
   cursor: pointer;
   position: absolute;
-  bottom: 120px;
+  bottom: 104px;
   right: 10px;
   z-index: 4000;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   fill: #999;
   background: #fff;
   padding: 4px;
   box-shadow: 1px 2px 1px rgba(0,0,0,.15);
   border-radius: 2px;
+  &:hover {
+    fill: #4682ff;
+  }
 }
 .export-btn {
     position:absolute;
