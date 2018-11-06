@@ -69,6 +69,7 @@ export default {
   },
   data: function() {
     return {
+      currentKey: null,
       styleMap: styleConfig.styleMap,
       configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap)),
       config: {}

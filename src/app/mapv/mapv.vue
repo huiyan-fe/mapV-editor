@@ -140,7 +140,11 @@ export default {
           // set defalut options
           const defalutDrawType = StoreData.data.data[0].geometry.type;
           if (styleConfig.styleMap[defalutDrawType]) {
-            const defalutConfig = JSON.parse(JSON.stringify(styleConfig.styleMap[defalutDrawType].simple.config));
+            let defalutConfig = JSON.parse(JSON.stringify(styleConfig.styleMap[defalutDrawType].simple.config));
+            if (StoreData.data.options) {
+              const draw = StoreData.data.options.draw || 'simple';
+              defalutConfig = JSON.parse(JSON.stringify(styleConfig.styleMap[defalutDrawType][draw].config));
+            }
             // console.warn(defalutConfig);
             if (StoreData.data.data.length > 100 && defalutConfig.useShadow) {
               defalutConfig.useShadow = false;

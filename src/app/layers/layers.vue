@@ -63,7 +63,11 @@ export default {
                 zIndex: index * 10
             }
             this.list.unshift(newLayer);
-            Action.home.emit('addNewLayer', newLayer);
+            if (layerInfo && layerInfo.name) {
+                Action.home.emit('importNewLayer', newLayer);
+            } else {
+                Action.home.emit('addNewLayer', newLayer);
+            }
             Action.home.emit('changeActiveLayer', newLayer);
         },
         changeActive: function (index) {

@@ -15,9 +15,15 @@ export default {
         const dataSetManager = new DatasetManager();
 
         Store.on('home.receivePostMessage', StoreData => {
-            dataSetManager.importCSV(StoreData.data);
-            console.log(StoreData.data)
-            console.log(dataSetManager.getData())
+            let data = {
+                id: new Date(),
+                active: true,
+                visible: true,
+                data: StoreData.data.data,
+                name: StoreData.data.name,
+                options: StoreData.data.options
+            };
+            Action.home.emit('receiveUploads', data);
         });
 
         Store.on("home.getSelects", (storeData) => {

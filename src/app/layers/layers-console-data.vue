@@ -191,6 +191,10 @@ export default {
             this.showDialog = true;
         });
 
+        Store.on("home.importNewLayer", storeData => {
+            this.layerInfo = storeData.data;
+        });
+
         Store.on("home.receiveSelects", storeData => {
             this.selectOptions = storeData.data;
         });

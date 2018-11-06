@@ -30,8 +30,10 @@ export default {
 
         window.addEventListener('message', e => {
             if (e.origin == 'http://localhost:2009') {
+                let data = JSON.parse(e.data);
                 e.source.postMessage('received data', e.origin);
-                Action.home.emit('receivePostMessage', e.data);
+                Action.home.emit('importData');
+                Action.home.emit('receivePostMessage', data);
             }
         }, false);
 
