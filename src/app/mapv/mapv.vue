@@ -142,8 +142,14 @@ export default {
           if (styleConfig.styleMap[defalutDrawType]) {
             let defalutConfig = JSON.parse(JSON.stringify(styleConfig.styleMap[defalutDrawType].simple.config));
             if (StoreData.data.options) {
-              const draw = StoreData.data.options.draw || 'simple';
+              const options = StoreData.data.options;
+              const draw = options.draw || 'simple';
               defalutConfig = JSON.parse(JSON.stringify(styleConfig.styleMap[defalutDrawType][draw].config));
+              for (const key in options) {
+                if (options.hasOwnProperty(key)) {
+                  defalutConfig[key] = Number(options[key]) || options[key];
+                }
+              }
             }
             // console.warn(defalutConfig);
             if (StoreData.data.data.length > 100 && defalutConfig.useShadow) {
