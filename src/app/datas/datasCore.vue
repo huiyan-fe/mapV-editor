@@ -29,7 +29,7 @@ export default {
         });
 
         window.addEventListener('message', e => {
-            if (e.origin == 'http://localhost:2009') {
+            if (/\.baidu\.com/.test(e.origin)) {
                 let data = JSON.parse(e.data);
                 e.source.postMessage('received data', e.origin);
                 Action.home.emit('importData');
