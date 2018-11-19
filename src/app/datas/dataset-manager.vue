@@ -100,11 +100,12 @@ export default {
                     dataSetManager.geoMultiLineString(geoCol, countCol);
                     data.data = dataSetManager.getGeoData();
                     Action.home.emit('receiveUploads', data);
-                } else if(positionType === 'boundary') {
-                    const boundaryCol = selectConfig.boundary.value;
+                } else if(positionType === 'od') {
+                    const fromCol = selectConfig.start.value;
+                    const toCol = selectConfig.end.value;
                     const countCol = selectConfig.count.value;
                     // 解析地址是异步
-                    dataSetManager.geoBoundary(boundaryCol, countCol, rs => {
+                    dataSetManager.geoOd(fromCol, toCol, countCol, rs => {
                         data.data = dataSetManager.getGeoData();
                         Action.home.emit('receiveUploads', data);
                     });
