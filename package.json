@@ -1,6 +1,6 @@
 {
     "name": "mapv-editor",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "awesome editor based on mapV",
     "main": "index.js",
     "scripts": {
