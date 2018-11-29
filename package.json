@@ -1,6 +1,6 @@
 {
     "name": "mapv-editor",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "description": "awesome editor based on mapV",
     "main": "index.js",
     "scripts": {
@@ -35,9 +35,6 @@
         "fetch-jsonp": "^1.1.3",
         "mapv": "^2.0.31",
         "material-ui": "^0.19.0",
-        "react": "^15.6.1",
-        "react-bmap": "^1.0.32",
-        "react-dom": "^15.6.1",
         "url-loader": "^0.6.2",
         "vue": "^2.5.17",
         "vue-color": "^2.4.3",

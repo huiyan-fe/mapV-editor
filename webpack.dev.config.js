@@ -8,7 +8,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     entry: {
         'app/index': './src/app/index.vue.js',
-        'app/common': ['mapv']
+        'app/common': ['mapv', 'vue', 'element-ui', 'vue-material']
     },
     output: {
         filename: '[name].js',
