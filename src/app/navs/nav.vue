@@ -1,7 +1,7 @@
 <template lang="pug">
 .nav-box
     .app-nav
-        .app-nav-logo 
+        .app-nav-logo(v-if="isiframe === false")
             span.logo
             span.text MAPV
         .app-nav-btn(@click="addLayer" :class="nav==='layer'?'active':''") 新建图层
@@ -57,7 +57,8 @@ export default {
             // showSnackbar: true,
             nav: null,
             shwoConfig: false,
-            version
+            version,
+            isiframe: false
         }
     },
     components: {
@@ -88,6 +89,18 @@ export default {
         // setTimeout(() => {
         //     this.showSnackbar = false;
         // }, this.duration);
+        
+        let search = location.search.substr(1);
+        if (search.length > 0) {
+            search = search.split('&');
+            for (var i = 0; i < search.length; i++) {
+                search[i] = search[i].split('=');
+                if (search[i][0] === 'isiframe') {
+                    this.isiframe = true;
+                    break;
+                }
+            }
+        }
 
         Store.on('home.importData', (data) => {
             console.log(this.nav)
@@ -121,10 +134,10 @@ export default {
   bottom: 0;
   background: #222;
   color: #b9b9b9;
+  padding-top: 20px;
   .app-nav-logo {
     height: 40px;
     text-align: center;
-    margin-top: 20px;
     margin-bottom: 20px;
     .logo {
       width: 101px;

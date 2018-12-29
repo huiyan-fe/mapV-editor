@@ -61,7 +61,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: 'src/page/index.html',
-            hash: false,
+            hash: true,
             chunks: ['app/index', 'app/common']
         }),
         new webpack.optimize.CommonsChunkPlugin({
