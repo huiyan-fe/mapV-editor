@@ -163,6 +163,21 @@ export default {
           Action.home.emit("initConfig", target.config);
         }
       }),
+      Store.on("home.updateData", StoreData => {
+        let target = null;
+        for (let i in this.list) {
+          if (this.list[i].id === this.layerid) {
+            target = this.list[i];
+            break;
+          }
+        }
+        if (target) {
+          this.$set(target, 'data', StoreData.data);
+          if (target.mapv) {
+            target.mapv.dataSet.set(StoreData.data.data);
+          }
+        }
+      }),
       Store.on("home.updateZIndex", StoreData => {
         this.list.forEach(list => {
           if (list.mapv) {

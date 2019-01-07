@@ -135,6 +135,13 @@ export default {
             }
             console.log(dataSetManager.getGeoData());
         });
+
+        Store.on("home.updateDataText", storeData => {
+            let {textCol, data} = storeData.data;
+            dataSetManager.copyColumn(textCol, 'text');
+            data.data = dataSetManager.getGeoData();
+            Action.home.emit('updateData', data);
+        });
     }
 };
 </script>

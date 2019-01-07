@@ -98,6 +98,26 @@ export default {
                     label: true,
                     draw: 'honeycomb'
                 }
+            },
+            text: {
+                name: '文字',
+                config: {
+                    textCol: '',
+                    fillStyle: 'rgba(255, 250, 250, 1)',
+                    useShadow: true,
+                    shadowColor: 'rgba(255, 250, 250, 1)',
+                    shadowBlur: 10,
+                    size: 12,
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+                    globalCompositeOperation: 'source-over',
+                    offset: {
+                        x: 0,
+                        y: 0
+                    },
+                    avoid: true,
+                    draw: 'text'
+                }
             }
         },
         LineString: {
@@ -232,6 +252,22 @@ export default {
             name: '半径大小',
             type: 'range',
             min: 1
+        },
+        offset: {
+            name: '文本偏移',
+            type: 'range',
+            min: -50,
+            max: 50
+        },
+        avoid: {
+            name: '标注避让',
+            type: 'checkbox'
+        },
+        textCol: {
+            name: '文本表头',
+            type: 'select',
+            value: '',
+            values: []
         },
         // globalCompositeOperation: {
         //     name: '渲染方式',

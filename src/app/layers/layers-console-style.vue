@@ -3,8 +3,9 @@
         .btns-typsbtn
             md-button(v-for="(value, key) in styleMap" :key='key' :class="key===config.draw?'md-toggle':''" @click='changeDrawType(key)') {{value.name}}
         .btns-block(v-for="(value, key) in config" v-if="configMap[key]&&configMap[key].name"
-            :class="key==='globalAlpha'||key==='lineWidth'||key==='fillStyle'||key==='size'||key==='max'||key==='shadowBlur'||key==='label'||key==='maxOpacity'?'bdrdown':''")
-            label(v-if="configMap[key]") {{configMap[key]&&configMap[key].name}} 
+            :class="key==='globalAlpha'||key==='lineWidth'||key==='fillStyle'||key==='size'||key==='max'||key==='shadowBlur'||key==='label'||key==='maxOpacity'||key==='textCol'||key==='avoid'?'bdrdown':''")
+            label(v-if="configMap[key]&&config.draw==='text'&&configMap[key].name==='半径大小'") 字体大小
+            label(v-else-if="configMap[key]&&configMap[key].name") {{configMap[key]&&configMap[key].name}} 
             el-tooltip(effect="light" placement="right" v-if="key==='max'&&configMap[key]&&currentKey==='bubble'")
                 div.tip-content-count(slot="content") 
                     p 该配置对应上传文件中权重字段，举例来说，如果设置最大权重为2，那么上传文件中所有权重大于等于2的数据均按最大半径展示。目前权重最大设置为100，建议用户将权重设置到100以内，以保证显示效果最佳。
@@ -18,7 +19,28 @@
                 show-alpha 
                 :disabled="(key==='shadowColor')&&(config.useShadow===false)"
                 @change="changeconfig($event,key)")
-            el-slider(v-else-if="configMap[key]&&configMap[key].type==='range'" 
+            div(v-else-if="configMap[key]&&configMap[key].type==='range'&&key==='offset'")
+                label x轴
+                el-slider(
+                    v-model="config[key].x"
+                    show-input
+                    :disabled="(key==='shadowBlur')&&(config.useShadow===false)"
+                    :xstep="Number(configMap[key]&&configMap[key].step)"
+                    :step="Number(configMap[key]&&configMap[key].step)||1"
+                    :max="Number(configMap[key]&&configMap[key].max)||100"
+                    :min="Number(configMap[key]&&configMap[key].min)||0"
+                    @change="changeconfig($event,key)")
+                label y轴
+                el-slider(
+                    v-model="config[key].y"
+                    show-input
+                    :disabled="(key==='shadowBlur')&&(config.useShadow===false)"
+                    :xstep="Number(configMap[key]&&configMap[key].step)"
+                    :step="Number(configMap[key]&&configMap[key].step)||1"
+                    :max="Number(configMap[key]&&configMap[key].max)||100"
+                    :min="Number(configMap[key]&&configMap[key].min)||0"
+                    @change="changeconfig($event,key)")
+            el-slider(v-else-if="configMap[key]&&configMap[key].type==='range'&&key!=='offset'" 
                 v-model="config[key]"
                 show-input
                 :disabled="(key==='shadowBlur')&&(config.useShadow===false)"
@@ -27,10 +49,14 @@
                 :max="Number(configMap[key]&&configMap[key].max)||100"
                 :min="Number(configMap[key]&&configMap[key].min)||0"
                 @change="changeconfig($event,key)")
-            el-select(v-else-if="configMap[key]&&configMap[key].type==='select'" 
+            el-select(v-else-if="configMap[key]&&configMap[key].type==='select'&&configMap[key].name!=='文本表头'"
                 @change="changeconfig($event,key)" 
                 v-model="config[key]")
                 el-option(v-for="value in configMap[key].values" v-bind:key="value.id+Math.random()" :value="value.id" :label="value.name")
+            el-select(v-else-if="configMap[key]&&configMap[key].type==='select'&&configMap[key].name==='文本表头'"
+                @change="changeconfig($event,key)"
+                v-model="config[key]")
+                el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
             el-switch(v-else-if="configMap[key]&&configMap[key].type==='checkbox'"
                 @change="changeconfig($event, key)" 
                 v-model="config[key]"
@@ -47,6 +73,11 @@
             span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'&&typeof value!=='boolean'" class="layers-console-value") {{value}}
             span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'&&value===true" class="layers-console-value") 是
             span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'&&value===false" class="layers-console-value") 否
+        //- .extra-block(v-if="config.draw==='text'")
+            //- text 类型 
+            label(v-if="config.draw==='text'") 文本表头
+            el-select(v-if="config.draw==='text'" v-model="textSelect" @change="changeText")
+                el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
         .btns-focus
             md-button(@click="focusOn()" title="聚焦图层")
               svg(viewBox="0 0 1024 1024")
@@ -67,12 +98,15 @@ export default {
   components: {
     Photoshop: Sketch
   },
+  props: ['layerInfo'],
   data: function() {
     return {
       currentKey: null,
       styleMap: styleConfig.styleMap,
       configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap)),
-      config: {}
+      config: {},
+      textSelect: '',
+      selectOptions: []
     };
   },
   methods: {
@@ -102,6 +136,9 @@ export default {
           this.config.shadowColor = undefined;
         }
       }
+      if (key === 'textCol') {
+        this.changeText(e);
+      }
       Action.home.emit("changeConfig", this.config);
     },
     changeDrawType: function(key) {
@@ -117,6 +154,13 @@ export default {
       this.cachedShadowBlurCache = null;
       this.cachedShadowColor = null;
       Action.home.emit("changeConfig", this.config);
+    },
+    changeText: function(value) {
+      const toUpdateData = {
+        data: this.layerInfo.data,
+        textCol: value
+      };
+      Action.home.emit("updateDataText", toUpdateData);
     }
   },
   mounted: function() {
@@ -124,11 +168,25 @@ export default {
       Store.on("home.initConfig", StoreData => {
         this.config = StoreData.data;
         this.styleMap = styleConfig.styleMap[this.config.dataType];
+        if (this.layerInfo && this.layerInfo.data) {
+          this.selectOptions = Object.keys(this.layerInfo.data.data[0]).filter((keyname) => {
+            return keyname!=='geometry' && keyname!=='count' && keyname!=='text';
+          });
+        }
         this.focusOn();
       }),
       Store.on("home.changeActiveLayer", StoreData => {
+        let newLayerInfo = StoreData.data;
         this.config = StoreData.data.config || {};
         this.styleMap = styleConfig.styleMap[this.config.dataType];
+        if (newLayerInfo && newLayerInfo.data) {
+          this.selectOptions = Object.keys(newLayerInfo.data.data[0]).filter((keyname) => {
+            return keyname!=='geometry' && keyname!=='count' && keyname!=='text';
+          });
+        }
+      }),
+      Store.on("home.receiveSelects", storeData => {
+        this.selectOptions = storeData.data;
       })
     ];
   },
@@ -180,6 +238,15 @@ export default {
     color: #666;
     height: 28px;
     line-height: 28px;
+  }
+
+  .extra-block {
+    margin: 0 10px;
+    padding: 10px;
+    border-bottom: 1px solid #4e4e4e;
+    label {
+      margin-right: 10px;
+    }
   }
 
   .btns-focus {
