@@ -41,28 +41,45 @@ export default {
         }
         if (target) {
           const datas = target.mapv.dataSet.get();
+          const projection = map.getMapType().getProjection();
           const allPoints = [];
           datas.forEach(point => {
             switch (point.geometry.type) {
               case 'Point':
-                allPoints.push(new BMap.Point(point.geometry.coordinates[0], point.geometry.coordinates[1]));
+                if (point.geometry.coordinates[0] > 180) {
+                  allPoints.push(projection.pointToLngLat(new BMap.Pixel(point.geometry.coordinates[0], point.geometry.coordinates[1])));
+                } else {
+                  allPoints.push(new BMap.Point(point.geometry.coordinates[0], point.geometry.coordinates[1]));
+                }
                 break;
               case 'LineString':
                 point.geometry.coordinates.forEach(point => {
-                  allPoints.push(new BMap.Point(point[0], point[1]));
+                  if (point[0] > 180) {
+                    allPoints.push(projection.pointToLngLat(new BMap.Pixel(point[0], point[1])));
+                  } else {
+                    allPoints.push(new BMap.Point(point[0], point[1]));
+                  }
                 });
                 break;
               case 'MultiLineString':
                 point.geometry.coordinates.forEach(line => {
                   line.forEach(point => {
-                    allPoints.push(new BMap.Point(point[0], point[1]));
+                    if (point[0] > 180) {
+                      allPoints.push(projection.pointToLngLat(new BMap.Pixel(point[0], point[1])));
+                    } else {
+                      allPoints.push(new BMap.Point(point[0], point[1]));
+                    }
                   });
                 });
                 break;
               case 'Polygon':
                 point.geometry.coordinates.forEach(boundary => {
                   boundary.forEach(point => {
-                    allPoints.push(new BMap.Point(point[0], point[1]));
+                    if (point[0] > 180) {
+                      allPoints.push(projection.pointToLngLat(new BMap.Pixel(point[0], point[1])));
+                    } else {
+                      allPoints.push(new BMap.Point(point[0], point[1]));
+                    }
                   });
                 });
                 break;
