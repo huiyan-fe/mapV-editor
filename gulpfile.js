@@ -16,10 +16,10 @@ gulp.task('page', () => {
 
 gulp.task('sass', () =>
     gulp.src('./src/scss/**/{*.scss,!_*.scss}')
-    .pipe(sass({
-        outputStyle: 'compressed'
-    }).on('error', sass.logError))
-    .pipe(gulp.dest('./dist/static/css'))
+        .pipe(sass({
+            outputStyle: 'compressed'
+        }).on('error', sass.logError))
+        .pipe(gulp.dest('./dist/static/css'))
 );
 
 gulp.task('static', () => {
@@ -32,9 +32,11 @@ gulp.task('images', () => {
         .pipe(gulp.dest('./dist/static/images'));
 });
 
-gulp.task('examples', () => {
+gulp.task('files', () => {
     gulp.src(['data/examples/示例数据&文件格式说明.zip'])
-        .pipe(gulp.dest('./dist/examples'));
+        .pipe(gulp.dest('./dist/assets/examples'));
+    gulp.src(['data/readme.pdf'])
+        .pipe(gulp.dest('./dist/assets/docs'));
 });
 
 
@@ -43,7 +45,7 @@ if (env === 'development') {
     gulp.watch('src/scss/**/{*.scss,!_*.scss}', ['sass']);
     gulp.watch('src/app/**/{*.png}', ['images']);
     gulp.watch('src/static/**/{*.*,!*.scss}', ['static']);
-    gulp.watch('data/examples/示例数据&文件格式说明.zip', ['examples']);
+    gulp.watch(['data/examples/示例数据&文件格式说明.zip'], ['files']);
 }
 
-gulp.task('default', ['page', 'sass', 'static', 'images', 'examples']);
+gulp.task('default', ['page', 'sass', 'static', 'images', 'files']);

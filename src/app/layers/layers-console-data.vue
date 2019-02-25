@@ -27,7 +27,7 @@
                                 p 1.上传的数据文件格式为excel或csv； 
                                 p 2.数据文件需设置字段名称（即列名称），且必须包含位置字段，可以是地址、坐标或者行政区名称；更多说明请参考下载文件。
                             a(href="javascript:") 文件说明
-                        a.download-data(href="./examples/示例数据&文件格式说明.zip") 
+                        a.download-data(href="./assets/examples/示例数据&文件格式说明.zip") 
                             i.el-icon-download
                             span 示例数据下载
                     el-col(:span="24") 
@@ -65,6 +65,8 @@
                     el-col(:span="18") 
                         el-radio-group(v-model="exampleType")
                             el-radio(v-for="item in exampleDatas" :label="item.id" @change="changeExample(item)" :key="item.id") {{item.name}}
+                el-row
+                    img(:src="`./static/images/layers/example-${exampleType}.png`")
         md-dialog-actions
             md-button.md-primary(@click="cancelDialog") 取消
             md-button.md-primary(@click="submitImport") 导入数据
@@ -118,6 +120,7 @@ export default {
         },
         changeExample: function(data) {
             this.exampleData = data;
+            console.log(this.exampleData)
         },
         beforeUpload: function(file) {
             this.clearData();
