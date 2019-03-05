@@ -131,6 +131,7 @@ export default {
   z-index: 1900;
 }
 .md-dialog-concent {
+  overflow-y: auto;
   padding: 0 20px 20px 20px;
 }
 .app-nav {
