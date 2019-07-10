@@ -31,7 +31,7 @@ export default {
             let fileName = file.name;
             let fr = new FileReader() ;
 
-            if (fileName.indexOf('.csv') > -1) {
+            if (fileName.includes('.csv') || fileName.includes('.txt')) {
                 fr.readAsText(file);
             } else {
                 fr.readAsBinaryString(file);
@@ -39,7 +39,7 @@ export default {
 
             fr.onload = function(e) {
                 let rs = e.target.result;
-                if (fileName.indexOf('.csv') > -1) {
+                if (fileName.includes('.csv') || fileName.includes('.txt')) {
                     dataSetManager.importCSV(rs);
                 } else {
                     dataSetManager.importXLSX(rs);
