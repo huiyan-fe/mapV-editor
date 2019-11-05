@@ -39,7 +39,7 @@
         "vue": "^2.5.17",
         "vue-color": "^2.4.3",
         "vue-loader": "^13.0.4",
-        "vue-material": "^1.0.0-beta-4",
+        "vue-material": "1.0.0-beta-4",
         "vue-template-compiler": "^2.5.17"
     },
     "devDependencies": {
