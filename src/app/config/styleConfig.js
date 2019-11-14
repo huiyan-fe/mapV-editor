@@ -251,7 +251,8 @@ export default {
         size: {
             name: '半径大小',
             type: 'range',
-            min: 1
+            min: 1,
+            max: 100
         },
         offset: {
             name: '文本偏移',
@@ -269,6 +270,20 @@ export default {
             value: '',
             values: []
         },
+        unit: {
+            name: '绘制单位',
+            type: 'select',
+            value: 'px',
+            values: [
+                {
+                    name: '米',
+                    id: 'm'
+                }, {
+                    name: '像素',
+                    id: 'px'
+                }
+            ]
+        }
         // globalCompositeOperation: {
         //     name: '渲染方式',
         //     type: 'select',

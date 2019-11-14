@@ -4,6 +4,7 @@
     "description": "awesome editor based on mapV",
     "main": "index.js",
     "scripts": {
+        "start": "npm run dev:webpackServer",
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev:webpack": "webpack -w --config webpack.config.js",
         "dev:webpackServer": "webpack-dev-server --config webpack.config.js --open",
