@@ -30,6 +30,7 @@ export default {
 
         window.addEventListener('message', e => {
             if (/\.baidu\.com/.test(e.origin) && e.data) {
+                console.log(data)
                 let data = JSON.parse(e.data);
                 e.source.postMessage('received data', e.origin);
                 Action.home.emit('importData');
