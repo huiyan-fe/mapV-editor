@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const env = process.env.NODE_ENV || 'production';
-console.log('111', process, env);
+// console.log('111', process, env);
 module.exports = {
     entry: {
         // 'app/index': './src/app/index.jsx',
@@ -62,7 +62,8 @@ module.exports = {
             filename: 'index.html',
             template: 'src/page/index.html',
             hash: true,
-            chunks: ['app/index', 'app/common']
+            chunks: ['app/common', 'app/index'],
+            chunksSortMode: 'dependency'
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'app/common', // Specify the common bundle's name.
@@ -76,7 +77,7 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: '"development"'
+                NODE_ENV: env === 'production' ? env : '"development"'
             }
         }),
     ]
