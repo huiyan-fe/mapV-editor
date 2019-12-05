@@ -9,7 +9,7 @@ module.exports = {
     entry: {
         // 'app/index': './src/app/index.jsx',
         'app/index': './src/app/index.vue.js',
-        'app/common': ['mapv', 'vue', 'element-ui', 'vue-material']
+        'app/common': ['vue', 'element-ui', 'vue-material']
     },
     output: {
         filename: '[name].js',
@@ -77,7 +77,7 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: env === 'production' ? env : '"development"'
+                NODE_ENV: JSON.stringify('production')
             }
         }),
     ]
