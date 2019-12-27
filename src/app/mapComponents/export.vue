@@ -88,7 +88,7 @@ export default {
             });
 
             // add water mask
-            const maskFetch = fetch('//mapopen.cdn.bcebos.com/cms/mapV-editor/newlogo_baidumap.png')
+            const maskFetch = fetch('//huiyan.baidu.com/cms/mapV-editor/newlogo_baidumap.png')
                 .then(res => res.blob())
                 .then(res => {
                     return new Promise((resolve, rej) => {

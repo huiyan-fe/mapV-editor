@@ -14,7 +14,8 @@
         "debug": "rm -rf dist && mkdir -p dist/static && npm run dev:gulp & npm run debug:webpackServer",
         "build:gulp": "gulp",
         "build:webpack": "webpack -p",
-        "build": "rm -rf dist && mkdir -p dist/static && npm run build:gulp && npm run build:webpack "
+        "build": "rm -rf dist && mkdir -p dist/static && npm run build:gulp && npm run build:webpack ",
+        "page": "sh page.sh"
     },
     "repository": {
         "type": "git",
@@ -44,6 +45,7 @@
         "vue-template-compiler": "^2.5.17"
     },
     "devDependencies": {
+        "@baidu/bos-pages": "^2.0.2",
         "babel-cli": "^6.26.0",
         "babel-core": "^6.26.0",
         "babel-eslint": "^8.0.1",

@@ -60,4 +60,4 @@ typings/
 .vscode
 
 .DS_Store
-package-lock.json
+page.sh
