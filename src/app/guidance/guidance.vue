@@ -8,7 +8,7 @@
             p 点击这里“新建图层”开始使用！
             p 还不知道什么是图层？还不会使用？
             p 点这里查看
-                a(href="https://huiyan.baidu.com/mapv.html" target="_blank") 使用引导
+                a(href="https://huiyan.baidu.com/products/mapv-editor" target="_blank") 使用引导
                 | ，或点击左下角的帮助按钮，下载详细的使用文档与示例数据~！
             .guidance-btn(@click="closeGuidance") 我知道啦!
 </template>
