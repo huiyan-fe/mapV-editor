@@ -65,10 +65,12 @@ export default {
             grid: {
                 name: '网格',
                 config: {
-                    useShadow: true,
+                    useShadow: false,
                     shadowColor: 'rgba(255, 50, 50, 1)',
-                    shadowBlur: 30,
+                    shadowBlur: 0,
                     globalCompositeOperation: 'lighter',
+                    enableCluster: true,
+                    unit: 'px',
                     size: 50,
                     min: 2,
                     max: 100,
@@ -81,6 +83,7 @@ export default {
                 config: {
                     maxOpacity: 0.8,
                     max: 100,
+                    unit: 'px',
                     size: 15,
                     draw: 'heatmap'
                 }
@@ -252,7 +255,8 @@ export default {
             name: '半径大小',
             type: 'range',
             min: 1,
-            max: 100
+            max: 100,
+            maxUnitM: 2000
         },
         offset: {
             name: '文本偏移',
@@ -270,17 +274,21 @@ export default {
             value: '',
             values: []
         },
+        enableCluster: {
+            name: '启用聚合',
+            type: 'checkbox'
+        },
         unit: {
             name: '绘制单位',
             type: 'select',
             value: 'px',
             values: [
                 {
-                    name: '米',
-                    id: 'm'
-                }, {
                     name: '像素',
                     id: 'px'
+                }, {
+                    name: '米',
+                    id: 'm'
                 }
             ]
         }

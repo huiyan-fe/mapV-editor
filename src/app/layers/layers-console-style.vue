@@ -46,7 +46,7 @@
                 :disabled="(key==='shadowBlur')&&(config.useShadow===false)"
                 :xstep="Number(configMap[key]&&configMap[key].step)"
                 :step="Number(configMap[key]&&configMap[key].step)||1"
-                :max="Number(configMap[key]&&configMap[key].max)||100"
+                :max="(isUnitM&&configMap[key]&&configMap[key].maxUnitM) || Number(configMap[key]&&configMap[key].max) || 100"
                 :min="Number(configMap[key]&&configMap[key].min)||0"
                 @change="changeconfig($event,key)")
             el-select(v-else-if="configMap[key]&&configMap[key].type==='select'&&configMap[key].name!=='文本表头'"
@@ -65,7 +65,7 @@
                 :type='configMap[key]&&configMap[key].type' 
                 :name="key" 
                 v-model="config[key]" 
-                :max="configMap[key]&&configMap[key].max"
+                :max="(isUnitM&&configMap[key]&&configMap[key].maxUnitM) || (configMap[key]&&configMap[key].max)"
                 :min="configMap[key]&&configMap[key].min" 
                 :step="configMap[key]&&configMap[key].step"
                 @change="changeconfig($event,key)"
@@ -73,11 +73,6 @@
             span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'&&typeof value!=='boolean'" class="layers-console-value") {{value}}
             span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'&&value===true" class="layers-console-value") 是
             span(v-if="configMap[key]&&configMap[key]&&configMap[key].type!=='range'&&value===false" class="layers-console-value") 否
-        //- .extra-block(v-if="config.draw==='text'")
-            //- text 类型 
-            label(v-if="config.draw==='text'") 文本表头
-            el-select(v-if="config.draw==='text'" v-model="textSelect" @change="changeText")
-                el-option(v-for="item in selectOptions" :key="item" :label="item" :value="item")
         .btns-focus
             md-button(@click="focusOn()" title="聚焦图层")
               svg(viewBox="0 0 1024 1024")
@@ -106,7 +101,8 @@ export default {
       configMap: JSON.parse(JSON.stringify(styleConfig.configLabelMap)),
       config: {},
       textSelect: '',
-      selectOptions: []
+      selectOptions: [],
+      isUnitM: false
     };
   },
   methods: {
@@ -139,10 +135,14 @@ export default {
       if (key === 'textCol') {
         this.changeText(e);
       }
+      if (key === 'unit') {
+        this.isUnitM = !!(e === 'm');
+      }
       Action.home.emit("changeConfig", this.config);
     },
     changeDrawType: function(key) {
       this.currentKey = key;
+      this.isUnitM = false;
       if (this.styleMap[key].config) {
         const newConfig = JSON.parse(JSON.stringify(this.styleMap[key].config));
         newConfig.dataType = this.config.dataType;
