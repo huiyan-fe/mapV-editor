@@ -10,7 +10,7 @@
     .layers-choose
         .layers-block(v-for="(item, index) in styles")
             div(@click="changeStyle(index)" :class="index===activeStyle?'layers-mapblock-name active':'layers-mapblock-name'" :title="item.desc") 
-                img(:src="'//api.map.baidu.com/customimage/staticmap?center=116.3975,39.9087&zoom=10&width=220&height=135&customid='+index+'&scaler=2'")
+                img(:src="`./static/images/map/${index}.png`")
                 p {{item.title}}
 
 </template>
@@ -21,60 +21,32 @@ import { Action, Store } from "marine";
 export default {
     data: function () {
         return {
-            activeStyle: localStorage.getItem('e-mapstyle') || 'visualization',
+            activeStyle: localStorage.getItem('e-mapstyle') || '05f89506b62664105cf31838837fdc66',
             styles: {
-                'visualization': {
-                    title: '默认',
+                '05f89506b62664105cf31838837fdc66': {
+                    title: 'MapV默认',
                     desc: 'mapv编辑器默认样式。'
                 },
                 'normal': {
                     title: '百度地图',
                     desc: '百度地图官网采用的地图样式。'
                 },
-                "grayscale": {
-                    title: '高端灰风格',
-                    desc: '地图整体成灰白色，使用该类地图便于突出其上叠加的个人信息。'
+                "6639f6523d2848ac4296ca004fd7f72a": {
+                    title: '初雪白',
+                    desc: '浅色模板，地图背景以蓝白色为主，明朗大方，仙气飘飘。'
                 },
-                "light": {
-                    title: '清新蓝风格',
-                    desc: '地图背景及道路均呈蓝色，给人以清新的感觉。'
+                "e028eb1c1d7436ab9f088b3eb51788ed": {
+                    title: '烟雨濛灰',
+                    desc: '浅色模板，地图背景以灰白色为主，文字标注较少，清新淡雅。'
                 },
-                "dark": {
-                    title: '黑夜风格',
-                    desc: '地图背景及道路均呈黑灰色，给人以寂静的感觉。'
+                'c8b657b9e084f120aa542d1ee208f738': {
+                    title: '眼眸蓝',
+                    desc: '深色模板，地图背景以深蓝色、墨绿色为主，文字标注较少，风格深邃神秘。'
                 },
-                'googlelite': {
-                    title: '精简风格',
-                    desc: '地图用色与google类似，不过过滤了一部分地图元素。'
+                "d298aa5244724c2d100c231d28753ef0": {
+                    title: '绿野仙踪',
+                    desc: '深色模板，地图背景以橙色、灰色为主，轮廓鲜明。'
                 },
-                "midnight": {
-                    title: '午夜蓝风格',
-                    desc: '地图背景呈深蓝色，水系为黑色，整体呈暗色风格。'
-                },
-                "redalert": {
-                    title: '红色警戒风格',
-                    desc: '地图呈大红色，红色警戒,给人高度惊醒的感觉。'
-                },
-                "grassgreen": {
-                    title: '自然绿风格',
-                    desc: '陆地呈草绿色，海洋呈蓝色，道路为白色，整幅地图自然气息十足。'
-                },
-                "pink": {
-                    title: '浪漫粉风格',
-                    desc: '地图为粉色、道路灰色，整体颜色柔和。'
-                },
-                "darkgreen": {
-                    title: '青春绿风格',
-                    desc: '地图背景为绿色、水系为黑色，标注为白色，地图用色浓重，时尚大气。'
-                },
-                "bluish": {
-                    title: '清新蓝绿风格',
-                    desc: '地图背景以蓝色为主色调，水系为白色，清新典雅。'
-                },
-                'hardedge': {
-                    title: '强边界风格',
-                    desc: '地图整体成白色，使用强烈的黑色边框,给人以强烈的轮廓感。'
-                }
             }
         }
     },
@@ -84,9 +56,9 @@ export default {
     },
     methods: {
         changeStyle: function (style) {
-            map.setMapStyle({ style: style });
+            map.setMapStyleV2({ styleId: style });
             this.activeStyle = style;
-            localStorage.setItem('e-mapstyle', style);
+            localStorage.setItem('v-mapstyle', style);
         },
         closeLayer: function () {
             Action.home.emit('changeNav', null);

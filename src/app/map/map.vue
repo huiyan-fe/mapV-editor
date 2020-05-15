@@ -23,8 +23,11 @@ export default {
         }));   //添加地图类型控件
         map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
         // map.addControl(navigationControl);
-        map.setMapStyle({
-            style: localStorage.getItem('e-mapstyle') || 'visualization' || 'midnight'
+        // map.setMapStyle({
+        //     style: localStorage.getItem('e-mapstyle') || 'visualization' || 'midnight'
+        // });
+        map.setMapStyleV2({     
+            styleId: localStorage.getItem('v-mapstyle') || '05f89506b62664105cf31838837fdc66'
         });
     }
 }
