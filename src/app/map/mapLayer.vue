@@ -21,7 +21,7 @@ import { Action, Store } from "marine";
 export default {
     data: function () {
         return {
-            activeStyle: localStorage.getItem('e-mapstyle') || '05f89506b62664105cf31838837fdc66',
+            activeStyle: localStorage.getItem('v-mapstyle') || '05f89506b62664105cf31838837fdc66',
             styles: {
                 '05f89506b62664105cf31838837fdc66': {
                     title: 'MapV默认',

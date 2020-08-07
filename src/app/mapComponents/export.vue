@@ -63,6 +63,12 @@ export default {
             }
 
             const promises = [];
+            let mapstyle = localStorage.getItem('v-mapstyle');
+            if (mapstyle === 'normal' || mapstyle === '6639f6523d2848ac4296ca004fd7f72a' || mapstyle === 'e028eb1c1d7436ab9f088b3eb51788ed') {
+                mapstyle = 'normal';
+            } else {
+                mapstyle = 'visualization';
+            }
             centers.forEach(item => {
                 let url = `//api.map.baidu.com/customimage/staticmap?`;
                 // url += `styles=${localStorage.getItem('e-mapstyle') || 'visualization'}&`;
@@ -70,7 +76,7 @@ export default {
                 url += `zoom=${item.zoom}&`;
                 url += `width=${item.width}&`;
                 url += `height=${item.height}&`;
-                url += `customid=${localStorage.getItem('e-mapstyle') || 'visualization'}&scaler=2`;
+                url += `customid=${mapstyle}&scaler=2`;
 
                 const imgFetch = fetch(url)
                     .then(res => res.blob())
