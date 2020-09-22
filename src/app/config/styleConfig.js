@@ -65,10 +65,11 @@ export default {
             grid: {
                 name: '网格',
                 config: {
-                    useShadow: false,
+                    useShadow: true,
                     shadowColor: 'rgba(255, 50, 50, 1)',
                     shadowBlur: 0,
                     globalCompositeOperation: 'lighter',
+                    globalAlpha: 1.0,
                     enableCluster: true,
                     unit: 'px',
                     size: 50,
@@ -219,7 +220,7 @@ export default {
         max: {
             name: '最大权重',
             type: 'range',
-            max: 100
+            max: 10000
         },
         maxSize: {
             name: '最大半径',
