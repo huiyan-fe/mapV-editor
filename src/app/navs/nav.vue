@@ -130,8 +130,10 @@ export default {
 .md-overlay {
   z-index: 1900;
 }
-.md-dialog-concent {
+.md-dialog-container {
   overflow-y: auto;
+}
+.md-dialog-concent {
   padding: 0 20px 20px 20px;
 }
 .app-nav {

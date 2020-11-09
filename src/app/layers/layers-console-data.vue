@@ -234,7 +234,6 @@ export default {
     padding: 0 20px;
     height: 400px;
     width: 600px;
-    overflow-y: auto;
 }
 .radio-btn-gp {
     display: block;
