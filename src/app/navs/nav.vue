@@ -110,7 +110,7 @@ export default {
         }
 
         Store.on('home.importData', (data) => {
-            console.log(this.nav)
+            // console.log(this.nav)
             if (this.nav !== 'layer') {
                 this.nav = 'layer';
                 Action.home.emit('changeNav', 'layer');

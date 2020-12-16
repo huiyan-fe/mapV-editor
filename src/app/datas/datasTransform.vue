@@ -103,7 +103,7 @@ export default {
         //   4.(, ):split by comma
 
         let lineDatas = lines.map((item, index) => {
-          console.log(1, item);
+          // console.log(1, item);
           let cellDatas = item.split("\t");
           // if not split by \t use space as the split chart
           if (cellDatas.length === 1) {
@@ -119,7 +119,7 @@ export default {
             jointCells.push(con.join());
           }
           cellDatas = jointCells;
-          console.log(1, cellDatas);
+          // console.log(1, cellDatas);
           // only support the first 10 files
           // if (cellDatas.length > 10) {
           //   cellDatas = cellDatas.slice(0, 10);
@@ -128,7 +128,7 @@ export default {
           // auto choose type of this filed
           // only show the first 5 line
           if (index < Infinity) {
-            console.log(cellDatas);
+            // console.log(cellDatas);
             cellDatas.forEach((item, fileIndex) => {
               // every line have same type or data structure
               // so we only need to maintain one line cell types :lineCellTypes
@@ -215,7 +215,7 @@ export default {
   watch: {
     stringFiledTypes: {
       handler: function(newVal, oldVal) {
-        console.log("new: %s, old: %s", newVal, oldVal);
+        // console.log("new: %s, old: %s", newVal, oldVal);
         if (newVal && newVal.indexOf("]") > -1) {
           newVal = typeof newVal == "string" ? JSON.parse(newVal) : newVal;
           let firstCellType = newVal[0];
@@ -239,7 +239,7 @@ export default {
       deep: true,
       immediate: true,
       handler: function(newVal, oldVal) {
-        console.log("可以了");
+        // console.log("可以了");
         // let firstCellType = newVal[0];
         // if (firstCellType == "poiName") {
         //   let nameList = lineDatas.map(l => {

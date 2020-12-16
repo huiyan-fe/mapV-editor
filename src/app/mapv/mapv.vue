@@ -23,9 +23,9 @@ export default {
           break;
         }
       }
-      Object.keys(config).forEach(key => {
-        console.log(key, config[key])
-      });
+      // Object.keys(config).forEach(key => {
+      //   console.log(key, config[key])
+      // });
       target.mapv.setOptions(config);
     }
   },
@@ -84,7 +84,7 @@ export default {
                 });
                 break;
               default:
-                console.log(point.geometry)
+                // console.log(point.geometry)
             }
           });
           map.setViewport(allPoints, {

@@ -107,7 +107,7 @@ export default {
             }
         },
         changeDataTab: function(tab) {
-            console.log(tab)
+            // console.log(tab)
         },
         changeDataType: function(type) {
             // this.clearData();
@@ -120,7 +120,7 @@ export default {
         },
         changeExample: function(data) {
             this.exampleData = data;
-            console.log(this.exampleData)
+            // console.log(this.exampleData)
         },
         beforeUpload: function(file) {
             this.clearData();
@@ -213,7 +213,7 @@ export default {
             })
             this.exampleDatas = StoreData.data;
             this.exampleData = StoreData.data[0];
-            console.log('guagua',this.exampleDatas)
+            // console.log('guagua',this.exampleDatas)
         });
         Action.home.emit('getDatas');
     }

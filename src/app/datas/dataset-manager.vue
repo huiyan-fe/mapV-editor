@@ -76,6 +76,7 @@ export default {
                     // 解析地址是异步
                     dataSetManager.geoAddress(addrCol, countCol, rs => {
                         data.data = dataSetManager.getGeoData();
+                        console.log(data.data);
                         Action.home.emit('receiveUploads', data);
                     });
                 } else {
