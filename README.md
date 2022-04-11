@@ -1,5 +1,8 @@
 # MapV-Editor
 
+## node版本
+8.17.0
+
 Please visit [https://mapv.baidu.com/editor/](https://mapv.baidu.com/editor/) to use it.
 If you have any questions or suggestions, please leave an issue to let us know.
 
